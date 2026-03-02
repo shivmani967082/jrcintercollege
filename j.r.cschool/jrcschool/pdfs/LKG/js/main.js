@@ -28,7 +28,7 @@ const JRCUtils = {
   async initNewsLoader() {
     const container = document.getElementById('newsContainer');
     if (!container) return;
-    const API_BASE = 'https://jrc-school-pro.onrender.com';
+    const API_BASE = 'https://jrcintercollege.onrender.com';
     try {
       const res = await fetch(`${API_BASE}/api/news?limit=10`);
       const json = await res.json();

@@ -2,14 +2,14 @@
  * Admin Portal JavaScript
  * Manages admission enquiries viewing and status updates
  */
-const API_BASE = "https://jrc-school-pro.onrender.com";
+const API_BASE = "https://jrcintercollege.onrender.com";
 const AdminPortal = {
   
-  API_URL: 'https://jrc-school-pro.onrender.com/api/admissions',
-  NEWS_API_URL: 'https://jrc-school-pro.onrender.com/api/news',
-  STUDENT_API_URL: 'https://jrc-school-pro.onrender.com/api/student',
-  TEACHERS_API_URL: 'https://jrc-school-pro.onrender.com/api/teachers',
-  CLASS_TEACHERS_API_URL: 'https://jrc-school-pro.onrender.com/api/class-teachers',
+  API_URL: 'https://jrcintercollege.onrender.com/api/admissions',
+  NEWS_API_URL: 'https://jrcintercollege.onrender.com/api/news',
+  STUDENT_API_URL: 'https://jrcintercollege.onrender.com/api/student',
+  TEACHERS_API_URL: 'https://jrcintercollege.onrender.com/api/teachers',
+  CLASS_TEACHERS_API_URL: 'https://jrcintercollege.onrender.com/api/class-teachers',
   currentPage: 1,
   currentLimit: 20,
   currentStatus: '',
@@ -154,7 +154,7 @@ const AdminPortal = {
                 imgUrl = originalImage;
               } else {
                 const cleanPath = originalImage.startsWith('/') ? originalImage.substring(1) : originalImage;
-                imgUrl = `https://jrc-school-pro.onrender.com/${cleanPath}`;
+                imgUrl = `https://jrcintercollege.onrender.com/${cleanPath}`;
               }
               if (previewImg) {
                 previewImg.src = imgUrl;
@@ -735,7 +735,7 @@ ${admission.notes ? `Notes: ${admission.notes}` : ''}
             <div class="flex items-center gap-2 mb-1">
               ${t.image && t.image.trim() ? (() => {
                 const cleanPath = t.image.startsWith('/') ? t.image.substring(1) : t.image;
-                const imgUrl = t.image.startsWith('http') ? t.image : `https://jrc-school-pro.onrender.com/${cleanPath}`;
+                const imgUrl = t.image.startsWith('http') ? t.image : `https://jrcintercollege.onrender.com/${cleanPath}`;
                 return `<img src="${this.escapeHtml(imgUrl)}" alt="${this.escapeHtml(t.name)}" class="w-12 h-12 rounded-full object-cover border-2 border-blue-200" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><div style="display:none; width:48px; height:48px; background:#d1d5db; border-radius:9999px; border:2px solid #93c5fd;"></div>`;
               })() : '<div class="w-12 h-12 rounded-full bg-gray-300 border-2 border-blue-200"></div>'}
               <div>
@@ -811,7 +811,7 @@ ${admission.notes ? `Notes: ${admission.notes}` : ''}
                 } else {
                   // Remove leading slash if present, then add base URL
                   const cleanPath = t.image.startsWith('/') ? t.image.substring(1) : t.image;
-                  imgUrl = `https://jrc-school-pro.onrender.com/${cleanPath}`;
+                  imgUrl = `https://jrcintercollege.onrender.com/${cleanPath}`;
                 }
                 previewImg.src = imgUrl;
                 previewImg.onerror = function() {
@@ -922,7 +922,7 @@ ${admission.notes ? `Notes: ${admission.notes}` : ''}
       console.log('✅ Teacher saved successfully:', result.data);
       if (result.data && result.data.image) {
         console.log('✅ Image path saved:', result.data.image);
-        console.log('✅ Full image URL:', `https://jrc-school-pro.onrender.com/${result.data.image}`);
+        console.log('✅ Full image URL:', `https://jrcintercollege.onrender.com/${result.data.image}`);
       }
       this.closeTeacherModal();
       this.loadTeachers();

@@ -3,7 +3,7 @@ const resolveApiOrigin = () => {
   const isDirectLocalHost = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0';
   const isLanHost = hostname.endsWith('.local');
   const isPrivateIp = /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.)/.test(hostname);
-  if (protocol === 'file:' || isDirectLocalHost) return 'http://localhost:3000';
+  if (protocol === 'file:' || isDirectLocalHost) return 'https://jrcintercollege.onrender.com';
   if (isLanHost || isPrivateIp) return `${protocol}//${hostname}:3000`;
   return origin;
 };

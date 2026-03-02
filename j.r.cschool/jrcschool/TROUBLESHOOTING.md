@@ -120,7 +120,7 @@ ls -la .env
 
 ### Test Backend Health:
 ```bash
-curl https://jrc-school-pro.onrender.com/api/health
+curl https://jrcintercollege.onrender.com/api/health
 ```
 
 ### Test MongoDB:
@@ -130,7 +130,7 @@ mongosh mongodb://localhost:27017/jrc-school
 
 ### Test Form Submission (from terminal):
 ```bash
-curl -X POST https://jrc-school-pro.onrender.com/api/admissions/submit \
+curl -X POST https://jrcintercollege.onrender.com/api/admissions/submit \
   -H "Content-Type: application/json" \
   -d '{
     "studentName": "Test Student",

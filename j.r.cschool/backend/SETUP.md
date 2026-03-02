@@ -63,13 +63,13 @@ npm run dev
 npm start
 ```
 
-Server `https://jrc-school-pro.onrender.com` पर चलेगा।
+Server `https://jrcintercollege.onrender.com` पर चलेगा।
 
 ## 📝 Testing
 
 ### 1. Health Check:
 ```bash
-curl https://jrc-school-pro.onrender.com/api/health
+curl https://jrcintercollege.onrender.com/api/health
 ```
 
 ### 2. Admission Form Submit करें:

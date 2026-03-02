@@ -2,7 +2,7 @@
  * Teacher Dashboard - student registration, class filter, results & fees
  */
 
-const API_BASE = 'https://jrc-school-pro.onrender.com/api';
+const API_BASE = 'https://jrcintercollege.onrender.com/api';
 const TeacherPortal = {
   selectedStudent: null,
 

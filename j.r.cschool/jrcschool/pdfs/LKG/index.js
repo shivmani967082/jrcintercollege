@@ -6,5 +6,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("Server Started on https://jrc-school-pro.onrender.com");
+  console.log("Server Started on https://jrcintercollege.onrender.com");
 });

@@ -48,7 +48,7 @@ const JRCFormHandler = {
       JRCUtils.setLoading(submitBtn, true);
 
       try {
-        const API_URL = 'https://jrc-school-pro.onrender.com/api/admissions/submit';
+        const API_URL = 'https://jrcintercollege.onrender.com/api/admissions/submit';
         
         try {
           const controller = new AbortController();

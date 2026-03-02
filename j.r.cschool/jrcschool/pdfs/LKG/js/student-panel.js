@@ -4,7 +4,7 @@
  * Logic preserved, data display organized with Session & Month filters.
  */
 
-const API_BASE = 'https://jrc-school-pro.onrender.com';
+const API_BASE = 'https://jrcintercollege.onrender.com';
 const TOKEN_KEY = 'jrc_student_token';
 const STUDENT_KEY = 'jrc_student_info';
 

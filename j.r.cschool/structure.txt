@@ -1,0 +1,618 @@
+.
+./index.html
+./.DS_Store
+./netlify.toml
+./node_modules
+./backend
+./backend/check-server.js
+./backend/FIX_ERROR.md
+./backend/start-mongodb.sh
+./backend/SETUP.md
+./backend/fix-dependencies.sh
+./backend/start-server.sh
+./backend/server.js
+./backend/node_modules
+./backend/utils
+./backend/utils/studentAuth.js
+./backend/models
+./backend/models/ClassTeacher.js
+./backend/models/ChatHistory.js
+./backend/models/Student.js
+./backend/models/Admission.js
+./backend/models/StudentFee.js
+./backend/models/Contact.js
+./backend/models/News.js
+./backend/models/StudentResult.js
+./backend/README.md
+./backend/.gitignore
+./backend/package-lock.json
+./backend/package.json
+./backend/MONGODB_FIRST.md
+./backend/.env.example
+./backend/routes
+./backend/routes/ai.js
+./backend/routes/fee.js
+./backend/routes/classTeacher.js
+./backend/routes/teacher.js
+./backend/routes/teacherDashboard.js
+./backend/routes/student.js
+./backend/routes/admission.js
+./backend/routes/studentAuth.js
+./backend/routes/contact.js
+./backend/routes/news.js
+./backend/services
+./backend/services/aiService.js
+./backend/services/emailService.js
+./backend/services/whatsappService.js
+./backend/QUICK_START.md
+./.gitignore
+./119-free-printable-worksheets-for-kids-alphabets-small-letters-tracing-alphabets-small-letters-tracing.pdf
+./jrcschool
+./jrcschool/.DS_Store
+./jrcschool/TROUBLESHOOTING.md
+./jrcschool/_redirects
+./jrcschool/package-lock.json
+./jrcschool/package.json
+./jrcschool/pdfs
+./jrcschool/pdfs/.DS_Store
+./jrcschool/pdfs/lkg
+./jrcschool/pdfs/lkg/BACKEND_START.md
+./jrcschool/pdfs/lkg/ai-assistant.html
+./jrcschool/pdfs/lkg/female staff.jpeg
+./jrcschool/pdfs/lkg/teachers.jpeg
+./jrcschool/pdfs/lkg/.DS_Store
+./jrcschool/pdfs/lkg/teacher-login.html
+./jrcschool/pdfs/lkg/student-panel.html
+./jrcschool/pdfs/lkg/admin.html
+./jrcschool/pdfs/lkg/practice.js
+./jrcschool/pdfs/lkg/styles.css
+./jrcschool/pdfs/lkg/about.html
+./jrcschool/pdfs/lkg/495172015_122099557628862742_8466078802183725771_n.jpg
+./jrcschool/pdfs/lkg/js
+./jrcschool/pdfs/lkg/js/attendance.js
+./jrcschool/pdfs/lkg/js/admin-auth.js
+./jrcschool/pdfs/lkg/js/student-panel.js
+./jrcschool/pdfs/lkg/js/teacher.js
+./jrcschool/pdfs/lkg/js/README.md
+./jrcschool/pdfs/lkg/js/main.js
+./jrcschool/pdfs/lkg/js/ai-assistant.js
+./jrcschool/pdfs/lkg/js/teacher-auth.js
+./jrcschool/pdfs/lkg/js/admin.js
+./jrcschool/pdfs/lkg/js/form-handler.js
+./jrcschool/pdfs/lkg/global.css
+./jrcschool/pdfs/lkg/teacher stu.jpeg
+./jrcschool/pdfs/lkg/homework1.pdf
+./jrcschool/pdfs/lkg/WhatsApp Image 2026-01-28 at 19.40.47.jpeg
+./jrcschool/pdfs/lkg/index.js
+./jrcschool/pdfs/lkg/babban sir.jpeg
+./jrcschool/pdfs/lkg/vikas sir.jpeg
+./jrcschool/pdfs/lkg/babban sir_files
+./jrcschool/pdfs/lkg/babban sir_files/killSwitchOverrides.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(3).js
+./jrcschool/pdfs/lkg/babban sir_files/_app-6b37bbae932169b1.js
+./jrcschool/pdfs/lkg/babban sir_files/layout.bundle.css
+./jrcschool/pdfs/lkg/babban sir_files/29107295-a36037e5ea1af0472eba.js
+./jrcschool/pdfs/lkg/babban sir_files/_ssgManifest(1).js
+./jrcschool/pdfs/lkg/babban sir_files/4248-8562867c247de54eedba.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(2).js
+./jrcschool/pdfs/lkg/babban sir_files/dc-spectrum-v3-core.css
+./jrcschool/pdfs/lkg/babban sir_files/2379-9f499ea640ca13a5e052.js
+./jrcschool/pdfs/lkg/babban sir_files/preload.js
+./jrcschool/pdfs/lkg/babban sir_files/framework-880e7eeca526ad46.js
+./jrcschool/pdfs/lkg/babban sir_files/preload(1).html
+./jrcschool/pdfs/lkg/babban sir_files/track.js
+./jrcschool/pdfs/lkg/babban sir_files/3631-e8206c7509a1f79f9a9b.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(1).js
+./jrcschool/pdfs/lkg/babban sir_files/main-abd670878cea5cbd.js
+./jrcschool/pdfs/lkg/babban sir_files/_app-abedb19b0f3ec392324a.js
+./jrcschool/pdfs/lkg/babban sir_files/1119-837c873e7b0939d42263.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(5).js
+./jrcschool/pdfs/lkg/babban sir_files/index.html
+./jrcschool/pdfs/lkg/babban sir_files/launch-5dd5dd2177e6.min.js
+./jrcschool/pdfs/lkg/babban sir_files/9413-2d487d4334aedd1eaf88.js
+./jrcschool/pdfs/lkg/babban sir_files/profile.bundle.css
+./jrcschool/pdfs/lkg/babban sir_files/UniversalNav.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(4).js
+./jrcschool/pdfs/lkg/babban sir_files/analytics-5dd348c9c6e1727cd0df.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(6).js
+./jrcschool/pdfs/lkg/babban sir_files/main-cc2b0ddb6319c8213e7c.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(7).js
+./jrcschool/pdfs/lkg/babban sir_files/ejz3fgh.js
+./jrcschool/pdfs/lkg/babban sir_files/2759-1018eabafa81bed42e64.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(20).js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(21).js
+./jrcschool/pdfs/lkg/babban sir_files/privacy-standalone.js
+./jrcschool/pdfs/lkg/babban sir_files/styles-69677dd2d7f72a43.js
+./jrcschool/pdfs/lkg/babban sir_files/paywall-5e936b1ef4f2c4d9d09c.js
+./jrcschool/pdfs/lkg/babban sir_files/dc-spectrum-s2-core.js
+./jrcschool/pdfs/lkg/babban sir_files/bundle.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(23).js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(22).js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap.js
+./jrcschool/pdfs/lkg/babban sir_files/dc-extras.css
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(26).js
+./jrcschool/pdfs/lkg/babban sir_files/ubl8raj.css
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(27).js
+./jrcschool/pdfs/lkg/babban sir_files/dc-core.js
+./jrcschool/pdfs/lkg/babban sir_files/RC04a927fa157f40a4a07fd03fc446f6f4-file.min.js
+./jrcschool/pdfs/lkg/babban sir_files/popover.bundle.css
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(19).js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(25).js
+./jrcschool/pdfs/lkg/babban sir_files/saved_resource(1).html
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(24).js
+./jrcschool/pdfs/lkg/babban sir_files/printHelper_main.61fdcef2.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(18).js
+./jrcschool/pdfs/lkg/babban sir_files/polyfills-c67a75d1b6f99dc8.js
+./jrcschool/pdfs/lkg/babban sir_files/_ssgManifest.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(15).js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(14).js
+./jrcschool/pdfs/lkg/babban sir_files/segmentation-d277245cf79a233e.js
+./jrcschool/pdfs/lkg/babban sir_files/saved_resource
+./jrcschool/pdfs/lkg/babban sir_files/dc-mobx.js
+./jrcschool/pdfs/lkg/babban sir_files/6gNXXegDB6rtHARrNKRF8w
+./jrcschool/pdfs/lkg/babban sir_files/4272-472c59d1a77bd9f71ebd.js
+./jrcschool/pdfs/lkg/babban sir_files/preload.html
+./jrcschool/pdfs/lkg/babban sir_files/RCad1da7c6652048d19f9c40a147919f67-file.min.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(16).js
+./jrcschool/pdfs/lkg/babban sir_files/styles-ffabca5437faff427fdf.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(17).js
+./jrcschool/pdfs/lkg/babban sir_files/payment-01aecee01334254f.js
+./jrcschool/pdfs/lkg/babban sir_files/TopAppBar.js
+./jrcschool/pdfs/lkg/babban sir_files/AdobeMessagingClient.css
+./jrcschool/pdfs/lkg/babban sir_files/webpack-20c258453b89b8e58336.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(13).js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(12).js
+./jrcschool/pdfs/lkg/babban sir_files/dc-extras.js
+./jrcschool/pdfs/lkg/babban sir_files/nil6fkt.css
+./jrcschool/pdfs/lkg/babban sir_files/polyfills-a40ef1678bae11e696dba45124eadd70.js
+./jrcschool/pdfs/lkg/babban sir_files/style.css
+./jrcschool/pdfs/lkg/babban sir_files/dc-spectrum-v3-core.js
+./jrcschool/pdfs/lkg/babban sir_files/dc-app-launcher-viewer.js
+./jrcschool/pdfs/lkg/babban sir_files/3578-e835cbb8f6e38b485c47.js
+./jrcschool/pdfs/lkg/babban sir_files/357-7c10caa2a47812e8c54b.js
+./jrcschool/pdfs/lkg/babban sir_files/webpack-761d3026de5891f7.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(10).js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(11).js
+./jrcschool/pdfs/lkg/babban sir_files/printHelper.html
+./jrcschool/pdfs/lkg/babban sir_files/dc-spectrum-v2-dark.css
+./jrcschool/pdfs/lkg/babban sir_files/framework-cd385e6e308f280c00f4.js
+./jrcschool/pdfs/lkg/babban sir_files/5723-9c6f3384de78493c14a3.js
+./jrcschool/pdfs/lkg/babban sir_files/preload-829a890ebdc7db5ba902.js
+./jrcschool/pdfs/lkg/babban sir_files/_buildManifest(1).js
+./jrcschool/pdfs/lkg/babban sir_files/main.standard.min.js
+./jrcschool/pdfs/lkg/babban sir_files/dc-view-sdk.js
+./jrcschool/pdfs/lkg/babban sir_files/preload-b6aabb891fa09f86.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(9).js
+./jrcschool/pdfs/lkg/babban sir_files/_app.8ad492db.css
+./jrcschool/pdfs/lkg/babban sir_files/commitment-1f9d7b9aa944c275.js
+./jrcschool/pdfs/lkg/babban sir_files/bootstrap(8).js
+./jrcschool/pdfs/lkg/babban sir_files/UniversalNav.css
+./jrcschool/pdfs/lkg/babban sir_files/saved_resource.html
+./jrcschool/pdfs/lkg/babban sir_files/AdobeMessagingClient.js
+./jrcschool/pdfs/lkg/babban sir_files/rendition.js
+./jrcschool/pdfs/lkg/babban sir_files/remoteEntry(1).js
+./jrcschool/pdfs/lkg/babban sir_files/8087-27a6084a8b652552797c.js
+./jrcschool/pdfs/lkg/babban sir_files/3498-a64197cef96425a43cc0.js
+./jrcschool/pdfs/lkg/babban sir_files/dc-spectrum-s2-core.css
+./jrcschool/pdfs/lkg/babban sir_files/_app.e7883d24.css
+./jrcschool/pdfs/lkg/babban sir_files/remoteEntry.js
+./jrcschool/pdfs/lkg/babban sir_files/remoteEntry(2).js
+./jrcschool/pdfs/lkg/babban sir_files/3988-1e6339ff20f656a937f3.js
+./jrcschool/pdfs/lkg/babban sir_files/_buildManifest.js
+./jrcschool/pdfs/lkg/babban sir_files/email-efc5865e887e6028.js
+./jrcschool/pdfs/lkg/package-lock.json
+./jrcschool/pdfs/lkg/package.json
+./jrcschool/pdfs/lkg/assignment.html
+./jrcschool/pdfs/lkg/admissions.html
+./jrcschool/pdfs/lkg/fee-structure.pdf
+./jrcschool/pdfs/lkg/stu.jpeg
+./jrcschool/pdfs/lkg/stud.jpeg
+./jrcschool/pdfs/lkg/fees.html
+./jrcschool/pdfs/lkg/mee.jpg
+./jrcschool/pdfs/lkg/admin-login.html
+./jrcschool/pdfs/lkg/teacher.html
+./jrcschool/pdfs/lkg/sarita mam.jpeg
+./jrcschool/pdfs/lkg/student-login.html
+./jrcschool/pdfs/lkg/WEBSITE_SUGGESTIONS.md
+./jrcschool/pdfs/lkg/deepak sir.jpeg
+./jrcschool/pdfs/lkg/teacher student.jpeg
+./jrcschool/pdfs/lkg/sanjay sir.jpeg
+./jrcschool/.vscode
+./jrcschool/.vscode/settings.json
+./.git
+./.git/config
+./.git/objects
+./.git/objects/61
+./.git/objects/61/8419bdb4ac12459b77e5ac187e17fa32d0254c
+./.git/objects/61/e263171d8dc62d98579d524bcbcab1f73b10af
+./.git/objects/61/8f619130dc92cab8bf39c5d8fc2b8a99955b68
+./.git/objects/61/315dac719f70b9461bebeeb0cd9f0ed973b66a
+./.git/objects/0d
+./.git/objects/0d/6194f18f6b2fd45132889ca5e651a62486d788
+./.git/objects/95
+./.git/objects/95/440da478c77ea84e066b166c2937941e0c6343
+./.git/objects/95/c50d28ce4912cb4c3ee3ee10d075c2278ba26e
+./.git/objects/95/2cbdb0c1d53ccd6c2bbb1f32a44b68dd1e394c
+./.git/objects/59
+./.git/objects/59/b7f1ca8008aacb907d56354a604bc07af37928
+./.git/objects/59/241ddbf8d1fe2b8f092e1ed0fee949cc3233c9
+./.git/objects/59/65909648a66d2ae5fa96654226533e1f55c294
+./.git/objects/92
+./.git/objects/92/e79f2ea8ab10e2cca274118fb22243f6127f1e
+./.git/objects/92/e44ac3ad6babc515b9ae0dcda81332fbbbfc9e
+./.git/objects/3e
+./.git/objects/3e/db38381d825608884735a339212d6ceb491a66
+./.git/objects/3e/fbe99af987aa98fc88b6c56ff0ac4881f2a7d1
+./.git/objects/68
+./.git/objects/68/70061440546a56c266ec826d93e2bd37c6db98
+./.git/objects/57
+./.git/objects/57/38adda716bc966ee5d27bc5eea879e32d08a2c
+./.git/objects/6f
+./.git/objects/6f/355b429c9002c66f34c1ea9dc41dc0406cb5ab
+./.git/objects/6f/e376495542a2862845834220288612d7db0a21
+./.git/objects/6f/3a2913e199cebe9ace75cf7e5a2818da27fbd3
+./.git/objects/9b
+./.git/objects/9b/c99a2add1528345760fbb1b993d184ae9ba508
+./.git/objects/6a
+./.git/objects/6a/2de32a298f6c76d3c945450723f2e81d3014f6
+./.git/objects/6a/074533ac3db728ae263486df605c5ad0cfe69b
+./.git/objects/3d
+./.git/objects/3d/b608c2dfee0bd4b776957d9cc346bdbfa5b851
+./.git/objects/58
+./.git/objects/58/9c5c974a696dd5b1c3f3c4d7bfb55826dd25ec
+./.git/objects/67
+./.git/objects/67/19fdc8a386f292271710b0b6cfa16d7db8bd0a
+./.git/objects/0b
+./.git/objects/0b/92d253afd7ded332153b35daeb666beb653310
+./.git/objects/94
+./.git/objects/94/84ab657da7f03bc5d6e8b0cf1a1fc444c8fde5
+./.git/objects/5f
+./.git/objects/5f/77a93dde7957c0cb5ab7d31b37a61c49809b3f
+./.git/objects/05
+./.git/objects/05/11aa895e5036ab4b50d97112e1d6aed9a3cd79
+./.git/objects/a4
+./.git/objects/a4/b8ddc08a9950104e36d571410d2d7fde95af03
+./.git/objects/a3
+./.git/objects/a3/a10a88a8288f006114678fb09f67b102b80cc4
+./.git/objects/b5
+./.git/objects/b5/42a2b32c0be689c90b16117ceb5abfa65d4cbb
+./.git/objects/ac
+./.git/objects/ac/22693779575b0c854fbea1c892e1c3f25f1e45
+./.git/objects/ad
+./.git/objects/ad/d1279f0b5acd470f70e6ebbbea4d736ba12cc5
+./.git/objects/ad/5b34aec343ea007e8baf1e6b518e8e660b33b2
+./.git/objects/ad/37e2c2c9d586095623ec6b10e8eccbeb6e36d3
+./.git/objects/bb
+./.git/objects/bb/f641606caafc91fbc4e274f1b3dc287f5e2776
+./.git/objects/d7
+./.git/objects/d7/a8184c9fcf6d199d5ea11c4c1efd61c9f9348e
+./.git/objects/d7/8d8e3af2723486da05896e17d983fc4df39003
+./.git/objects/d0
+./.git/objects/d0/3dcc69354903f3ac248ba12dd05d92c79118b8
+./.git/objects/be
+./.git/objects/be/6599dc5e6522a5ed631d7610715db0d3642fcc
+./.git/objects/b4
+./.git/objects/b4/38753dab90db811c251fa2bbe8229820ad8af3
+./.git/objects/b4/8963957ec81bf369d6327dc8e04a6751f0446a
+./.git/objects/a2
+./.git/objects/a2/55809a65d79ded3c81430bc39fe948dadf5907
+./.git/objects/bd
+./.git/objects/bd/cf83129eebaaa0a50f164c95c24ebad5656fdf
+./.git/objects/bc
+./.git/objects/bc/77027c068d8f8cb2385a9bba46ce74336de79c
+./.git/objects/bc/7ff3348b680a9e853d66e181fc3f1d34958700
+./.git/objects/bc/0f12b153e485079a5c9bda897e4ba5bf2ea3bd
+./.git/objects/d8
+./.git/objects/d8/7962d8cf079af1ed122895ba560f954dfa8105
+./.git/objects/d8/a37bdbfe00b93905057e11aa4cfbae684e1137
+./.git/objects/e5
+./.git/objects/e5/494bd21e33d47125edf9845a2a1b81dad2232c
+./.git/objects/e5/b0bdad954de63756adae6008cb468fc62d2154
+./.git/objects/e2
+./.git/objects/e2/c5462dcfb5473c48c8c55116bbbf655d8ee904
+./.git/objects/c0
+./.git/objects/c0/52fec7713432c6346c30bdea66e6f18f6a6fd0
+./.git/objects/c9
+./.git/objects/c9/2bb29b544a2dc4bdf92dca2b6cdf2678104312
+./.git/objects/fc
+./.git/objects/fc/9eab158fe011d8b9f39bf48e1a376da87ef5fe
+./.git/objects/fd
+./.git/objects/fd/8f6b0618448cb5456a5253501dc322ec98ac3b
+./.git/objects/fd/2f7dbce528d889b9ceeb1bc9f6f59222e10458
+./.git/objects/e3
+./.git/objects/e3/122afd7965dd08f4f199757468d46c6c042acd
+./.git/objects/ca
+./.git/objects/ca/ece0a11c2f50510f37689d0d7f6803bbb5f951
+./.git/objects/ca/2f7f2fc0dc6f012f4ca9264637144347c6d79e
+./.git/objects/ca/54774a85f3fb2016e91527ded550f2caa191fc
+./.git/objects/e4
+./.git/objects/e4/4d1604a240e568594d35014a4dc142e144cbd1
+./.git/objects/e4/d951b1c87c2fa77de13a6a8e339d298348c8d1
+./.git/objects/e4/76a8e862b9fa3ff3d12d93a378006523a40cdd
+./.git/objects/fe
+./.git/objects/fe/9f9d878e4d5a7ba1965233ab8c0f75e7b25e35
+./.git/objects/c8
+./.git/objects/c8/1bb73d3ca6d9d5da3cf6ca642e74d2fb6027d5
+./.git/objects/fb
+./.git/objects/fb/7637f97634499e3b6e1c9388064556cfb35d76
+./.git/objects/c1
+./.git/objects/c1/e82da4782b5c9b7c374cdeb309aba199587724
+./.git/objects/c1/8b35272f6d57bbb3a971007ace86da517ff542
+./.git/objects/4e
+./.git/objects/4e/efe65cf792e3db588744d3a59900c276686be0
+./.git/objects/18
+./.git/objects/18/b49fbbdd5ce677cf4f98789f2d0ca9ba8f5a92
+./.git/objects/pack
+./.git/objects/7d
+./.git/objects/7d/b06cb7e6056497873ba5c96d99237d5be2b360
+./.git/objects/7c
+./.git/objects/7c/0198785e6fbb87cb4c5ab53fcc5b15fed86ef8
+./.git/objects/42
+./.git/objects/42/b5528c5b1a5f29ca1a090c2d7b21ed7b57d30c
+./.git/objects/89
+./.git/objects/89/ecc14557223682eea7bfeae97223f47c8f1ca8
+./.git/objects/45
+./.git/objects/45/39711fe522ddb33c1176ece801a3beb9a15184
+./.git/objects/45/a61b2cb23b4ef7d01fcba56de6b903b7fe3858
+./.git/objects/45/0aa513b2ec4eb734fbbfdf162f2e4e1fc0d1de
+./.git/objects/1f
+./.git/objects/1f/9bee6f75fbcc00c538465134f16ce6ac15b653
+./.git/objects/73
+./.git/objects/73/c96a46d111218a0accd1fb0c6909710a2ac2ce
+./.git/objects/80
+./.git/objects/80/1d8d345be06b5f74bd0b71a873af154df67a4c
+./.git/objects/1a
+./.git/objects/1a/8aca451c2dad0ffb2d7675feb5a656065ae1da
+./.git/objects/1a/40815cb65ea50b3939a3b11c6046f86d97f907
+./.git/objects/17
+./.git/objects/17/0ac9b8910b5d35f0db2d2b1dbaca397c76cd7c
+./.git/objects/17/add63f882a16ee715f47100abc68ce3f32f756
+./.git/objects/17/b075ac99b0d8d3ab12987b1537576d57eddbdf
+./.git/objects/7e
+./.git/objects/7e/8bd7fe6a2e815c52995f15d24295f20b517acd
+./.git/objects/19
+./.git/objects/19/58f61e47fdbfe6d85008cd086d369988272b64
+./.git/objects/21
+./.git/objects/21/262c69596a7f0f7da0a8877c6119c9744ab0f8
+./.git/objects/81
+./.git/objects/81/7b42a03476bc3e90a056e0296719e2f66db003
+./.git/objects/86
+./.git/objects/86/6bbb1a48d2f52d53a5ced7fb3f834704eb2be0
+./.git/objects/86/48211302534f5acff8d6ed012c866b9b22dbb5
+./.git/objects/72
+./.git/objects/72/c47d6400dc1426d86f995fd3d53b10d52ab82c
+./.git/objects/72/40d3400039131f1cf161d1949fc850e08cb83b
+./.git/objects/2f
+./.git/objects/2f/5d84f3e65b4d831545421013aefd53d01157d1
+./.git/objects/9f
+./.git/objects/9f/ed1c06b4589a42c246de5fa5be5016685b7c58
+./.git/objects/38
+./.git/objects/38/2dc94451b92ae9f6aaa2d749ba3e3bfab88e1e
+./.git/objects/38/465e5ae301b3ddefabfe22b188c4fee52182c0
+./.git/objects/00
+./.git/objects/00/6015d361dfed4f0e5d7029ac04e7a1ea51cedf
+./.git/objects/00/25f540e5e353e40ca30d30e68fe8aec5e91c86
+./.git/objects/00/1c6a9557b3c0aeb3baa29d5f486ac4df87d14b
+./.git/objects/00/3a1a6f6d7e0e11364396cf3e4509d82c490104
+./.git/objects/6e
+./.git/objects/6e/07b5ddc0eb82e3b61913db27d75b5e249a7687
+./.git/objects/9a
+./.git/objects/9a/5b7d3f73ef17001e842bdf192e5973b28d9e83
+./.git/objects/09
+./.git/objects/09/89d34e7063762282331d184ad70c7cea0ab3e6
+./.git/objects/5d
+./.git/objects/5d/11026e65fddf3caeace70115dfa36271bd67db
+./.git/objects/info
+./.git/objects/96
+./.git/objects/96/3b2ae45febd3b8f2de34f0306470cb4125c6d8
+./.git/objects/3a
+./.git/objects/3a/b5255b68e21df7fc7fa5df879ec896266a996d
+./.git/objects/30
+./.git/objects/30/5da84bcfd7a3af80ad2a089d5f30268284237c
+./.git/objects/30/28b89526903b5fe10e5a2a77649d3598fc04c8
+./.git/objects/5b
+./.git/objects/5b/90fd68cfaa99ce5db55c2292e897751423e1c2
+./.git/objects/5b/ab2cedd7e6694aa6676a054400ada8a8339d98
+./.git/objects/5b/da6fc69b8186af3769974f8b2bf322edd640d4
+./.git/objects/01
+./.git/objects/01/b0090872d8f43cc7edb69846d4dc69f38c5aed
+./.git/objects/01/7107d1dac653143b12174d21a716f2238ad042
+./.git/objects/06
+./.git/objects/06/0f48337f5cc1495246fc54cb3c32a3dbad2a04
+./.git/objects/6c
+./.git/objects/6c/515fec24338c91699e0b646ec2dcd27aa696e7
+./.git/objects/39
+./.git/objects/39/8062ec095c507744221891f87299d920f06d0a
+./.git/objects/99
+./.git/objects/99/47af0c22d5fe00a2327034a1218704fddf4983
+./.git/objects/55
+./.git/objects/55/32f5596e39b0e6946d4692f69ccec88f702c4e
+./.git/objects/0f
+./.git/objects/0f/43e6b82e7a37d94f9066eec8b2f7f9370e84c8
+./.git/objects/0f/e92f69549364606a0acf799ac6325a1bd95347
+./.git/objects/0a
+./.git/objects/0a/5728a21c17b27b5f9b3f1211334e076a003061
+./.git/objects/64
+./.git/objects/64/f53ada5f03a03bc9acc4f457ae1925600ab880
+./.git/objects/64/3abca691b3363250b40f3bc051a780d413bead
+./.git/objects/64/7409e934f50ea0536bfc98a144586043d870a0
+./.git/objects/64/42fafa443e7e536afbf65a62a77875a81ad5e7
+./.git/objects/64/d3497fa01ddc9cbc60ff191e30634451ed1bf0
+./.git/objects/90
+./.git/objects/90/4b0287348f891bd150e125f25bc37a073e8ec8
+./.git/objects/90/1a04944f8a46a8afb7e0afd0777cbe7950d80a
+./.git/objects/90/b3d62253a073015d876d9d9405e72093700160
+./.git/objects/d4
+./.git/objects/d4/88a8044219fbea23f289e9bae4fa75302cce41
+./.git/objects/ba
+./.git/objects/ba/2e8f69ac2e713a0d61a31a8ec93624dae080ce
+./.git/objects/ba/b55f41931e1f69edf9c3c5a482d84098b03c60
+./.git/objects/ba/e7a23171656fc13a29ee3e13066e05a5886c43
+./.git/objects/dc
+./.git/objects/dc/e16cd708a811c35ae54e483cad0575419d00f9
+./.git/objects/dc/c44aa0523c4d5a8ecdc36dbfeed24d94343e71
+./.git/objects/b6
+./.git/objects/b6/58a5e645fb9ff1c99684b018cb487b65bbfa9b
+./.git/objects/d5
+./.git/objects/d5/029e4ef6022c76bfaa60d7317580d3c116af87
+./.git/objects/af
+./.git/objects/af/d7a3927bb3b037e7c052b84ba2219aa75c7176
+./.git/objects/af/0006aa69515f0e0508cf9be33381229b8cbaa1
+./.git/objects/b7
+./.git/objects/b7/fec8c17842bf5f0d00f7a6213aabc203fb0335
+./.git/objects/a8
+./.git/objects/a8/57ac81e794f0bd5cff3e74ef5f77f775fc5602
+./.git/objects/a8/dc1e71dabdf4541facac9b4663d4823c8682df
+./.git/objects/de
+./.git/objects/de/184f1de40d6958e76eab7ab220eab2ff1859f6
+./.git/objects/b0
+./.git/objects/b0/0efadbb459ad8c93566e8b8aa90673558ad84a
+./.git/objects/a6
+./.git/objects/a6/c78ce80305fd781de00345b72bdd4d51b187de
+./.git/objects/a1
+./.git/objects/a1/f5d252a9a6da26bedd0b5dccdb738ab55619c6
+./.git/objects/c3
+./.git/objects/c3/c866981d75a387fa6c1276b53f5c1a41a8e328
+./.git/objects/c3/f0d93fa4fd6f203caf2e6da065d656fbb02edb
+./.git/objects/c3/cf3803d9a7d90066519313f32e9f6da97fa0f5
+./.git/objects/c4
+./.git/objects/c4/6d54c77672279df051f13e0cf40440883e1385
+./.git/objects/c4/f65857727d42d1c0ab5234d4388c22cb0fc8b5
+./.git/objects/e1
+./.git/objects/e1/f3c7df1303cbecbe68a44831e1b10b615be32f
+./.git/objects/cd
+./.git/objects/cd/5c6b4707aaf2d6a82a15fda45dcbf73d6cf3e3
+./.git/objects/e6
+./.git/objects/e6/789ac9b40e7af3854f23b27df7e94af54e3a1c
+./.git/objects/e6/f107c39bebcfba4d7cf5fc9ee8534637b6d5c3
+./.git/objects/e6/f5e5ad2082b71d86a294d0be17b314d602c776
+./.git/objects/e6/9de29bb2d1d6434b8b29ae775ad8c2e48c5391
+./.git/objects/f9
+./.git/objects/f9/0ef2a137c2d9666dc60e500f7d16f6461ea5a1
+./.git/objects/f9/09167fa2666779ad1ef2528fa860180fb261a3
+./.git/objects/f0
+./.git/objects/f0/bc35218adf9202b368e9aacc9060fe4020e885
+./.git/objects/fa
+./.git/objects/fa/dc2aaf39802ab24e4ca37b00ec8d6a0d4c13e3
+./.git/objects/fa/5528b31b83d153a8f1876af89949059553f2fa
+./.git/objects/f6
+./.git/objects/f6/73a71b7a275609030462c0278586d61e5f3a00
+./.git/objects/e9
+./.git/objects/e9/6896926cbef61af5cf74b28b13d70661d6ae10
+./.git/objects/e9/3ddaeb4e174126a6e6ea48787d5bfc2abb22ea
+./.git/objects/f1
+./.git/objects/f1/2e41f8b829d1dd00e319f2e0ebc1fc46b69a65
+./.git/objects/f1/f6bfb0767938f1e29635e312ab41d700374301
+./.git/objects/e7
+./.git/objects/e7/190ba9a648ed6f948a8165dd65ee83a5edc06a
+./.git/objects/cb
+./.git/objects/cb/44a38ea2cd3d738894af69a529451cd66343ed
+./.git/objects/cb/c864b4d61414fef1be591c5084d250c84799f1
+./.git/objects/f8
+./.git/objects/f8/6c9604703d0a8702583300bcaccc290de2558f
+./.git/objects/ce
+./.git/objects/ce/0d9816dd6ed6040aa4cad7f94a0ceab41f98ae
+./.git/objects/ce/066e50c8e17e83bc1adfefbfeeb17a974377f2
+./.git/objects/ce/9b5dfd7bcb378bd2c6a0c196f4ae79f1bba8a6
+./.git/objects/ce/41325778b163b2fd39cfffab7977d350a05fce
+./.git/objects/ce/05acebc641e99528b0827f50d7d9b9554e2370
+./.git/objects/e0
+./.git/objects/e0/39a5629d1596dd0d2e4474ea91f6054943b6a3
+./.git/objects/2c
+./.git/objects/2c/9021fa15e383246e96a8fcd7a973c815f1dd74
+./.git/objects/2c/942abfdfd7f99428cabb55b41564ca0b5ee4e6
+./.git/objects/2d
+./.git/objects/2d/a32767f43e7735bca583bf1aa5c7436ae485fe
+./.git/objects/83
+./.git/objects/83/0f0c9e5d24cadfc9415963a1bd8d2d107b9118
+./.git/objects/1b
+./.git/objects/1b/bfe1fe25721aa4487b1a01caf0b0d16fb22db9
+./.git/objects/77
+./.git/objects/77/d256890c3b3b67348968f25afeff528c4b422b
+./.git/objects/1e
+./.git/objects/1e/06c1a529cf2d524659336428c50ec706b00b34
+./.git/objects/84
+./.git/objects/84/02a0d06d37decfea792615d68692a9bcf69174
+./.git/objects/84/475f47a73be286206af78d328d1e5e33b76b75
+./.git/objects/4f
+./.git/objects/4f/cfb21db03ac7ba2f2b3f2817c0f18c31d29755
+./.git/objects/15
+./.git/objects/15/f97365e22a961c67e38d88bf3f52a1fad0add5
+./.git/objects/15/d372f8a94351783e34a424dafb9036850739c0
+./.git/objects/8c
+./.git/objects/8c/a5ee7426a6352fc5ce09caaa47f6e8fdeab0e5
+./.git/objects/8c/ab7db13395e0e1f31d48d463e160ff867fef62
+./.git/objects/85
+./.git/objects/85/8ab20824a0ef0b7002bf147c7ada60787eff49
+./.git/objects/71
+./.git/objects/71/8e2f96a1f61c3f925a3ab27290c7cd978d9a8f
+./.git/objects/71/a07dcd5a5687756a5135833fdf73dbf6ee2a5b
+./.git/objects/1c
+./.git/objects/1c/ca0d584d1803cfde19a2a150f205df23262f57
+./.git/objects/1c/574d2d76d50a010ec484631df77ed7063e9205
+./.git/objects/1c/06debcd8247ca65bdc7cf9b94aa498001753f1
+./.git/objects/82
+./.git/objects/82/1a586628c696ff7b5c56ea09e6ee15d4c629c8
+./.git/objects/82/c888b7ec514d91eacc5bae7fb78ec5bba9c2d4
+./.git/objects/82/b1d2c1e183109d1b728f5c04f8ba26b45b5899
+./.git/objects/82/72683eed68d1330c00c9dbaf5beed6efa4e78d
+./.git/objects/49
+./.git/objects/49/d250fb60b84cfe76bef60db75fe7fe23c8451e
+./.git/objects/49/60e1f2822626805afbcb343a11c7335e0c0e59
+./.git/objects/49/364580d9c6f0437d9434185e3026561a18ea18
+./.git/objects/40
+./.git/objects/40/615a501b115cdfb3eb44ae6cf7f17dc095c166
+./.git/objects/2b
+./.git/objects/2b/c817f873c813369f24267fc0cfe6e6ee2d5f88
+./.git/objects/2b/28fa91f303af29e25edbde3e7abc5dd2e65314
+./.git/objects/78
+./.git/objects/78/f0a056a595ce71bc551ad19d0442e0556ac17e
+./.git/objects/78/d3e122d8f34b4ec3a4143585c3a3c0fb6d45d6
+./.git/objects/13
+./.git/objects/13/628144643e30dc3f2760d210264f483d1f00a5
+./.git/objects/13/aa01395cdbe6aabba276dabc493352841ca5a2
+./.git/objects/7a
+./.git/objects/7a/07ffc88fab93905bbc35ec0653b117fc3c993b
+./.git/objects/14
+./.git/objects/14/3a05d1ff6ec1669892ec9b09fb114d24a21840
+./.git/objects/8e
+./.git/objects/8e/2a113ca86375fec90767e7bb4969df24da0aa9
+./.git/objects/8e/c7287cce791c5b1ac3df24fdd565a0d265e1be
+./.git/HEAD
+./.git/info
+./.git/info/exclude
+./.git/logs
+./.git/logs/HEAD
+./.git/logs/refs
+./.git/logs/refs/heads
+./.git/logs/refs/heads/main
+./.git/logs/refs/remotes
+./.git/logs/refs/remotes/origin
+./.git/logs/refs/remotes/origin/main
+./.git/description
+./.git/hooks
+./.git/hooks/commit-msg.sample
+./.git/hooks/pre-rebase.sample
+./.git/hooks/pre-commit.sample
+./.git/hooks/applypatch-msg.sample
+./.git/hooks/fsmonitor-watchman.sample
+./.git/hooks/pre-receive.sample
+./.git/hooks/prepare-commit-msg.sample
+./.git/hooks/post-update.sample
+./.git/hooks/pre-merge-commit.sample
+./.git/hooks/pre-applypatch.sample
+./.git/hooks/pre-push.sample
+./.git/hooks/update.sample
+./.git/hooks/push-to-checkout.sample
+./.git/refs
+./.git/refs/heads
+./.git/refs/heads/main
+./.git/refs/tags
+./.git/refs/remotes
+./.git/refs/remotes/origin
+./.git/refs/remotes/origin/main
+./.git/index
+./.git/COMMIT_EDITMSG
+./structure.txt
+./.vscode
+./.vscode/settings.json
