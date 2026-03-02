@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>शैक्षणिक असाइनमेंट हब (LKG - 12वीं)</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js (optional background) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GSAP for animations -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+    <style>
+        /* Base page */
+        body {
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            background-color: #f7f9fc;
+            margin: 0;
+        }
+
+        /* Three.js container MUST be behind content */
+        #three-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;                 /* behind everything */
+            opacity: 0.12;              /* subtle tint */
+            pointer-events: none;       /* don't intercept clicks */
+        }
+
+        /* Header background bar */
+        .header-bg {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #4c669f 0%, #203f7e 100%);
+            z-index: 1;
+        }
+
+        /* Content area should be above the three-container */
+        .content-area {
+            position: relative;
+            z-index: 30; /* above three-container */
+        }
+
+        /* Grade card styling */
+        .grade-card {
+            cursor: pointer;
+            background-color: #fff;
+            border: 2px solid rgba(99,102,241,0.15); /* subtle indigo border */
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+            /* FORCE full visibility and interactivity (fixes faint/faded cards) */
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+
+        .grade-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 35px rgba(15, 23, 42, 0.12);
+            border-color: rgba(99,102,241,0.35);
+        }
+
+        /* Small utility to ensure grade text is dark and visible */
+        .grade-number-text {
+            color: #203f7e !important;
+            -webkit-font-smoothing: antialiased;
+            font-weight: 800;
+        }
+
+        /* Assignment card minor styling */
+        .assignment-card { 
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            border: 1px solid #edf2ff;
+        }
+
+        /* scrollbar aesthetics */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-thumb { background: #3f51b5; border-radius: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Three.js subtle background -->
+    <div id="three-container" aria-hidden="true"></div>
+
+    <!-- Header -->
+    <header class="header-bg text-white pt-12 pb-20 md:pt-16 md:pb-28">
+        <div class="content-area max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-3xl md:text-5xl font-extrabold mb-2 text-center">शैक्षणिक असाइनमेंट हब</h1>
+            <p class="text-md md:text-xl text-center font-light">LKG से 12वीं कक्षा तक सीखने के संसाधन</p>
+            <p class="text-center text-sm mt-3 italic opacity-80">(क्लाइंट-साइड डेमो — कोड में नकली असाइनमेंट)</p>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main class="content-area -mt-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <div class="bg-white p-6 md:p-8 rounded-xl shadow-2xl">
+
+            <!-- Grade selector -->
+            <div id="grade-selector-view">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-8">अपना कक्षा स्तर चुनें</h2>
+
+                <!-- responsive grid: 2 / 3 / 4 / 5 columns depending on width -->
+                <div id="grade-cards-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 pb-12">
+                    <!-- cards inserted by JS -->
+                </div>
+            </div>
+
+            <!-- Detail view (hidden by default) -->
+            <div id="assignment-detail-view" class="hidden">
+                <button id="back-button" onclick="showView('grade-selector-view')" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6 font-medium transition duration-150">
+                    <svg xmlns="www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    सभी कक्षाओं पर वापस जाएं
+                </button>
+
+                <h2 id="detail-view-title" class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2"></h2>
+
+                <div id="grade-assignments-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- assignment cards go here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- footer -->
+    <footer class="mt-12 py-8 bg-gray-100">
+        <div class="max-w-6xl mx-auto text-center text-sm text-gray-500">
+            &copy; 2025 शैक्षणिक हब | क्लाइंट-साइड डेमो
+        </div>
+    </footer>
+
+    <!-- App scripts -->
+    <script>
+        // --- Mock data (unchanged) ---
+        const grades = ["LKG","UKG","1st","2nd","3rd","4th","5th","6th","7th","8th","9th","10th","11th","12th"];
+
+        const mockAssignments = [
+            { grade: "LKG", subject: "Phonics", title: "Alphabet Tracing Practice", date: "2025-10-20", link: "119-free-printable-worksheets-for-kids-alphabets-small-letters-tracing-alphabets-small-letters-tracing.pdf" },
+            { grade: "LKG", subject: "Coloring", title: "My Favorite Animals Sheet", date: "2025-11-04", link: "#" },
+            {grade: "LKG",subject:"maths",title: "addition",lin: "#"},
+
+            { grade: "UKG", subject: "Maths", title: "Number Recognition 1-100", date: "2025-10-21", link: "#" },
+            { grade: "UKG", subject: "English", title: "Sight Words Matching Game", date: "2025-11-05", link: "#" },
+
+            { grade: "1st", subject: "English", title: "Simple Sentence Construction", date: "2025-10-22", link: "#" },
+            { grade: "1st", subject: "Maths", title: "Addition and Subtraction Puzzles", date: "2025-11-06", link: "#" },
+
+            { grade: "2nd", subject: "EVS", title: "My Neighborhood Activity Sheet", date: "2025-11-01", link: "#" },
+            { grade: "2nd", subject: "English", title: "Reading Comprehension Story", date: "2025-11-07", link: "#" },
+
+            { grade: "3rd", subject: "Science", title: "Plant Life Cycle Diagram", date: "2025-10-23", link: "#" },
+            { grade: "3rd", subject: "Maths", title: "Multiplication Tables 1-10 Drill", date: "2025-11-08", link: "#" },
+
+            { grade: "4th", subject: "Hindi", title: "Varnamala and Matras Review", date: "2025-11-02", link: "#" },
+            { grade: "4th", subject: "Science", title: "Simple Machines Project Guide", date: "2025-11-09", link: "#" },
+
+            { grade: "5th", subject: "Social Studies", title: "Map of India Quiz", date: "2025-10-24", link: "#" },
+            { grade: "5th", subject: "English", title: "Poetry Analysis Worksheet", date: "2025-11-10", link: "#" },
+
+            { grade: "6th", subject: "Geography", title: "Atmosphere and Climate Reading", date: "2025-11-03", link: "#" },
+            { grade: "6th", subject: "Science", title: "Separation of Substances Lab Report", date: "2025-11-11", link: "#" },
+
+            { grade: "7th", subject: "Maths", title: "Algebraic Expressions Worksheet", date: "2025-10-25", link: "#" },
+            { grade: "7th", subject: "English", title: "Essay Writing: Short Story Critique", date: "2025-11-12", link: "#" },
+
+            { grade: "8th", subject: "History", title: "The Mughal Empire Research Guide", date: "2025-10-26", link: "#" },
+            { grade: "8th", subject: "Science", title: "Chemical Reactions Flowchart", date: "2025-11-13", link: "#" },
+
+            { grade: "9th", subject: "Physics", title: "Motion and Forces Problem Set", date: "2025-10-27", link: "#" },
+            { grade: "9th", subject: "Maths", title: "Trigonometry Basics Practice", date: "2025-11-14", link: "#" },
+
+            { grade: "10th", subject: "Biology", title: "Cell Structure and Function Report", date: "2025-10-28", link: "#" },
+            { grade: "10th", subject: "History", title: "Nationalism in Europe Analysis", date: "2025-11-15", link: "#" },
+
+            { grade: "11th", subject: "Chemistry", title: "Stoichiometry Practice Questions", date: "2025-10-29", link: "#" },
+            { grade: "11th", subject: "Physics", title: "Kinematics Problem Set Advanced", date: "2025-11-16", link: "#" },
+
+            { grade: "12th", subject: "Computer Science", title: "Data Structures Project Outline", date: "2025-10-30", link: "#" },
+            { grade: "12th", subject: "Economics", title: "Macroeconomics Policy Analysis", date: "2025-10-31", link: "#" }
+        ];
+
+        // --- Grade card renderer ---
+        function renderGradeSelectionCard(grade) {
+            let bgColorClass = 'bg-yellow-300';
+            let categoryText = 'Foundation';
+            // detect numeric grade (strip ordinal if needed)
+            const numeric = parseInt(grade);
+            if (grade === "LKG" || grade === "UKG") {
+                bgColorClass = 'bg-yellow-300';
+                categoryText = 'फाउंडेशन';
+            } else if (!isNaN(numeric) && numeric >= 1 && numeric <= 5) {
+                bgColorClass = 'bg-green-300';
+                categoryText = 'प्राथमिक';
+            } else if (!isNaN(numeric) && numeric >= 6 && numeric <= 8) {
+                bgColorClass = 'bg-blue-300';
+                categoryText = 'मध्य';
+            } else {
+                bgColorClass = 'bg-red-300';
+                categoryText = 'माध्यमिक';
+            }
+
+            return `
+                <div class="grade-card" onclick="navigateToGrade('${grade}')">
+                    <div class="flex flex-col items-center justify-center">
+                        <div class="text-3xl md:text-4xl grade-number-text mb-2">${grade}</div>
+                        <span class="text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full ${bgColorClass} text-black">
+                          ${categoryText}
+                        </span>
+                        <p class="mt-4 text-center text-sm text-gray-500">इस स्तर के लिए असाइनमेंट देखें।</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderGradeSelectionView() {
+            const container = document.getElementById('grade-cards-container');
+            container.innerHTML = '';
+            grades.forEach(grade => {
+                container.insertAdjacentHTML('beforeend', renderGradeSelectionCard(grade));
+            });
+
+            // entrance animation (safe: animate opacity from 0 to 1)
+            try {
+                gsap.from(".grade-card", { opacity: 0, y: 14, stagger: 0.04, duration: 0.45, ease: "power2.out" });
+            } catch (e) {
+                // gsap not available or failed; silence
+            }
+        }
+
+        // assignment card template
+        function renderAssignmentCard(assignment) {
+            return `
+                <div class="assignment-card">
+                    <div>
+                        <span class="inline-block bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded-full mb-3">${assignment.subject}</span>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">${assignment.title}</h3>
+                        <p class="text-sm text-gray-500">अपलोड किया गया: ${assignment.date}</p>
+                    </div>
+                    <div class="mt-4 flex items-center justify-between">
+                        <span class="text-xs text-gray-400">कक्षा ${assignment.grade}</span>
+                        <a href="${assignment.link}" class="text-xs inline-flex items-center px-3 py-1 rounded-full bg-indigo-600 text-white">डाउनलोड</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderGradeDetailView(grade) {
+            const titleElement = document.getElementById('detail-view-title');
+            const assignmentsContainer = document.getElementById('grade-assignments-container');
+
+            const assignmentsForGrade = mockAssignments.filter(a => a.grade === grade);
+            titleElement.textContent = `कक्षा ${grade} के लिए असाइनमेंट`;
+            assignmentsContainer.innerHTML = '';
+
+            if (assignmentsForGrade.length === 0) {
+                assignmentsContainer.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-gray-500">
+                        <h3 class="mt-2 text-xl font-medium text-gray-900">कोई असाइनमेंट अपलोड नहीं किया गया</h3>
+                        <p class="mt-1 text-sm text-gray-500">एडमिन ने अभी तक कक्षा ${grade} के लिए संसाधन अपलोड नहीं किए हैं।</p>
+                    </div>
+                `;
+            } else {
+                assignmentsForGrade.forEach(a => assignmentsContainer.insertAdjacentHTML('beforeend', renderAssignmentCard(a)));
+                try {
+                    gsap.from(".assignment-card", { opacity: 0, y: 20, stagger: 0.05, duration: 0.45, ease: "power2.out" });
+                } catch (e) {}
+            }
+        }
+
+        // view toggling
+        function showView(viewId) {
+            const selectorView = document.getElementById('grade-selector-view');
+            const detailView = document.getElementById('assignment-detail-view');
+
+            if (viewId === 'grade-selector-view') {
+                // show selector, hide detail
+                detailView.classList.add('hidden');
+                selectorView.classList.remove('hidden');
+                try { gsap.fromTo(selectorView, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.45 }); } catch(e){}
+            } else {
+                selectorView.classList.add('hidden');
+                detailView.classList.remove('hidden');
+                try { gsap.fromTo(detailView, { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.45 }); } catch(e){}
+            }
+        }
+
+        function navigateToGrade(grade) {
+            renderGradeDetailView(grade);
+            showView('assignment-detail-view');
+        }
+
+        // --- three.js subtle particle background (optional) ---
+        (function initThreeJS() {
+            const container = document.getElementById('three-container');
+            if (!container || !window.THREE) return;
+
+            try {
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(60, container.clientWidth/container.clientHeight, 0.1, 1000);
+                camera.position.z = 8;
+                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                container.appendChild(renderer.domElement);
+
+                const geo = new THREE.BufferGeometry();
+                const count = 160;
+                const positions = new Float32Array(count * 3);
+                for (let i = 0; i < count; i++) {
+                    positions[i*3] = (Math.random()-0.5) * 20;
+                    positions[i*3+1] = (Math.random()-0.5) * 10;
+                    positions[i*3+2] = (Math.random()-0.5) * 6;
+                }
+                geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                const mat = new THREE.PointsMaterial({ size: 0.06, color: 0xffffff, transparent: true, opacity: 0.9 });
+                const points = new THREE.Points(geo, mat);
+                scene.add(points);
+
+                function onResize() {
+                    camera.aspect = container.clientWidth / container.clientHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(container.clientWidth, container.clientHeight);
+                }
+                window.addEventListener('resize', onResize);
+
+                function tick() {
+                    points.rotation.y += 0.0008;
+                    renderer.render(scene, camera);
+                    requestAnimationFrame(tick);
+                }
+                tick();
+            } catch (err) {
+                // if three.js fails, hide container and continue
+                container.style.display = 'none';
+                console.warn('Three.js init failed:', err);
+            }
+        })();
+
+        // init on load
+        window.addEventListener('load', function(){
+            renderGradeSelectionView();
+            try {
+                gsap.from(".header-bg, .content-area", { duration: 0.9, opacity: 0, y: -30, stagger: 0.08, ease: "power3.out" });
+            } catch(e){}
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>फीस संरचना | JRC स्कूल, हरही बाज़ार बस्ती</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Inter:wght@300;400;600;800&display=swap');
+
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #fbbf24;
+      --glass: rgba(255, 255, 255, 0.9);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background-color: #0f172a;
+      font-family: 'Inter', sans-serif;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Bree Serif', serif;
+    }
+
+    #canvas-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+    }
+
+    .glass-card {
+      background: var(--glass);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 1.5rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav-glass {
+      background: rgba(30, 58, 138, 0.85);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-pulse {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-pulse:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    }
+
+    .lang-btn {
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(4px);
+    }
+
+    .input-style {
+      background: rgba(255, 255, 255, 0.8);
+      border: 2px solid #e2e8f0;
+      transition: all 0.3s ease;
+    }
+
+    .input-style:focus {
+      border-color: #3b82f6;
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    }
+
+    .fee-row {
+      transition: all 0.2s ease;
+    }
+    .fee-row:hover {
+      background: rgba(59, 130, 246, 0.05);
+      transform: translateX(10px);
+    }
+  </style>
+</head>
+<body class="text-gray-900 flex flex-col min-h-screen">
+
+  <div id="canvas-container"></div>
+
+  <header class="nav-glass text-white shadow-xl sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div class="flex items-center space-x-3 animate__animated animate__fadeInLeft">
+        <div class="bg-yellow-400 text-blue-900 font-extrabold rounded-2xl h-11 w-11 flex items-center justify-center text-xl shadow-lg">J</div>
+        <div>
+          <p class="text-base font-bold uppercase tracking-widest leading-none">J.R.C. Inter College</p>
+          <p class="text-xs text-blue-200 mt-1">Harahi Bazar, Basti (U.P.)</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center space-x-6">
+        <nav class="hidden lg:flex space-x-5 text-sm font-medium items-center">
+          <a href="/j.r.cschool/index.html" class="hover:text-yellow-300 transition-all" id="navHome">होम</a>
+          <a href="about.html" class="hover:text-yellow-300 transition-all" id="navAbout">हमारे बारे में</a>
+          <a href="admissions.html" class="hover:text-yellow-300 transition-all" id="navAdmission">प्रवेश</a>
+          <a href="fees.html" class="text-yellow-400 font-bold border-b-2 border-yellow-400" id="navFees">फीस संरचना</a>
+          <a href="student-login.html" class="hover:text-yellow-300 transition-all" id="navStudent">छात्र पोर्टल</a>
+          <a href="ai-assistant.html" class="bg-yellow-400 text-blue-900 px-4 py-1.5 rounded-full hover:bg-yellow-300 transition shadow-lg font-bold" id="navAI">AI सहायक</a>
+          <a href="admin-login.html" class="text-gray-300 hover:text-yellow-300 border border-gray-600 px-3 py-1 rounded-full transition" id="navAdmin">🔐 Admin</a>
+        </nav>
+
+        <button id="langToggle" class="lang-btn flex items-center space-x-2 px-4 py-2 rounded-full text-xs font-bold animate__animated animate__fadeInRight">
+          <span id="langText">English</span>
+          <svg xmlns="www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5c.13 1 .46 2.04 1.05 3" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-12 space-y-12 flex-1">
+    <section class="animate__animated animate__fadeInDown text-white">
+      <h1 id="mainTitle" class="text-5xl font-black mb-6 tracking-tight drop-shadow-xl">आधिकारिक फीस संरचना (2025)</h1>
+      <p id="mainDesc" class="text-lg leading-relaxed text-blue-50 opacity-90 max-w-4xl">
+        नीचे दी गई फीस संरचना आपके द्वारा प्रदान किए गए आधिकारिक PDF चार्ट के अनुसार अपडेट की गई है। किसी भी अन्य स्पष्टीकरण के लिए स्कूल कार्यालय से संपर्क करें।
+      </p>
+    </section>
+
+    <!-- Fee Table Section -->
+    <section class="glass-card overflow-hidden animate__animated animate__fadeInUp">
+      <div class="bg-blue-800 px-8 py-5 flex justify-between items-center">
+        <h2 id="chartTitle" class="text-2xl font-bold text-white">आधिकारिक वार्षिक फीस चार्ट (INR में)</h2>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left">
+          <thead class="bg-blue-50 text-blue-900 uppercase text-xs font-black tracking-widest">
+            <tr>
+              <th class="px-8 py-4" id="thClass">कक्षा</th>
+              <th class="px-8 py-4" id="thTuition">ट्यूशन फीस (मासिक)</th>
+              <th class="px-8 py-4 text-blue-600" id="thNew">नया छात्र (New)</th>
+              <th class="px-8 py-4 text-green-600" id="thOld">पुराना छात्र (Old)</th>
+            </tr>
+          </thead>
+          <tbody id="feeTableBody" class="divide-y divide-gray-200 text-gray-700 font-medium">
+            <tr class="fee-row"><td class="px-8 py-4 font-bold">L.K.G. / U.K.G.</td><td class="px-8 py-4">₹ 350</td><td class="px-8 py-4">₹ 500</td><td class="px-8 py-4">₹ 300</td></tr>
+            <tr class="fee-row"><td class="px-8 py-4 font-bold">Class 1st to 5th</td><td class="px-8 py-4">₹ 400</td><td class="px-8 py-4">₹ 500</td><td class="px-8 py-4">₹ 300</td></tr>
+            <tr class="fee-row"><td class="px-8 py-4 font-bold">Class 6th to 8th</td><td class="px-8 py-4">₹ 450</td><td class="px-8 py-4">₹ 500</td><td class="px-8 py-4">₹ 300</td></tr>
+            <tr class="fee-row"><td class="px-8 py-4 font-bold">Class 9th</td><td class="px-8 py-4">₹ 500</td><td class="px-8 py-4">₹ 800</td><td class="px-8 py-4">₹ 800</td></tr>
+            <tr class="fee-row"><td class="px-8 py-4 font-bold">Class 10th</td><td class="px-8 py-4">₹ 500</td><td class="px-8 py-4">₹ 1300</td><td class="px-8 py-4">₹ 1300</td></tr>
+            <tr class="fee-row"><td class="px-8 py-4 font-bold">Class 11th</td><td class="px-8 py-4">₹ 550</td><td class="px-8 py-4">₹ 800</td><td class="px-8 py-4">₹ 800</td></tr>
+            <tr class="fee-row"><td class="px-8 py-4 font-bold">Class 12th</td><td class="px-8 py-4">₹ 550</td><td class="px-8 py-4">₹ 1300</td><td class="px-8 py-4">₹ 1300</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="bg-blue-50/50 p-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p id="examNote" class="text-xs text-gray-500 italic font-medium">* परीक्षा शुल्क: ₹300 (अर्धवार्षिक) + ₹300 (वार्षिक) = ₹600 प्रति वर्ष अनिवार्य है।</p>
+        <a href="fee-structure.pdf" download class="bg-blue-700 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg flex items-center gap-2">
+          📄 <span id="btnPdf">आधिकारिक फीस PDF डाउनलोड करें</span>
+        </a>
+      </div>
+    </section>
+
+    <div class="grid md:grid-cols-2 gap-10">
+      <!-- Transport Card -->
+      <div class="glass-card p-8 animate__animated animate__fadeInLeft">
+        <h2 id="extraTitle" class="text-3xl font-bold text-blue-900 mb-6">अतिरिक्त शुल्क और वाहन</h2>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center p-4 bg-white/50 rounded-xl border border-blue-100">
+            <span id="trans1" class="font-medium text-gray-700">परिवहन शुल्क (0-2 km)</span>
+            <span class="bg-blue-600 text-white px-3 py-1 rounded-lg font-bold text-sm">₹ 350 / माह</span>
+          </div>
+          <div class="flex justify-between items-center p-4 bg-white/50 rounded-xl border border-blue-100">
+            <span id="trans2" class="font-medium text-gray-700">परिवहन शुल्क (2-5 km)</span>
+            <span class="bg-blue-600 text-white px-3 py-1 rounded-lg font-bold text-sm">₹ 500 / माह</span>
+          </div>
+          <div class="flex justify-between items-center p-4 bg-white/50 rounded-xl border border-blue-100">
+            <span id="trans3" class="font-medium text-gray-700">परिवहन शुल्क (5+ km)</span>
+            <span class="bg-blue-600 text-white px-3 py-1 rounded-lg font-bold text-sm">₹ 600 / माह</span>
+          </div>
+          <p id="uniformNote" class="text-sm italic text-gray-500 mt-4 px-2">नोट: वर्दी और किताबें स्कूल परिसर से बाहर अलग से लेनी होंगी।</p>
+        </div>
+      </div>
+
+      <!-- AI Calculator -->
+      <div class="glass-card p-8 border-t-8 border-yellow-400 animate__animated animate__fadeInRight">
+        <h2 id="calcTitle" class="text-3xl font-bold text-blue-900 mb-2">AI फीस सलाहकार</h2>
+        <p id="calcDesc" class="text-sm mb-8 text-gray-600 font-medium">सटीक वार्षिक फीस की गणना के लिए कक्षा और अन्य सुविधाएं चुनें।</p>
+        
+        <form id="feeCalculator" class="space-y-5">
+          <div>
+            <label id="lblClass" class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 ml-1">कक्षा का चयन करें</label>
+            <select id="feeClass" class="w-full rounded-xl px-4 py-3 focus:outline-none input-style font-bold">
+              <option value="" id="optSelect">कक्षा चुनें</option>
+              <option value="lkg">L.K.G. / U.K.G.</option>
+              <option value="primary">Class 1st to 5th</option>
+              <option value="middle">Class 6th to 8th</option>
+              <option value="9th">Class 9th</option>
+              <option value="10th">Class 10th</option>
+              <option value="11th">Class 11th</option>
+              <option value="12th">Class 12th</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label id="lblStuType" class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 ml-1">छात्र प्रकार</label>
+              <select id="studentStatus" class="w-full rounded-xl px-4 py-3 focus:outline-none input-style font-bold">
+                <option value="new" id="optNew">नया छात्र (New)</option>
+                <option value="old" id="optOld">पुराना छात्र (Old)</option>
+              </select>
+            </div>
+            <div>
+              <label id="lblTrans" class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 ml-1">वाहन</label>
+              <select id="transport" class="w-full rounded-xl px-4 py-3 focus:outline-none input-style font-bold">
+                <option value="0" id="optNo">नहीं</option>
+                <option value="350">हाँ (0-2 km)</option>
+                <option value="500">हाँ (2-5 km)</option>
+                <option value="600">हाँ (5 km+)</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" id="btnCalc" class="w-full bg-blue-700 text-white py-4 rounded-xl font-bold text-lg shadow-xl btn-pulse active:scale-95 transition-all">
+            कुल वार्षिक फीस की गणना करें
+          </button>
+        </form>
+        <div id="feeResult" class="mt-6 hidden animate__animated animate__fadeIn p-4 bg-green-50 border border-green-200 rounded-xl text-green-800 font-bold text-center"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-black/40 backdrop-blur-md text-center text-gray-400 py-10 text-sm border-t border-white/10 mt-auto">
+    <div class="max-w-7xl mx-auto px-4">
+      <p id="footerMain" class="font-bold tracking-widest text-white mb-2">© 2025 JRC स्कूल, हरही बाज़ार बस्ती</p>
+      <p id="footerSub" class="text-xs text-gray-500">शिवमणि सिंह द्वारा डिज़ाइन और विकसित</p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+  
+  <script>
+    // --- THREE.JS BACKGROUND ---
+    let scene, camera, renderer, particles;
+    function init3D() {
+      const container = document.getElementById('canvas-container');
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      container.appendChild(renderer.domElement);
+      const geometry = new THREE.BufferGeometry();
+      const count = 4000;
+      const posArray = new Float32Array(count * 3);
+      for(let i = 0; i < count * 3; i++) posArray[i] = (Math.random() - 0.5) * 12;
+      geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+      const material = new THREE.PointsMaterial({ size: 0.006, color: 0x60a5fa, transparent: true, opacity: 0.6 });
+      particles = new THREE.Points(geometry, material);
+      scene.add(particles);
+      camera.position.z = 3;
+      document.addEventListener('mousemove', (e) => {
+        const mouseX = (e.clientX / window.innerWidth) - 0.5;
+        const mouseY = (e.clientY / window.innerHeight) - 0.5;
+        gsap.to(particles.rotation, { y: mouseX * 0.4, x: -mouseY * 0.4, duration: 2 });
+      });
+      function animate() {
+        requestAnimationFrame(animate);
+        particles.rotation.y += 0.0008;
+        renderer.render(scene, camera);
+      }
+      animate();
+    }
+    window.onload = init3D;
+
+    // --- TRANSLATION LOGIC ---
+    const translations = {
+      hi: {
+        lang: "English", navHome: "होम", navAbout: "हमारे बारे में", navAdmission: "प्रवेश", navFees: "फीस संरचना", navStudent: "छात्र पोर्टल", navAI: "AI सहायक", navAdmin: "🔐 Admin",
+        mainTitle: "आधिकारिक फीस संरचना (2025)", mainDesc: "नीचे दी गई फीस संरचना आपके द्वारा प्रदान किए गए आधिकारिक PDF चार्ट के अनुसार अपडेट की गई है।",
+        chartTitle: "आधिकारिक वार्षिक फीस चार्ट (INR में)", thClass: "कक्षा", thTuition: "ट्यूशन फीस (मासिक)", thNew: "नया छात्र (New)", thOld: "पुराना छात्र (Old)",
+        examNote: "* परीक्षा शुल्क: ₹300 (अर्धवार्षिक) + ₹300 (वार्षिक) = ₹600 प्रति वर्ष अनिवार्य है।", btnPdf: "आधिकारिक फीस PDF डाउनलोड करें",
+        extraTitle: "अतिरिक्त शुल्क और वाहन", trans1: "परिवहन शुल्क (0-2 km)", trans2: "परिवहन शुल्क (2-5 km)", trans3: "परिवहन शुल्क (5+ km)", uniformNote: "नोट: वर्दी और किताबें स्कूल परिसर से बाहर अलग से लेनी होंगी।",
+        calcTitle: "AI फीस सलाहकार", calcDesc: "सटीक वार्षिक फीस की गणना के लिए कक्षा और अन्य सुविधाएं चुनें।",
+        lblClass: "कक्षा का चयन करें", optSelect: "कक्षा चुनें", lblStuType: "छात्र प्रकार", optNew: "नया छात्र (New)", optOld: "पुराना छात्र (Old)", lblTrans: "वाहन", optNo: "नहीं", btnCalc: "कुल वार्षिक फीस की गणना करें",
+        footerMain: "© 2025 JRC स्कूल, हरही बाज़ार बस्ती", footerSub: "शिवमणि सिंह द्वारा डिज़ाइन और विकसित"
+      },
+      en: {
+        lang: "हिंदी", navHome: "Home", navAbout: "About", navAdmission: "Admission", navFees: "Fees", navStudent: "Portal", navAI: "AI Assistant", navAdmin: "🔐 Admin",
+        mainTitle: "Official Fee Structure (2025)", mainDesc: "The fee structure below is updated according to the official PDF chart provided by the school management.",
+        chartTitle: "Official Annual Fee Chart (in INR)", thClass: "Class", thTuition: "Tuition Fee (Monthly)", thNew: "New Student", thOld: "Old Student",
+        examNote: "* Exam Fee: ₹300 (Half-yearly) + ₹300 (Annual) = ₹600 per year is mandatory.", btnPdf: "Download Official Fee PDF",
+        extraTitle: "Extra Fees & Transport", trans1: "Transport Fee (0-2 km)", trans2: "Transport Fee (2-5 km)", trans3: "Transport Fee (5+ km)", uniformNote: "Note: Uniforms and books must be purchased separately outside school.",
+        calcTitle: "AI Fee Advisor", calcDesc: "Select class and facilities to calculate accurate annual fees.",
+        lblClass: "Select Class", optSelect: "Select Class", lblStuType: "Student Type", optNew: "New Student", optOld: "Old Student", lblTrans: "Transport", optNo: "No", btnCalc: "Calculate Total Annual Fee",
+        footerMain: "© 2025 JRC School, Basti", footerSub: "Designed & Developed by Shivamani Singh"
+      }
+    };
+
+    let currentLang = 'hi';
+    document.getElementById('langToggle').addEventListener('click', () => {
+      currentLang = currentLang === 'hi' ? 'en' : 'hi';
+      const t = translations[currentLang];
+      document.getElementById('langText').innerText = t.lang;
+      document.getElementById('navHome').innerText = t.navHome;
+      document.getElementById('navAbout').innerText = t.navAbout;
+      document.getElementById('navAdmission').innerText = t.navAdmission;
+      document.getElementById('navFees').innerText = t.navFees;
+      document.getElementById('navStudent').innerText = t.navStudent;
+      document.getElementById('navAI').innerText = t.navAI;
+      document.getElementById('navAdmin').innerText = t.navAdmin;
+      document.getElementById('mainTitle').innerText = t.mainTitle;
+      document.getElementById('mainDesc').innerText = t.mainDesc;
+      document.getElementById('chartTitle').innerText = t.chartTitle;
+      document.getElementById('thClass').innerText = t.thClass;
+      document.getElementById('thTuition').innerText = t.thTuition;
+      document.getElementById('thNew').innerText = t.thNew;
+      document.getElementById('thOld').innerText = t.thOld;
+      document.getElementById('examNote').innerText = t.examNote;
+      document.getElementById('btnPdf').innerText = t.btnPdf;
+      document.getElementById('extraTitle').innerText = t.extraTitle;
+      document.getElementById('trans1').innerText = t.trans1;
+      document.getElementById('trans2').innerText = t.trans2;
+      document.getElementById('trans3').innerText = t.trans3;
+      document.getElementById('uniformNote').innerText = t.uniformNote;
+      document.getElementById('calcTitle').innerText = t.calcTitle;
+      document.getElementById('calcDesc').innerText = t.calcDesc;
+      document.getElementById('lblClass').innerText = t.lblClass;
+      document.getElementById('optSelect').innerText = t.optSelect;
+      document.getElementById('lblStuType').innerText = t.lblStuType;
+      document.getElementById('optNew').innerText = t.optNew;
+      document.getElementById('optOld').innerText = t.optOld;
+      document.getElementById('lblTrans').innerText = t.lblTrans;
+      document.getElementById('optNo').innerText = t.optNo;
+      document.getElementById('btnCalc').innerText = t.btnCalc;
+      document.getElementById('footerMain').innerText = t.footerMain;
+      document.getElementById('footerSub').innerText = t.footerSub;
+    });
+  </script>
+
+  <!-- External Routes & Handlers -->
+  <script src="/j.r.cschool/backend/routes/fee.js"></script>
+  <script src="/j.r.cschool/jrcschool/pdfs/lkg/js/main.js"></script>
+  <script src="/j.r.cschool/jrcschool/pdfs/lkg/js/form-handler.js"></script>
+</body>
+</html>

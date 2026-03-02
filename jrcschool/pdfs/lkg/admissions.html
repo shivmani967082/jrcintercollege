@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>प्रवेश | JRC स्कूल, हरही बाज़ार बस्ती</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Inter:wght@300;400;600;800&display=swap');
+
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #fbbf24;
+      --glass: rgba(255, 255, 255, 0.9);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background-color: #0f172a;
+      font-family: 'Inter', sans-serif;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Bree Serif', serif;
+    }
+
+    #canvas-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+    }
+
+    .glass-card {
+      background: var(--glass);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 1.5rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav-glass {
+      background: rgba(30, 58, 138, 0.85);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-pulse {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-pulse:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    }
+
+    .lang-btn {
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(4px);
+    }
+
+    .input-style {
+      background: rgba(255, 255, 255, 0.8);
+      border: 2px solid #e2e8f0;
+      transition: all 0.3s ease;
+    }
+
+    .input-style:focus {
+      border-color: #3b82f6;
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    }
+  </style>
+</head>
+<body class="text-gray-900 flex flex-col min-h-screen">
+
+  <!-- Three.js Background -->
+  <div id="canvas-container"></div>
+
+  <header class="nav-glass text-white shadow-xl sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div class="flex items-center space-x-3 animate__animated animate__fadeInLeft">
+        <div class="bg-yellow-400 text-blue-900 font-extrabold rounded-2xl h-11 w-11 flex items-center justify-center text-xl shadow-lg">J</div>
+        <div>
+          <p class="text-base font-bold uppercase tracking-widest leading-none">J.R.C. Inter College</p>
+          <p class="text-xs text-blue-200 mt-1">Harahi Bazar, Basti (U.P.)</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center space-x-6">
+        <nav class="hidden lg:flex space-x-5 text-sm font-medium items-center">
+          <a href="/j.r.cschool/index.html" class="hover:text-yellow-300 transition-all" id="navHome">होम</a>
+          <a href="about.html" class="hover:text-yellow-300 transition-all" id="navAbout">हमारे बारे में</a>
+          <a href="admissions.html" class="text-yellow-400 font-bold border-b-2 border-yellow-400" id="navAdmission">प्रवेश</a>
+          <a href="fees.html" class="hover:text-yellow-300 transition-all" id="navFees">फीस संरचना</a>
+          <a href="student-login.html" class="hover:text-yellow-300 transition-all" id="navStudent">छात्र पोर्टल</a>
+          <a href="ai-assistant.html" class="bg-yellow-400 text-blue-900 px-4 py-1.5 rounded-full hover:bg-yellow-300 transition shadow-lg font-bold" id="navAI">AI सहायक</a>
+        </nav>
+
+        <button id="langToggle" class="lang-btn flex items-center space-x-2 px-4 py-2 rounded-full text-xs font-bold animate__animated animate__fadeInRight">
+          <span id="langText">English</span>
+          <svg xmlns="www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5c.13 1 .46 2.04 1.05 3" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-12 space-y-12 flex-1">
+    <section class="animate__animated animate__fadeInDown text-white">
+      <h1 id="mainTitle" class="text-5xl font-black mb-6 tracking-tight drop-shadow-xl">प्रवेश</h1>
+      <div class="space-y-4 text-blue-50 text-lg opacity-90 leading-relaxed max-w-4xl">
+        <p id="desc1">J.R.C. इंटर कॉलेज में नर्सरी से कक्षा 12<sup>वीं</sup> तक की कक्षाओं के लिए प्रवेश खुले हैं, सीटों की उपलब्धता और पात्रता मानदंडों की पूर्ति के अधीन।</p>
+        <p id="desc2">हम जे.आर.सी. इंटर कॉलेज में नर्सरी से कक्षा 12 तक प्रवेश प्रदान करते हैं (सीट की उपलब्धता के अनुसार)। प्रवेश मेरिट, इंटरव्यू और दस्तावेज़ सत्यापन के आधार पर होता है।</p>
+      </div>
+    </section>
+
+    <div class="grid md:grid-cols-2 gap-12 items-start">
+      <!-- Admission Info -->
+      <div class="glass-card p-8 space-y-8 animate__animated animate__fadeInLeft">
+        <div>
+          <h2 id="processTitle" class="text-3xl font-bold text-blue-900 mb-6 flex items-center gap-3">
+            <span class="bg-blue-600 w-2 h-8 rounded-full"></span> प्रवेश प्रक्रिया
+          </h2>
+          <div class="mb-6">
+            <a href="admission-form.pdf" download class="inline-flex items-center gap-3 bg-blue-700 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg btn-pulse">
+              <svg xmlns="www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+              <span id="btnDownload">प्रवेश फॉर्म PDF डाउनलोड करें</span>
+            </a>
+          </div>
+          <ol id="processSteps" class="space-y-4 text-gray-700 font-medium">
+            <li class="flex gap-3"><span class="bg-blue-100 text-blue-800 h-6 w-6 flex items-center justify-center rounded-full text-xs font-bold">1</span> स्कूल कार्यालय से प्रवेश फॉर्म लें या ऊपर दिए लिंक से PDF डाउनलोड करें।</li>
+            <li class="flex gap-3"><span class="bg-blue-100 text-blue-800 h-6 w-6 flex items-center justify-center rounded-full text-xs font-bold">2</span> सभी विवरण सावधानी से भरें और आवश्यक दस्तावेज़ संलग्न करें।</li>
+            <li class="flex gap-3"><span class="bg-blue-100 text-blue-800 h-6 w-6 flex items-center justify-center rounded-full text-xs font-bold">3</span> दिए गए तारीखों के भीतर स्कूल कार्यालय में फॉर्म जमा करें।</li>
+            <li class="flex gap-3"><span class="bg-blue-100 text-blue-800 h-6 w-6 flex items-center justify-center rounded-full text-xs font-bold">4</span> बातचीत / प्रवेश परीक्षा में भाग लें (यदि लागू हो)।</li>
+            <li class="flex gap-3"><span class="bg-blue-100 text-blue-800 h-6 w-6 flex items-center justify-center rounded-full text-xs font-bold">5</span> चयन पर, फीस का भुगतान पूरा करें और प्रवेश की पुष्टि करें।</li>
+          </ol>
+        </div>
+
+        <div>
+          <h2 id="docTitle" class="text-3xl font-bold text-blue-900 mb-6 flex items-center gap-3">
+            <span class="bg-yellow-500 w-2 h-8 rounded-full"></span> आवश्यक दस्तावेज़
+          </h2>
+          <ul id="docList" class="space-y-3 text-gray-700 font-medium">
+            <li class="flex items-center gap-3"><svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> जन्म प्रमाणपत्र</li>
+            <li class="flex items-center gap-3"><svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> पिछली कक्षा की अंक पत्रिका / प्रगति रिपोर्ट</li>
+            <li class="flex items-center gap-3"><svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> स्कूल स्थानांतरण प्रमाणपत्र (T.C.)</li>
+            <li class="flex items-center gap-3"><svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> छात्र और माता-पिता का आधार कार्ड</li>
+            <li class="flex items-center gap-3"><svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> पासपोर्ट आकार की तस्वीरें</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Enquiry Form -->
+      <div class="glass-card p-10 animate__animated animate__fadeInRight">
+        <h2 id="formTitle" class="text-3xl font-bold text-blue-900 mb-4">ऑनलाइन प्रवेश पूछताछ</h2>
+        <p id="formDesc" class="text-sm mb-8 text-gray-600 font-medium">स्कूल को एक पूछताछ भेजने के लिए इस फॉर्म को भरें। हम आपसे जल्द ही संपर्क करेंगे।</p>
+        
+        <form id="admissionEnquiryForm" class="space-y-5">
+          <div>
+            <label id="lblStuName" class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 ml-1">छात्र का नाम</label>
+            <input type="text" id="studentName" required class="w-full rounded-xl px-4 py-3 focus:outline-none input-style" placeholder="पूरा नाम दर्ज करें">
+          </div>
+          <div>
+            <label id="lblClass" class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 ml-1">प्रवेश के लिए कक्षा</label>
+            <select id="classApplying" required class="w-full rounded-xl px-4 py-3 focus:outline-none input-style">
+              <option value="">कक्षा चुनें</option>
+              <option>Nursery</option><option>LKG</option><option>UKG</option>
+              <option>1st</option><option>2nd</option><option>3rd</option><option>4th</option><option>5th</option>
+              <option>6th</option><option>7th</option><option>8th</option><option>9th</option><option>10th</option>
+              <option>11th</option><option>12th</option>
+            </select>
+          </div>
+          <div>
+            <label id="lblMob" class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 ml-1">मोबाइल नंबर</label>
+            <input type="tel" id="parentMobile" required pattern="[0-9]{10}" class="w-full rounded-xl px-4 py-3 focus:outline-none input-style" placeholder="10 अंकों का मोबाइल नंबर">
+          </div>
+          <div>
+            <label id="lblMsg" class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 ml-1">संदेश / प्रश्न</label>
+            <textarea id="message" rows="3" class="w-full rounded-xl px-4 py-3 focus:outline-none input-style" placeholder="अपना प्रश्न लिखें (वैकल्पिक)"></textarea>
+          </div>
+          <button type="submit" id="btnSubmit" class="w-full bg-blue-700 text-white py-4 rounded-xl font-bold text-lg shadow-xl btn-pulse active:scale-95 transition-all">
+            पूछताछ जमा करें
+          </button>
+          <p id="formStatus" class="text-center font-bold text-green-600 hidden py-2 animate__animated animate__fadeIn">धन्यवाद! आपकी पूछताछ दर्ज की गई है।</p>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-black/40 backdrop-blur-md text-center text-gray-400 py-10 text-sm border-t border-white/10 mt-auto">
+    <div class="max-w-7xl mx-auto px-4">
+      <p id="footerMain" class="font-bold tracking-widest text-white mb-2">© 2025 JRC स्कूल, हरही बाज़ार बस्ती</p>
+      <p id="footerSub" class="text-xs text-gray-500">शिवमणि सिंह द्वारा डिज़ाइन और विकसित</p>
+    </div>
+  </footer>
+
+  <!-- Background Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+  
+  <script>
+    // --- THREE.JS 3D BACKGROUND ---
+    let scene, camera, renderer, particles;
+    function init3D() {
+      const container = document.getElementById('canvas-container');
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      container.appendChild(renderer.domElement);
+
+      const geometry = new THREE.BufferGeometry();
+      const count = 4000;
+      const posArray = new Float32Array(count * 3);
+      for(let i = 0; i < count * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 12;
+      }
+      geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+      
+      const material = new THREE.PointsMaterial({
+        size: 0.006,
+        color: 0xfbbf24, // Gold particles for Admissions
+        transparent: true,
+        opacity: 0.6
+      });
+
+      particles = new THREE.Points(geometry, material);
+      scene.add(particles);
+      camera.position.z = 3;
+
+      document.addEventListener('mousemove', (e) => {
+        const mouseX = (e.clientX / window.innerWidth) - 0.5;
+        const mouseY = (e.clientY / window.innerHeight) - 0.5;
+        gsap.to(particles.rotation, { y: mouseX * 0.4, x: -mouseY * 0.4, duration: 2 });
+      });
+
+      function animate() {
+        requestAnimationFrame(animate);
+        particles.rotation.y += 0.0008;
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+    window.onload = init3D;
+
+    // --- TRANSLATION LOGIC ---
+    const translations = {
+      hi: {
+        lang: "English", mainTitle: "प्रवेश", navHome: "होम", navAbout: "हमारे बारे में", navAdmission: "प्रवेश", navFees: "फीस संरचना", navStudent: "छात्र पोर्टल", navAI: "AI सहायक",
+        desc1: "J.R.C. इंटर कॉलेज में नर्सरी से कक्षा 12वीं तक की कक्षाओं के लिए प्रवेश खुले हैं...",
+        desc2: "प्रवेश मेरिट, इंटरव्यू और दस्तावेज़ सत्यापन के आधार पर होता है।",
+        processTitle: "प्रवेश प्रक्रिया", btnDownload: "प्रवेश फॉर्म PDF डाउनलोड करें",
+        docTitle: "आवश्यक दस्तावेज़", formTitle: "ऑनलाइन प्रवेश पूछताछ",
+        formDesc: "स्कूल को एक पूछताछ भेजने के लिए इस फॉर्म को भरें।",
+        lblStuName: "छात्र का नाम", lblClass: "कक्षा", lblMob: "मोबाइल नंबर", lblMsg: "संदेश / प्रश्न", btnSubmit: "पूछताछ जमा करें"
+      },
+      en: {
+        lang: "हिंदी", mainTitle: "Admissions", navHome: "Home", navAbout: "About Us", navAdmission: "Admissions", navFees: "Fees", navStudent: "Student Portal", navAI: "AI Assistant",
+        desc1: "Admissions are open for classes from Nursery to 12th at J.R.C. Inter College, subject to availability...",
+        desc2: "Admission is based on merit, interview, and document verification.",
+        processTitle: "Admission Process", btnDownload: "Download Admission PDF",
+        docTitle: "Required Documents", formTitle: "Online Enquiry",
+        formDesc: "Fill out this form to send an enquiry to the school.",
+        lblStuName: "Student Name", lblClass: "Class", lblMob: "Mobile Number", lblMsg: "Message / Query", btnSubmit: "Submit Enquiry"
+      }
+    };
+
+    let currentLang = 'hi';
+    document.getElementById('langToggle').addEventListener('click', () => {
+      currentLang = currentLang === 'hi' ? 'en' : 'hi';
+      const t = translations[currentLang];
+      document.getElementById('langText').innerText = t.lang;
+      document.getElementById('mainTitle').innerText = t.mainTitle;
+      document.getElementById('navHome').innerText = t.navHome;
+      document.getElementById('navAbout').innerText = t.navAbout;
+      document.getElementById('navAdmission').innerText = t.navAdmission;
+      document.getElementById('navFees').innerText = t.navFees;
+      document.getElementById('navStudent').innerText = t.navStudent;
+      document.getElementById('navAI').innerText = t.navAI;
+      document.getElementById('processTitle').innerHTML = `<span class="bg-blue-600 w-2 h-8 rounded-full"></span> ${t.processTitle}`;
+      document.getElementById('btnDownload').innerText = t.btnDownload;
+      document.getElementById('docTitle').innerHTML = `<span class="bg-yellow-500 w-2 h-8 rounded-full"></span> ${t.docTitle}`;
+      document.getElementById('formTitle').innerText = t.formTitle;
+      document.getElementById('formDesc').innerText = t.formDesc;
+      document.getElementById('lblStuName').innerText = t.lblStuName;
+      document.getElementById('lblClass').innerText = t.lblClass;
+      document.getElementById('lblMob').innerText = t.lblMob;
+      document.getElementById('lblMsg').innerText = t.lblMsg;
+      document.getElementById('btnSubmit').innerText = t.btnSubmit;
+    });
+  </script>
+
+  <!-- External Form Handlers -->
+  <script src="/j.r.cschool/jrcschool/pdfs/lkg/js/main.js"></script>
+  <script src="/j.r.cschool/jrcschool/pdfs/lkg/js/form-handler.js"></script>
+</body>
+</html>

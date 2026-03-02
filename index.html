@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRC स्कूल, हरही बाज़ार बस्ती | Premium Education</title>
+  
+  <!-- Frameworks & Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #0f172a; 
+      --accent: #fbbf24;  
+      --glass: rgba(255, 255, 255, 0.05);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--primary);
+      color: #f8fafc;
+      overflow-x: hidden;
+      transition: all 0.5s ease;
+    }
+
+    #three-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .glass-nav {
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .premium-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.4s ease;
+    }
+
+    .premium-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .gold-text {
+      background: linear-gradient(45deg, #fbbf24, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .nav-link {
+      position: relative;
+      font-size: 1rem;
+      white-space: nowrap;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Lightbox Styles */
+    #lightbox {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    #lightbox img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+      box-shadow: 0 0 50px rgba(251, 191, 36, 0.2);
+    }
+
+    /* Classy Achievement Image */
+    .tilted-frame {
+      position: relative;
+      transform: perspective(1000px) rotateY(-10deg) rotateX(5deg);
+      transition: transform 0.5s ease;
+      box-shadow: 20px 20px 60px rgba(0,0,0,0.5);
+    }
+    
+    .tilted-frame:hover {
+      transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+    }
+
+    .tilted-frame::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: -10px;
+      bottom: -10px;
+      background: var(--accent);
+      z-index: -1;
+      border-radius: 1rem;
+      opacity: 0.3;
+    }
+
+    /* Horizontal Gallery Styles */
+    .gallery-container {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .gallery-wrapper {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      gap: 1.5rem;
+      padding: 20px 0;
+      scrollbar-width: none; /* Firefox */
+    }
+    
+    .gallery-wrapper::-webkit-scrollbar {
+      display: none; /* Chrome/Safari */
+    }
+
+    .gallery-item {
+      flex: 0 0 350px;
+      height: 250px;
+    }
+
+    .scroll-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(251, 191, 36, 0.8);
+      color: #000;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+
+    .scroll-btn:hover {
+      background: #fff;
+      scale: 1.1;
+    }
+
+    .btn-left { left: 10px; }
+    .btn-right { right: 10px; }
+
+    /* Lang Toggle Button */
+    .lang-toggle {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 11px;
+      color: var(--accent);
+      transition: all 0.3s;
+    }
+    .lang-toggle:hover {
+      background: var(--accent);
+      color: #000;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Lightbox Overlay -->
+  <div id="lightbox" onclick="this.style.display='none'">
+    <img id="lightbox-img" src="" alt="Popup View">
+    <p class="absolute bottom-10 text-white/50" data-translate="lightbox_close">कहीं भी क्लिक करें बंद करने के लिए</p>
+  </div>
+
+  <!-- Three.js Background -->
+  <canvas id="three-canvas"></canvas>
+
+  <!-- Navigation -->
+  <header class="glass-nav sticky top-0 z-50">
+    <div class="max-w-[1400px] mx-auto flex items-center justify-between px-4 py-3">
+      <div class="flex items-center space-x-3">
+        <div class="bg-amber-400 text-slate-900 font-bold rounded-lg h-10 w-10 flex items-center justify-center text-xl">
+          J
+        </div>
+        <div>
+          <h1 class="text-sm font-bold text-white uppercase tracking-wider leading-none" data-translate="school_name">J.R.C. Inter College</h1>
+          <p class="text-[10px] text-amber-400 font-medium" data-translate="school_location">Harahi Bazar, Basti (U.P.)</p>
+        </div>
+      </div>
+      
+      <nav class="hidden xl:flex items-center space-x-5 font-semibold uppercase tracking-tighter">
+        <a href="index.html" class="nav-link text-white hover:text-amber-400" data-translate="nav_home">होम</a>
+        <a href="/j.r.cschool/jrcschool/pdfs//lkg/about.html" class="nav-link text-white hover:text-amber-400" data-translate="nav_about">हमारे बारे में</a>
+        <a href="/j.r.cschool/jrcschool/pdfs//lkg/admissions.html" class="nav-link text-white hover:text-amber-400" data-translate="nav_admissions">प्रवेश</a>
+        <a href="/j.r.cschool/jrcschool/pdfs//lkg/fees.html" class="nav-link text-white hover:text-amber-400" data-translate="nav_fees">फीस संरचना</a>
+        <a href="#facilities" class="nav-link text-white hover:text-amber-400" data-translate="nav_facilities">सुविधाएं</a>
+        <a href="#news" class="nav-link text-white hover:text-amber-400" data-translate="nav_news">सूचनाएं</a>
+        <a href="#gallery" class="nav-link text-white hover:text-amber-400" data-translate="nav_gallery">गैलरी</a>
+        <a href="#contact" class="nav-link text-white hover:text-amber-400" data-translate="nav_contact">संपर्क</a>
+        <a href="/j.r.cschool/jrcschool/pdfs//lkg/student-login.html" class="nav-link text-white hover:text-amber-400" data-translate="nav_portal">छात्र पोर्टल</a>
+        
+        <div class="flex items-center space-x-2 ml-2">
+          <button onclick="toggleLanguage()" class="lang-toggle" id="langBtn">English</button>
+          <a href="/j.r.cschool/jrcschool/pdfs//lkg/ai-assistant.html" class="bg-amber-400 text-slate-900 px-3 py-1.5 rounded-full text-[11px] hover:bg-white transition-all" data-translate="nav_ai">AI सहायक</a>
+          <a href="/j.r.cschool/jrcschool/pdfs//lkg/teacher-login.html" class="border border-white/20 text-slate-300 px-3 py-1.5 rounded-full text-[11px] hover:bg-white/10 transition-all">👩‍🏫 Teacher</a>
+          <a href="/j.r.cschool/jrcschool/pdfs//lkg/admin-login.html" class="border border-white/20 text-slate-300 px-3 py-1.5 rounded-full text-[11px] hover:bg-white/10 transition-all">🔐 Admin</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative min-h-[85vh] flex items-center justify-center px-6">
+    <div class="relative z-10 text-center max-w-4xl" id="hero-content">
+      <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight" data-translate="hero_title">
+        J.R.C. इंटर कॉलेज, <span class="gold-text">हरही बाज़ार बस्ती</span> में आपका स्वागत है
+      </h1>
+      <p class="text-lg md:text-xl text-slate-400 mb-8 font-light" data-translate="hero_subtitle">
+        युवा मन को पोषित करना | शिक्षा में उत्कृष्टता | आधुनिक शिक्षण वातावरण
+      </p>
+    </div>
+  </section>
+
+  <!-- 🖼️ Full-Width Poster Section -->
+  <section class="w-full">
+    <div class="scroll-reveal">
+      <div class="w-full relative">
+        <img src="/j.r.cschool/jrcschool/pdfs/lkg/495172015_122099557628862742_8466078802183725771_n.jpg" class="w-full h-auto object-cover cursor-pointer" alt="School Poster" onclick="openLightbox(this.src)">
+        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-950 to-transparent p-10">
+          <p class="text-center text-amber-400 text-lg font-medium italic" data-translate="poster_caption">J.R.C. इंटर कॉलेज का भव्य परिसर</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ताज़ा सूचनाएं -->
+  <section id="news" class="py-20 px-6 bg-slate-900/30">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-4xl font-bold text-center mb-12 scroll-reveal" data-translate="news_title">ताज़ा <span class="gold-text">सूचनाएं</span></h2>
+      <div id="newsContainer" class="space-y-4 scroll-reveal">
+        <p class="text-center text-slate-500" data-translate="loading">लोड हो रहा है...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- उन्नत गैलरी Section (Horizontal Scroll Added) -->
+  <section id="gallery" class="py-20 px-6">
+    <div class="max-w-7xl mx-auto overflow-visible">
+      <h2 class="text-4xl font-bold text-center mb-4 scroll-reveal" data-translate="gallery_title">इवेंट <span class="gold-text">गैलरी</span></h2>
+      <p class="text-center text-slate-400 mb-12 scroll-reveal" data-translate="gallery_subtitle">स्कूल के कार्यक्रमों की तस्वीरें। बड़े रूप में देखने के लिए फोटो पर क्लिक करें।</p>
+      
+      <div class="gallery-container scroll-reveal">
+        <div class="scroll-btn btn-left" onclick="scrollGallery(-400)">❮</div>
+        <div class="scroll-btn btn-right" onclick="scrollGallery(400)">❯</div>
+        
+        <div class="gallery-wrapper" id="galleryWrapper">
+          <div class="gallery-item bg-white/5 rounded-2xl overflow-hidden premium-card group cursor-pointer" onclick="openLightbox(this.querySelector('img').src)">
+            <img src="/j.r.cschool/jrcschool/pdfs/lkg/teachers.jpeg" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">
+          </div>
+          <div class="gallery-item bg-white/5 rounded-2xl overflow-hidden premium-card group cursor-pointer" onclick="openLightbox(this.querySelector('img').src)">
+            <img src="/j.r.cschool/jrcschool/pdfs/lkg/teacher stu.jpeg" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">
+          </div>
+          <div class="gallery-item bg-white/5 rounded-2xl overflow-hidden premium-card group cursor-pointer" onclick="openLightbox(this.querySelector('img').src)">
+            <img src="/j.r.cschool/jrcschool/pdfs/lkg/stud.jpeg" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">
+          </div>
+          <div class="gallery-item bg-white/5 rounded-2xl overflow-hidden premium-card group flex items-center justify-center text-slate-600">PHOTO 4</div>
+          <div class="gallery-item bg-white/5 rounded-2xl overflow-hidden premium-card group flex items-center justify-center text-slate-600">PHOTO 5</div>
+          <div class="gallery-item bg-white/5 rounded-2xl overflow-hidden premium-card group flex items-center justify-center text-slate-600">PHOTO 6</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-20 px-6 bg-slate-900/20">
+    <div class="max-w-4xl mx-auto text-center scroll-reveal">
+      <h2 class="text-4xl font-bold mb-10 text-white" data-translate="about_title">हमारे स्कूल के <span class="gold-text">बारे में</span></h2>
+      <p class="text-lg leading-relaxed text-slate-300" data-translate="about_desc">
+        JRC स्कूल, हरही बाज़ार बस्ती, विश्व-स्तरीय शिक्षा प्रदान करने के लिए समर्पित है जो अकादमिक उत्कृष्टता को मूल्यों और रचनात्मकता के साथ मिलाती है। 
+        हमारा संस्थान सर्वांगीण विकास पर ध्यान केंद्रित करता है—यह सुनिश्चित करता है कि छात्र शिक्षा, खेल, कला और नेतृत्व में उत्कृष्ट प्रदर्शन करें। 
+      </p>
+    </div>
+  </section>
+
+  <!-- Facilities Section -->
+  <section id="facilities" class="py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-4xl font-bold text-center mb-12 scroll-reveal" data-translate="facilities_title">हमारी <span class="gold-text">सुविधाएं</span></h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="premium-card p-6 rounded-2xl scroll-reveal">
+          <h3 class="text-xl font-bold mb-3 text-amber-400" data-translate="fac_1_title">स्मार्ट कक्षाएं</h3>
+          <p class="text-slate-400 text-sm" data-translate="fac_1_desc">शिक्षा को मजेदार और आकर्षक बनाने के लिए इंटरैक्टिव डिजिटल शिक्षण वातावरण।</p>
+        </div>
+        <div class="premium-card p-6 rounded-2xl scroll-reveal">
+          <h3 class="text-xl font-bold mb-3 text-amber-400" data-translate="fac_2_title">कंप्यूटर लैब</h3>
+          <p class="text-slate-400 text-sm" data-translate="fac_2_desc">डिजिटल साक्षरता बढ़ाने के लिए नवीनतम तकनीक से सुसज्जित आधुनिक कंप्यूटर लैब।</p>
+        </div>
+        <div class="premium-card p-6 rounded-2xl scroll-reveal">
+          <h3 class="text-xl font-bold mb-3 text-amber-400" data-translate="fac_3_title">खेल और गतिविधियां</h3>
+          <p class="text-slate-400 text-sm" data-translate="fac_3_desc">विभिन्न खेलों और पाठ्येतर गतिविधियों के माध्यम से शारीरिक फिटनेस और टीम वर्क।</p>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- Classy Achievements Section -->
+  <section class="py-24 px-6 bg-slate-900/40 overflow-hidden">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+      <div class="scroll-reveal order-2 md:order-1">
+        <h2 class="text-4xl font-bold mb-6" data-translate="achieve_title">हमारी <span class="gold-text">उपलब्धियां</span></h2>
+        <h3 class="text-xl font-semibold mb-4 text-amber-400" data-translate="achieve_sub">🏆 खो-खो में उत्कृष्टता</h3>
+        <p class="text-slate-300 mb-4" data-translate="achieve_desc">
+          J.R.C. स्कूल, हरही बाज़ार बस्ती ने खेलों में – खासकर <b>खो-खो</b> में – बहुत बड़ी सफलता हासिल की है।
+          हमारे मेहनती छात्रों ने गर्व से कई जिला-स्तरीय और राज्य-स्तरीय ट्रॉफ़ियाँ जीती हैं।
+        </p>
+        <p class="text-slate-400 italic border-l-2 border-amber-400 pl-4" data-translate="achieve_quote">टीम वर्क और अनुशासन के साथ, हमारी टीम हर साल हमें गर्व महसूस कराती है।</p>
+      </div>
+      <div class="scroll-reveal order-1 md:order-2 flex justify-center">
+        <div class="tilted-frame w-full max-w-md rounded-2xl overflow-hidden cursor-pointer" onclick="openLightbox(this.querySelector('img').src)">
+          <img src="https://scontent-del2-2.xx.fbcdn.net/v/t39.30808-6/506406472_122120494718862742_5824950341834509681_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=1WsH2mULUp0Q7kNvwF1xINp&_nc_oc=Adnc2keb5u4K9DNPvTy1TlVjl1xTEDSeZNrnVlVyVAG5rqD2U-wqHT9W_hUvWH_FJkG88XT_tYA0QuB_hL4Zja4x&_nc_zt=23&_nc_ht=scontent-del2-2.xx&_nc_gid=AczD8_uboPqWTv6gKXJIXA&oh=00_AfeeMvQeaiYX57EbKvBiqhcmlcJ0lo_DgCEzqtCwpE8rAA&oe=690BE8F2" 
+               class="w-full h-full object-cover" alt="Kho-Kho Team">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-20 px-6">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-4xl font-bold text-center mb-12 scroll-reveal" data-translate="faq_title">अक्सर पूछे जाने वाले <span class="gold-text">प्रश्न</span></h2>
+      <div class="space-y-4 scroll-reveal">
+        <div class="premium-card p-6 rounded-xl">
+          <h3 class="font-bold text-amber-400 mb-2" data-translate="q1">प्रवेश कब खुलते हैं?</h3>
+          <p class="text-slate-400" data-translate="a1">नर्सरी से कक्षा 12 तक प्रवेश सीट की उपलब्धता के अनुसार खुले रहते हैं।</p>
+        </div>
+        <div class="premium-card p-6 rounded-xl">
+          <h3 class="font-bold text-amber-400 mb-2" data-translate="q2">स्कूल का समय क्या है?</h3>
+          <p class="text-slate-400" data-translate="a2">नियमित समय सुबह 8:00 बजे से दोपहर 2:00 बजे तक (सोमवार–शनिवार)।</p>
+        </div>
+        <div class="premium-card p-6 rounded-xl">
+          <h3 class="font-bold text-amber-400 mb-2" data-translate="q1">प्रवेश कब खुलते हैं?</h3>
+          <p class="text-slate-400" data-translate="a1">नर्सरी से कक्षा 12 तक प्रवेश सीट की उपलब्धता के अनुसार खुले रहते हैं।</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer / Contact -->
+  <footer id="contact" class="bg-slate-950 py-16 px-6 border-t border-white/5">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
+      <div class="scroll-reveal">
+        <h2 class="text-3xl font-bold mb-6" data-translate="contact_title">हमसे <span class="gold-text">संपर्क करें</span></h2>
+        <div class="space-y-3 text-slate-400">
+          <p data-translate="address">📍 हरही बाज़ार, बस्ती, उत्तर प्रदेश</p>
+          <p>📞 +91 8874543973, +91 9219998118</p>
+          <p>✉️ jrcintercollegebasti1@gmail.com</p>
+        </div>
+      </div>
+      <div class="flex items-center justify-center scroll-reveal">
+         <p class="text-slate-600 text-center" data-translate="footer_copy">© 2025 JRC स्कूल, हरही बाज़ार बस्ती | शिवमणि सिंह द्वारा डिज़ाइन किया गया</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Lightbox Functionality
+    function openLightbox(src) {
+      const lb = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lightbox-img');
+      lbImg.src = src;
+      lb.style.display = 'flex';
+    }
+
+    // Scroll Gallery Function
+    function scrollGallery(val) {
+      document.getElementById('galleryWrapper').scrollLeft += val;
+    }
+
+    // --- Translation Logic ---
+    let currentLang = 'hi';
+    const translations = {
+      en: {
+        school_name: "J.R.C. Inter College",
+        school_location: "Harahi Bazar, Basti (U.P.)",
+        nav_home: "Home",
+        nav_about: "About Us",
+        nav_admissions: "Admissions",
+        nav_fees: "Fees Structure",
+        nav_facilities: "Facilities",
+        nav_news: "Notifications",
+        nav_gallery: "Gallery",
+        nav_contact: "Contact",
+        nav_portal: "Student Portal",
+        nav_ai: "AI Assistant",
+        hero_title: "Welcome to J.R.C. Inter College, <span class='gold-text'>Harahi Bazar Basti</span>",
+        hero_subtitle: "Nurturing Young Minds | Excellence in Education | Modern Learning Environment",
+        poster_caption: "Grand Campus of J.R.C. Inter College",
+        news_title: "Latest <span class='gold-text'>Notifications</span>",
+        loading: "Loading...",
+        gallery_title: "Event <span class='gold-text'>Gallery</span>",
+        gallery_subtitle: "Photos of school events. Click on a photo to view larger.",
+        about_title: "About <span class='gold-text'>Our School</span>",
+        about_desc: "JRC School, Harahi Bazar Basti, is dedicated to providing world-class education that blends academic excellence with values and creativity. Our institution focuses on holistic development—ensuring students excel in academics, sports, arts, and leadership.",
+        facilities_title: "Our <span class='gold-text'>Facilities</span>",
+        fac_1_title: "Smart Classes",
+        fac_1_desc: "Interactive digital learning environments to make education fun and engaging.",
+        fac_2_title: "Computer Lab",
+        fac_2_desc: "Modern computer labs equipped with the latest technology for digital literacy.",
+        fac_3_title: "Sports & Activities",
+        fac_3_desc: "Encouraging physical fitness and teamwork through various sports and extracurriculars.",
+        achieve_title: "Our <span class='gold-text'>Achievements</span>",
+        achieve_sub: "🏆 Excellence in Kho-Kho",
+        achieve_desc: "J.R.C. School, Harahi Bazar Basti has achieved great success in sports – especially in <b>Kho-Kho</b>. Our hardworking students have proudly won many District-level and State-level trophies.",
+        achieve_quote: "With teamwork and discipline, our team makes us proud every year.",
+        faq_title: "Frequently Asked <span class='gold-text'>Questions</span>",
+        q1: "When do admissions open?",
+        a1: "Admissions from Nursery to Class 12 remain open based on seat availability.",
+        q2: "What are the school timings?",
+        a2: "Regular timings are 8:00 AM to 2:00 PM (Monday–Saturday).",
+        contact_title: "Contact <span class='gold-text'>Us</span>",
+        address: "📍 Harahi Bazar, Basti, Uttar Pradesh",
+        footer_copy: "© 2025 JRC School, Harahi Bazar Basti | Designed by Shivamani Singh",
+        lightbox_close: "Click anywhere to close"
+      },
+      hi: {
+        school_name: "J.R.C. Inter College",
+        school_location: "Harahi Bazar, Basti (U.P.)",
+        nav_home: "होम",
+        nav_about: "हमारे बारे में",
+        nav_admissions: "प्रवेश",
+        nav_fees: "फीस संरचना",
+        nav_facilities: "सुविधाएं",
+        nav_news: "सूचनाएं",
+        nav_gallery: "गैलरी",
+        nav_contact: "संपर्क",
+        nav_portal: "छात्र पोर्टल",
+        nav_ai: "AI सहायक",
+        hero_title: "J.R.C. इंटर कॉलेज, <span class='gold-text'>हरही बाज़ार बस्ती</span> में आपका स्वागत है",
+        hero_subtitle: "युवा मन को पोषित करना | शिक्षा में उत्कृष्टता | आधुनिक शिक्षण वातावरण",
+        poster_caption: "J.R.C. इंटर कॉलेज का भव्य परिसर",
+        news_title: "ताज़ा <span class='gold-text'>सूचनाएं</span>",
+        loading: "लोड हो रहा है...",
+        gallery_title: "इवेंट <span class='gold-text'>गैलरी</span>",
+        gallery_subtitle: "स्कूल के कार्यक्रमों की तस्वीरें। बड़े रूप में देखने के लिए फोटो पर क्लिक करें।",
+        about_title: "हमारे स्कूल के <span class='gold-text'>बारे में</span>",
+        about_desc: "JRC स्कूल, हरही बाज़ार बस्ती, विश्व-स्तरीय शिक्षा प्रदान करने के लिए समर्पित है जो अकादमिक उत्कृष्टता को मूल्यों और रचनात्मकता के साथ मिलाती है। हमारा संस्थान सर्वांगीण विकास पर ध्यान केंद्रित करता है—यह सुनिश्चित करता है कि छात्र शिक्षा, खेल, कला और नेतृत्व में उत्कृष्ट प्रदर्शन करें।",
+        facilities_title: "हमारी <span class='gold-text'>सुविधाएं</span>",
+        fac_1_title: "स्मार्ट कक्षाएं",
+        fac_1_desc: "शिक्षा को मजेदार और आकर्षक बनाने के लिए इंटरैक्टिव डिजिटल शिक्षण वातावरण।",
+        fac_2_title: "कंप्यूटर लैब",
+        fac_2_desc: "डिजिटल साक्षरता बढ़ाने के लिए नवीनतम तकनीक से सुसज्जित आधुनिक कंप्यूटर लैब।",
+        fac_3_title: "खेल और गतिविधियां",
+        fac_3_desc: "विभिन्न खेलों और पाठ्येतर गतिविधियों के माध्यम से शारीरिक फिटनेस और टीम वर्क।",
+        achieve_title: "हमारी <span class='gold-text'>उपलब्धियां</span>",
+        achieve_sub: "🏆 खो-खो में उत्कृष्टता",
+        achieve_desc: "J.R.C. स्कूल, हरही बाज़ार बस्ती ने खेलों में – खासकर <b>खो-खो</b> में – बहुत बड़ी सफलता हासिल की है। हमारे मेहनती छात्रों ने गर्व से कई जिला-स्तरीय और राज्य-स्तरीय ट्रॉफ़ियाँ जीती हैं।",
+        achieve_quote: "टीम वर्क और अनुशासन के साथ, हमारी टीम हर साल हमें गर्व महसूस कराती है।",
+        faq_title: "अक्सर पूछे जाने वाले <span class='gold-text'>प्रश्न</span>",
+        q1: "प्रवेश कब खुलते हैं?",
+        a1: "नर्सरी से कक्षा 12 तक प्रवेश सीट की उपलब्धता के अनुसार खुले रहते हैं।",
+        q2: "स्कूल का समय क्या है?",
+        a2: "नियमित समय सुबह 8:00 बजे से दोपहर 2:00 बजे तक (सोमवार–शनिवार)।",
+        contact_title: "हमसे <span class='gold-text'>संपर्क करें</span>",
+        address: "📍 हरही बाज़ार, बस्ती, उत्तर प्रदेश",
+        footer_copy: "© 2025 JRC स्कूल, हरही बाज़ार बस्ती | शिवमणि सिंह द्वारा डिज़ाइन किया गया",
+        lightbox_close: "कहीं भी क्लिक करें बंद करने के लिए"
+      }
+    };
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'hi' ? 'en' : 'hi';
+      const btn = document.getElementById('langBtn');
+      btn.innerText = currentLang === 'hi' ? 'English' : 'हिंदी';
+      
+      document.querySelectorAll('[data-translate]').forEach(el => {
+        const key = el.getAttribute('data-translate');
+        if (translations[currentLang][key]) {
+          el.innerHTML = translations[currentLang][key];
+        }
+      });
+    }
+
+    // --- GSAP Animations ---
+    gsap.registerPlugin(ScrollTrigger);
+    document.querySelectorAll('.scroll-reveal').forEach((el) => {
+      gsap.to(el, {
+        scrollTrigger: {
+          trigger: el,
+          start: "top 90%",
+          toggleActions: "play none none none"
+        },
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power2.out"
+      });
+    });
+
+    // --- Three.js BG ---
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const geometry = new THREE.BufferGeometry();
+    const vertices = [];
+    for (let i = 0; i < 1500; i++) {
+      vertices.push(THREE.MathUtils.randFloatSpread(10));
+      vertices.push(THREE.MathUtils.randFloatSpread(10));
+      vertices.push(THREE.MathUtils.randFloatSpread(10));
+    }
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    const material = new THREE.PointsMaterial({ color: 0xfbbf24, size: 0.015, transparent: true, opacity: 0.5 });
+    const points = new THREE.Points(geometry, material);
+    scene.add(points);
+    camera.position.z = 5;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      points.rotation.y += 0.0005;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+  
+  <script src="/j.r.cschool/jrcschool/pdfs/lkg/js/main.js"></script>
+  <script src="/j.r.cschool/jrcschool/pdfs/lkg/js/form-handler.js"></script>
+</body>
+</html>

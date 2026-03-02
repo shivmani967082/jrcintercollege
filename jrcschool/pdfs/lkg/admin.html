@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal | JRC स्कूल</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  
+  <!-- Added Three.js and GSAP for the background -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+
+  <style>
+    :root {
+      --primary-navy: #0f172a;
+      --secondary-slate: #1e293b;
+      --accent-yellow: #facc15;
+    }
+
+    /* Background Canvas Styling */
+    #star-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: linear-gradient(to bottom, #0f172a, #1e293b);
+    }
+
+    body {
+      background-color: transparent;
+      color: #1e293b;
+    }
+
+    /* Target Result & Fee inputs specifically for Black Text */
+    #addResultForm input, 
+    #addResultForm select, 
+    #addFeeForm input, 
+    #addFeeForm select {
+      color: #000000 !important;
+      background-color: #ffffff !important;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      transition: transform 0.2s ease;
+    }
+
+    .dark-panel {
+      background: var(--primary-navy);
+      color: white;
+      border-radius: 1rem;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+    .status-pending { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .status-contacted { background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+    .status-admitted { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+    .status-rejected { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    
+    /* Teacher Modal Scrolling Fix */
+    #teacherModal {
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+    #teacherModal > div {
+      max-height: calc(100vh - 2rem);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    /* Custom Input Focus */
+    input:focus, select:focus, textarea:focus {
+      border-color: #3b82f6 !important;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- Interactive Star Background -->
+  <canvas id="star-canvas"></canvas>
+
+  <!-- Header -->
+  <header class="bg-blue-900 text-white shadow-xl sticky top-0 z-40 border-b-4 border-yellow-400">
+    <div class="max-w-7xl mx-auto px-4 py-3">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center space-x-3">
+          <div class="bg-yellow-400 text-blue-900 font-extrabold rounded-xl h-12 w-12 flex items-center justify-center text-2xl shadow-inner">J</div>
+          <div>
+            <h1 class="text-xl font-bold tracking-tight">JRC Admin Portal</h1>
+            <p class="text-xs text-yellow-300 font-medium tracking-widest uppercase">Management Intelligence</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <!-- Translation Dropdown -->
+          <div class="flex items-center bg-blue-800 rounded-lg px-2 py-1 border border-blue-700">
+            <span class="text-xs mr-2 text-blue-200">🌐</span>
+            <select id="languageToggle" onchange="translatePage(this.value)" class="bg-transparent text-sm font-medium focus:outline-none cursor-pointer">
+              <option value="hi" class="text-gray-900">हिंदी (Hindi)</option>
+              <option value="en" class="text-gray-900">English</option>
+            </select>
+          </div>
+
+          <div class="h-8 w-px bg-blue-700 hidden md:block"></div>
+
+          <span class="text-sm font-semibold bg-blue-800 px-3 py-1.5 rounded-full border border-blue-700" id="adminName"></span>
+          
+          <div class="flex gap-2">
+            <button id="refreshBtn" class="bg-blue-700 hover:bg-blue-600 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center shadow-md">
+              <span class="mr-1">🔄</span> Refresh
+            </button>
+            <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center shadow-md">
+              <span class="mr-1">🚪</span> Logout
+            </button>
+            <a href="/j.r.cschool/index.html" class="bg-yellow-400 text-blue-900 px-4 py-2 rounded-lg text-sm font-bold hover:bg-yellow-300 transition shadow-md">
+              🏠 Home
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="glass-card rounded-2xl shadow-sm p-6 border-l-4 border-blue-500">
+        <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1" data-key="total_adm">कुल प्रवेश</div>
+        <div class="text-3xl font-black text-blue-600" id="totalCount">0</div>
+      </div>
+      <div class="glass-card rounded-2xl shadow-sm p-6 border-l-4 border-amber-500">
+        <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1" data-key="pending_adm">Pending</div>
+        <div class="text-3xl font-black text-amber-600" id="pendingCount">0</div>
+      </div>
+      <div class="glass-card rounded-2xl shadow-sm p-6 border-l-4 border-sky-500">
+        <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1" data-key="contacted_adm">Contacted</div>
+        <div class="text-3xl font-black text-sky-600" id="contactedCount">0</div>
+      </div>
+      <div class="glass-card rounded-2xl shadow-sm p-6 border-l-4 border-emerald-500">
+        <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1" data-key="admitted_adm">Admitted</div>
+        <div class="text-3xl font-black text-emerald-600" id="admittedCount">0</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="glass-card rounded-2xl shadow-md p-6 mb-8">
+      <div class="flex flex-wrap items-center gap-6">
+        <div class="flex-1 min-w-[200px]">
+          <label class="block text-xs font-bold text-gray-500 uppercase mb-2" data-key="status_filter">Status Filter</label>
+          <select id="statusFilter" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none transition">
+            <option value="" data-key="all">सभी</option>
+            <option value="pending">Pending</option>
+            <option value="contacted">Contacted</option>
+            <option value="admitted">Admitted</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <div class="flex-[2] min-w-[300px]">
+          <label class="block text-xs font-bold text-gray-500 uppercase mb-2" data-key="search_label">Search</label>
+          <div class="relative">
+            <input type="text" id="searchInput" placeholder="नाम या मोबाइल..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-10 py-2.5 focus:outline-none transition">
+            <span class="absolute left-3 top-3 text-gray-400">🔍</span>
+          </div>
+        </div>
+        <div class="flex items-end">
+          <button id="clearFilters" class="bg-gray-800 text-white hover:bg-gray-700 px-6 py-2.5 rounded-xl text-sm font-bold transition shadow-lg" data-key="clear_filters">
+            Clear Filters
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator" class="text-center py-12 hidden">
+      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <p class="mt-4 text-gray-600 font-medium">Fetching secure data...</p>
+    </div>
+
+    <!-- Admissions Table -->
+    <div class="glass-card rounded-2xl shadow-xl overflow-hidden mb-12">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Date</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Student Name</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Class</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Mobile</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Message</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Status</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admissionsTableBody" class="bg-white divide-y divide-gray-100">
+            <!-- Data will be inserted here -->
+          </tbody>
+        </table>
+      </div>
+      <div id="noData" class="text-center py-12 text-gray-500 font-medium hidden">
+        कोई डेटा नहीं मिला
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div id="pagination" class="mt-6 flex justify-center items-center space-x-2 hidden">
+      <button id="prevPage" class="px-6 py-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 font-semibold transition disabled:opacity-50">
+        ← Previous
+      </button>
+      <span id="pageInfo" class="px-6 py-2 text-sm font-bold text-blue-600 bg-blue-50 rounded-xl"></span>
+      <button id="nextPage" class="px-6 py-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 font-semibold transition disabled:opacity-50">
+        Next →
+      </button>
+    </div>
+
+    <!-- सूचनाएं प्रबंधन (News) -->
+    <section class="mt-16 pt-12 border-t-2 border-gray-200">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-white font-black text-white-800 flex items-center gap-2">
+          <span class="bg-blue-100 p-2 rounded-lg text-blue-600 text-xl">📢</span> 
+          <span data-key="news_mgmt">ताज़ा सूचनाएं प्रबंधन</span>
+        </h2>
+        <button id="addNewsBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition shadow-lg">
+          + नई सूचना जोड़ें
+        </button>
+      </div>
+      <div id="newsListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <p class="text-gray-500 text-center py-4">लोड हो रहा है...</p>
+      </div>
+    </section>
+
+    <!-- छात्र परिणाम / फीस (Student Result & Fee) -->
+    <section class="mt-16 pt-12 border-t-2 border-gray-200">
+      <h2 class="text-white font-black text-white-800 mb-8 flex items-center gap-2">
+        <span class="bg-purple-100 p-2 rounded-lg text-purple-600 text-xl">🎓</span>
+        <span data-key="res_fee_mgmt">छात्र परिणाम व फीस जोड़ें</span>
+      </h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Results Form Panel -->
+        <div class="dark-panel shadow-2xl overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 px-6 py-4 border-b border-slate-700">
+            <h3 class="text-lg font-bold text-yellow-400 flex items-center gap-2" data-key="add_res">परीक्षा परिणाम जोड़ें</h3>
+          </div>
+          <form id="addResultForm" class="p-6 space-y-5">
+            <div>
+              <label class="block text-xs font-bold text-slate-400 uppercase mb-2">छात्र चुनें</label>
+              <select id="resultStudentId" required class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white focus:outline-none">
+                <option value="">-- छात्र चुनें --</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="col-span-2 md:col-span-1">
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">परीक्षा का नाम</label>
+                <input type="text" id="resultExamName" required class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white" placeholder="जैसे अर्धवार्षिक 2024">
+              </div>
+              <div class="col-span-2 md:col-span-1">
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">सत्र (2024-25)</label>
+                <input type="text" id="resultSession" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white" placeholder="2024-25">
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4 bg-slate-800 p-4 rounded-xl border border-slate-700">
+              <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">कुल अंक</label>
+                <input type="number" id="resultTotalMarks" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white" placeholder="100">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">प्राप्त अंक</label>
+                <input type="number" id="resultObtainedMarks" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white" placeholder="85">
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">प्रतिशत</label>
+                <input type="number" id="resultPercentage" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white" placeholder="85" step="0.01">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">ग्रेड</label>
+                <input type="text" id="resultGrade" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white" placeholder="A">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-400 uppercase mb-2">टिप्पणी</label>
+              <input type="text" id="resultRemarks" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white" placeholder="उत्तीर्ण">
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-500 transition shadow-lg transform active:scale-95">परिणाम जोड़ें</button>
+          </form>
+        </div>
+
+        <!-- Fee Form Panel -->
+        <div class="dark-panel shadow-2xl overflow-hidden border border-slate-700">
+          <div class="bg-slate-800 px-6 py-4 border-b border-slate-700">
+            <h3 class="text-lg font-bold text-emerald-400 flex items-center gap-2" data-key="add_fee">फीस रिकॉर्ड जोड़ें</h3>
+          </div>
+          <form id="addFeeForm" class="p-6 space-y-5">
+            <div>
+              <label class="block text-xs font-bold text-slate-400 uppercase mb-2">छात्र चुनें</label>
+              <select id="feeStudentId" required class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white focus:outline-none">
+                <option value="">-- छात्र चुनें --</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-400 uppercase mb-2">विवरण</label>
+              <input type="text" id="feeDescription" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white" placeholder="वार्षिक फीस 2024-25">
+            </div>
+            <div class="grid grid-cols-2 gap-4 bg-slate-800 p-4 rounded-xl border border-slate-700">
+              <div>
+                <label class="block text-xs font-bold text-emerald-400 uppercase mb-2">कुल राशि (₹)</label>
+                <input type="number" id="feeAmount" required class="w-full bg-slate-900 border border-emerald-900 rounded-xl px-4 py-2.5 text-white" placeholder="15000" min="0">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">दी गई राशि (₹)</label>
+                <input type="number" id="feePaid" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white" placeholder="0" min="0" value="0">
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">सत्र</label>
+                <input type="text" id="feeSession" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white" placeholder="2024-25">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-2">देय तारीख</label>
+                <input type="date" id="feeDueDate" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white">
+              </div>
+            </div>
+            <button type="submit" class="w-full bg-emerald-600 text-white py-3 rounded-xl font-bold hover:bg-emerald-500 transition shadow-lg transform active:scale-95">फीस जोड़ें</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Class Teacher प्रबंधन -->
+    <section class="mt-16 pt-12 border-t-2 border-gray-200">
+      <h2 class="text-white font-black text-white-800 mb-2 flex items-center gap-2">
+        <span class="bg-indigo-100 p-2 rounded-lg text-indigo-600 text-xl">👩‍🏫</span>
+        <span data-key="ct_mgmt">Class Teacher (टीचर पैनल लॉगिन)</span>
+      </h2>
+      <p class="text-sm text-gray-500 mb-6 font-medium">Manage teacher access credentials for specific classrooms.</p>
+      
+      <div class="glass-card rounded-2xl shadow-lg p-8 mb-8 border border-gray-100">
+        <h3 class="font-bold text-gray-800 mb-6 pb-2 border-b">नया Class Teacher रजिस्टर करें</h3>
+        <form id="classTeacherForm" class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
+          <div>
+            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">शिक्षक का नाम *</label>
+            <input type="text" id="ctName" required class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="नाम">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">कक्षा *</label>
+            <select id="ctClass" required class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="">चुनें</option>
+              <option value="Nursery">Nursery</option>
+              <option value="LKG">LKG</option>
+              <option value="UKG">UKG</option>
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+              <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+              <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+              <option value="9-Arts">9-Arts</option><option value="9-Home Science">9-Home Science</option><option value="9-Science">9-Science</option>
+              <option value="10">10</option>
+              <option value="11-Arts">11-Arts</option><option value="11-Commerce">11-Commerce</option><option value="11-Science">11-Science</option>
+              <option value="12-Arts">12-Arts</option><option value="12-Commerce">12-Commerce</option><option value="12-Science">12-Science</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">पासवर्ड *</label>
+            <input type="password" id="ctPassword" required minlength="6" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Min 6 characters">
+          </div>
+          <button type="submit" class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg transform active:scale-95">रजिस्टर करें</button>
+        </form>
+        <p id="ctMessage" class="mt-4 text-sm font-bold hidden"></p>
+      </div>
+      <div id="classTeachersListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <p class="text-gray-500 text-center py-4">लोड हो रहा है...</p>
+      </div>
+    </section>
+
+    <!-- शिक्षक प्रबंधन (About Page) -->
+    
+  </main>
+
+  <!-- Teacher Add/Edit Modal (PRESERVED) -->
+  <div id="teacherModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50 flex py-4" style="overflow-y: auto; backdrop-filter: blur(4px);">
+    <div class="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4 my-auto shadow-2xl border border-gray-100" style="max-height: calc(100vh - 2rem); overflow-y: auto;">
+      <h3 class="text-2xl font-black text-gray-800 mb-6 flex items-center gap-2" id="teacherModalTitle">नया शिक्षक जोड़ें</h3>
+      <form id="teacherForm">
+        <input type="hidden" id="teacherId">
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">नाम *</label>
+            <input type="text" id="teacherName" required class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none" placeholder="शिक्षक का नाम">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">पदनाम (Designation)</label>
+            <input type="text" id="teacherDesignation" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none" placeholder="जैसे Principal, Director">
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">योग्यता (Qualification)</label>
+            <input type="text" id="teacherQualification" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none" placeholder="जैसे B.Ed, M.Sc">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">अनुभव (Experience)</label>
+            <input type="text" id="teacherExperience" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none" placeholder="जैसे 5 साल">
+          </div>
+        </div>
+        <div class="mb-6">
+          <label class="block text-xs font-bold text-gray-500 uppercase mb-2">विषय (Subject)</label>
+          <input type="text" id="teacherSubject" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none" placeholder="जैसे Maths, English">
+        </div>
+        <div class="mb-6">
+          <label class="block text-xs font-bold text-gray-500 uppercase mb-2">विचार (Thought)</label>
+          <textarea id="teacherThought" rows="3" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none" placeholder="शिक्षक का विचार या संदेश"></textarea>
+        </div>
+        <div class="mb-6 p-6 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+          <label class="block text-xs font-bold text-gray-500 uppercase mb-2">फोटो (Photo Upload)</label>
+          <input type="file" id="teacherImage" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+          <p class="text-xs text-gray-500 mt-2">Maximum size: 20MB. Supports: JPEG, PNG, GIF, WebP</p>
+          <div id="teacherImagePreview" class="mt-4 hidden">
+            <img id="teacherImagePreviewImg" src="" alt="Preview" class="max-w-xs max-h-48 rounded-xl shadow-lg border-2 border-white">
+            <p class="text-xs text-gray-600 mt-1 font-bold">Image Preview</p>
+          </div>
+        </div>
+        <div class="mb-8">
+          <label class="block text-xs font-bold text-gray-500 uppercase mb-2">क्रम (Display Order)</label>
+          <input type="number" id="teacherOrder" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none" placeholder="0" value="0" min="0">
+        </div>
+        <div class="flex justify-end space-x-4 sticky bottom-0 bg-white pt-6 border-t mt-4">
+          <button type="button" id="cancelTeacher" class="px-8 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition">रद्द करें</button>
+          <button type="submit" class="px-8 py-3 bg-pink-600 text-white font-bold rounded-xl hover:bg-pink-700 transition shadow-lg">सेव करें</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- News Add/Edit Modal (PRESERVED) -->
+  <div id="newsModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50 flex">
+    <div class="bg-white rounded-2xl p-8 max-lg w-full mx-4 max-h-[90vh] overflow-y-auto shadow-2xl">
+      <h3 class="text-2xl font-black text-gray-800 mb-6" id="newsModalTitle">नई सूचना जोड़ें</h3>
+      <form id="newsForm" class="space-y-6">
+        <input type="hidden" id="newsId">
+        <div>
+          <label class="block text-xs font-bold text-gray-500 uppercase mb-2">शीर्षक</label>
+          <input type="text" id="newsTitle" required class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none" placeholder="सूचना का शीर्षक">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-500 uppercase mb-2">विषय / विवरण</label>
+          <textarea id="newsContent" required rows="4" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none" placeholder="सूचना की जानकारी"></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-500 uppercase mb-2">प्रकार</label>
+          <select id="newsType" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none">
+            <option value="notice">सूचना</option>
+            <option value="holiday">छुट्टी</option>
+            <option value="exam">परीक्षा</option>
+            <option value="event">कार्यक्रम</option>
+            <option value="general">सामान्य</option>
+          </select>
+        </div>
+        <div class="flex justify-end space-x-4 pt-4 border-t">
+          <button type="button" id="cancelNews" class="px-8 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl transition">रद्द करें</button>
+          <button type="submit" class="px-8 py-3 bg-blue-600 text-white font-bold rounded-xl shadow-lg transition">सेव करें</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Status Update Modal (PRESERVED) -->
+  <div id="statusModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50 flex">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
+      <h3 class="text-2xl font-black text-gray-800 mb-6">Update Status</h3>
+      <form id="statusForm" class="space-y-6">
+        <input type="hidden" id="admissionId">
+        <div>
+          <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Status</label>
+          <select id="statusSelect" class="w-full border border-gray-200 rounded-xl px-4 py-3 font-bold text-blue-800 focus:outline-none" required>
+            <option value="pending">Pending</option>
+            <option value="contacted">Contacted</option>
+            <option value="admitted">Admitted</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Notes (Optional)</label>
+          <textarea id="statusNotes" rows="3" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none" placeholder="Add internal notes..."></textarea>
+        </div>
+        <div class="flex justify-end space-x-4 pt-4 border-t">
+          <button type="button" id="cancelStatus" class="px-8 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl transition">
+            Cancel
+          </button>
+          <button type="submit" class="px-8 py-3 bg-blue-600 text-white font-bold rounded-xl shadow-lg transition">
+            Update
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/j.r.cschool/jrcschool/pdfs/lkg/js/admin-auth.js"></script>
+  <script src="/j.r.cschool/jrcschool/pdfs/lkg/js/admin.js"></script>
+  
+  <script>
+    /* --- STAR BACKGROUND INITIALIZATION (THREE.JS + GSAP) --- */
+    (function initStarField() {
+      const canvas = document.getElementById('star-canvas');
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 5;
+
+      // Create Stars
+      const starCount = 3000;
+      const geometry = new THREE.BufferGeometry();
+      const positions = new Float32Array(starCount * 3);
+      
+      for (let i = 0; i < starCount * 3; i++) {
+        positions[i] = (Math.random() - 0.5) * 15;
+      }
+      
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      
+      const material = new THREE.PointsMaterial({
+        size: 0.015,
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.8
+      });
+      
+      const points = new THREE.Points(geometry, material);
+      scene.add(points);
+
+      // Mouse interaction
+      let mouseX = 0;
+      let mouseY = 0;
+      
+      document.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth) - 0.5;
+        mouseY = (e.clientY / window.innerHeight) - 0.5;
+      });
+
+      // Animation Loop
+      function animate() {
+        requestAnimationFrame(animate);
+        
+        // Constant slow drift
+        points.rotation.y += 0.0008;
+        points.rotation.x += 0.0005;
+
+        // Smooth GSAP-like reaction to mouse
+        gsap.to(points.rotation, {
+          y: points.rotation.y + (mouseX * 0.1),
+          x: points.rotation.x + (mouseY * 0.1),
+          duration: 2,
+          ease: "power2.out"
+        });
+
+        renderer.render(scene, camera);
+      }
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      animate();
+    })();
+
+    /**
+     * PAGE TRANSLATION ENGINE
+     */
+    const TRANSLATIONS = {
+        hi: {
+            total_adm: "कुल प्रवेश",
+            pending_adm: "लंबित (Pending)",
+            contacted_adm: "संपर्क किया (Contacted)",
+            admitted_adm: "प्रवेश हुआ (Admitted)",
+            status_filter: "स्थिति फ़िल्टर",
+            search_label: "खोजें",
+            all: "सभी",
+            clear_filters: "फ़िल्टर साफ़ करें",
+            news_mgmt: "ताज़ा सूचनाएं प्रबंधन",
+            res_fee_mgmt: "छात्र परिणाम व फीस जोड़ें",
+            add_res: "परीक्षा परिणाम जोड़ें",
+            add_fee: "फीस रिकॉर्ड जोड़ें",
+            ct_mgmt: "Class Teacher (टीचर पैनल लॉगिन)",
+            about_teachers: "शिक्षक प्रबंधन (About Page)"
+        },
+        en: {
+            total_adm: "Total Admissions",
+            pending_adm: "Pending Requests",
+            contacted_adm: "Contacted Leads",
+            admitted_adm: "Admitted Students",
+            status_filter: "Filter by Status",
+            search_label: "Search Database",
+            all: "All Records",
+            clear_filters: "Clear Filters",
+            news_mgmt: "News & Bulletins Management",
+            res_fee_mgmt: "Result & Fee Entry Management",
+            add_res: "Add New Exam Result",
+            add_fee: "Add New Fee Record",
+            ct_mgmt: "Class Teacher Panel Access",
+            about_teachers: "About Page Teacher Gallery"
+        }
+    };
+
+    function translatePage(lang) {
+        document.querySelectorAll('[data-key]').forEach(element => {
+            const key = element.getAttribute('data-key');
+            if (TRANSLATIONS[lang] && TRANSLATIONS[lang][key]) {
+                element.textContent = TRANSLATIONS[lang][key];
+            }
+        });
+        
+        const searchInput = document.getElementById('searchInput');
+        if (lang === 'en') {
+            searchInput.placeholder = "Search name or mobile...";
+        } else {
+            searchInput.placeholder = "नाम या मोबाइल...";
+        }
+    }
+
+    if (AdminAuth.isAuthenticated()) {
+      const session = AdminAuth.getSession();
+      if (session) {
+        document.getElementById('adminName').textContent = `Admin: ${session.username}`;
+      }
+      
+      let isAdminPage = true;
+      window.addEventListener('beforeunload', () => {
+        AdminAuth.logout(true);
+      });
+    }
+  </script>
+</body>
+</html>

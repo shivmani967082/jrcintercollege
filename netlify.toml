@@ -1,0 +1,3 @@
+[build]
+  base = "j.r.cschool/jrcschool"
+  publish = "pdfs/LKG"
