@@ -29,39 +29,36 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(helmet()); // Security headers
-app.use(morgan('dev')); // Logging
+app.use(helmet());
+app.use(morgan('dev'));
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    
-    // In development, allow all origins
+
     if (process.env.NODE_ENV === 'development') {
       return callback(null, true);
     }
-    
-    // In production, check against allowed origins
+
     const allowedOrigins = [
       process.env.FRONTEND_URL,
-      'localhost:5500',
-      'https://jrc-school-pro.onrender.com',
-      '127.0.0.1:5500',
-      '127.0.0.1:3000'
+      'http://localhost:5500',
+      'http://127.0.0.1:5500',
+      'http://127.0.0.1:3000'
     ].filter(Boolean);
-    
-    if (allowedOrigins.indexOf(origin) !== -1) {
+
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(null, true); // Allow for now, restrict in production
+      callback(null, true); // can restrict later
     }
   },
   credentials: true
 }));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Serve static files - images and uploads
+// Serve static files
 const staticPath = path.join(__dirname, '../jrcschool/j.r.cschool/jrcschool/pdfs//LKG');
 app.use(express.static(staticPath));
 console.log('📁 Serving static files from:', staticPath);
@@ -69,7 +66,8 @@ console.log('📁 Serving static files from:', staticPath);
 const teacherUploadsPath = path.join(__dirname, '../jrcschool/j.r.cschool/jrcschool/pdfs//LKG/uploads/teachers');
 app.use('/uploads/teachers', express.static(teacherUploadsPath));
 console.log('📁 Teacher images from:', teacherUploadsPath);
-// Health check endpoint
+
+// Health check
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'OK',
@@ -78,7 +76,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// API Routes
+// Routes
 app.use('/api/admissions', admissionRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/ai', aiRoutes);
@@ -87,10 +85,9 @@ app.use('/api/news', newsRoutes);
 app.use('/api/student', studentAuthRoutes);
 app.use('/api/student', studentRoutes);
 app.use('/api/teacher', teacherRoutes);
-// app.use('/api/teachers', teacherProfileRoutes);
 app.use('/api/class-teachers', classTeacherRoutes);
 
-// 404 handler
+// 404
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -108,34 +105,36 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Connect to MongoDB (short timeout so server starts even if MongoDB is not running)
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/jrc-school', {
+
+// ✅ SAFE MONGODB CONNECTION (FIXED)
+
+if (!process.env.MONGODB_URI) {
+  console.error("❌ MONGODB_URI is not defined in environment variables");
+  process.exit(1);
+}
+
+mongoose.connect(process.env.MONGODB_URI, {
   serverSelectionTimeoutMS: 5000
 })
 .then(() => {
   console.log('✅ Connected to MongoDB');
-  
-  // Start server
- app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
 
-  const BASE_URL =
-    process.env.NODE_ENV === "production"
-      ? "https://jrc-school-pro.onrender.com"
-      : `localhost:${PORT}`;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
 
-  console.log(`📡 API available at ${BASE_URL}/api`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
-});
+    const BASE_URL =
+      process.env.NODE_ENV === "production"
+        ? process.env.RENDER_EXTERNAL_URL
+        : `http://localhost:${PORT}`;
+
+    console.log(`📡 API available at ${BASE_URL}/api`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
+  });
+
 })
 .catch((error) => {
   console.error('❌ MongoDB connection error:', error);
-  console.log('⚠️  Starting server without database connection...');
-  
-  // Start server anyway (for development)
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT} (without database)`);
-  });
+  process.exit(1); // stop app if DB fails in production
 });
 
 module.exports = app;
