@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>छात्र लॉगिन | JRC स्कूल</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #fbbf24;
+      --glass: rgba(255, 255, 255, 0.85);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background-color: #0f172a; /* Deep dark aesthetic base */
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* 3D Canvas Container */
+    #canvas-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+    }
+
+    .glass-card {
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 1.5rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .input-focus-effect:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .btn-gradient {
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-gradient:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 20px 25px -5px rgba(30, 64, 175, 0.4);
+    }
+
+    .tab-active {
+      background: white !important;
+      color: #1e40af !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Custom Toast/Pop-up style */
+    #formMessage {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      padding: 1.25rem 2.5rem;
+      border-radius: 1rem;
+      color: white;
+      font-weight: 600;
+      z-index: 1000;
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      transform: translateX(120%);
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+    }
+    #formMessage.show {
+      transform: translateX(0);
+    }
+
+    .lang-btn {
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(4px);
+    }
+
+    .lang-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: rotate(3deg);
+    }
+  </style>
+</head>
+<body class="text-gray-900 flex flex-col min-h-screen">
+  
+  <!-- Three.js Canvas -->
+  <div id="canvas-container"></div>
+
+  <header class="bg-blue-900/80 backdrop-blur-md text-white shadow-xl sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div class="flex items-center space-x-4 animate__animated animate__fadeInLeft">
+        <div class="bg-yellow-400 text-blue-900 font-extrabold rounded-2xl h-11 w-11 flex items-center justify-center text-xl shadow-lg">J</div>
+        <div>
+          <p class="text-base font-bold uppercase tracking-widest leading-none">J.R.C. Inter College</p>
+          <p class="text-xs text-blue-200 mt-1">Harahi Bazar, Basti (U.P.)</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center space-x-4">
+        <nav class="hidden lg:flex space-x-6 text-sm font-medium items-center">
+          <a href="index.html" class="hover:text-yellow-300 transition-colors">होम</a>
+          <a href="student-login.html" class="text-yellow-400 font-bold border-b-2 border-yellow-400">छात्र लॉगिन</a>
+          <a href="teacher-login.html" class="text-gray-300 hover:text-white border border-white/20 px-4 py-1.5 rounded-xl transition-all hover:bg-white/10">👩‍🏫 Teacher</a>
+          <a href="admin-login.html" class="text-gray-300 hover:text-white border border-white/20 px-4 py-1.5 rounded-xl transition-all hover:bg-white/10">🔐 Admin</a>
+        </nav>
+
+        <button id="langToggle" class="lang-btn flex items-center space-x-2 px-4 py-2 rounded-full text-xs font-bold animate__animated animate__fadeInRight">
+          <span id="langText">English</span>
+          <svg xmlns="www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5c.13 1 .46 2.04 1.05 3" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-lg mx-auto px-6 py-12 w-full animate__animated animate__zoomIn">
+    <div class="text-center mb-10">
+      <h1 id="mainTitle" class="text-5xl font-black text-white mb-3 tracking-tighter drop-shadow-lg">छात्र पोर्टल</h1>
+      <p id="subTitle" class="text-blue-100 font-medium opacity-80">अपनी शिक्षा की यात्रा यहाँ से शुरू करें</p>
+    </div>
+
+    <div class="flex p-1.5 bg-white/10 rounded-2xl mb-0 mx-2 glass-card" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none;">
+      <button type="button" id="tabRegister" class="flex-1 py-3 text-sm font-bold rounded-xl transition-all duration-300 tab-active">नया खाता बनाएं</button>
+      <button type="button" id="tabLogin" class="flex-1 py-3 text-sm font-bold rounded-xl transition-all duration-300 text-blue-900/60 hover:text-blue-900">लॉगिन</button>
+    </div>
+
+    <div id="formRegister" class="glass-card rounded-t-none p-8 space-y-6 animate__animated animate__fadeIn">
+      <div class="flex items-center space-x-3">
+        <div class="w-1.5 h-8 bg-blue-600 rounded-full"></div>
+        <h2 id="regHeader" class="text-2xl font-bold text-gray-800">रजिस्टर करें</h2>
+      </div>
+      
+      <div class="bg-blue-600/10 p-4 rounded-xl border-l-4 border-blue-600">
+        <p id="regInfo" class="text-xs text-blue-900 font-medium leading-relaxed">सूचना: वही नाम लिखें जो स्कूल रजिस्टर में है (Case-Sensitive)।</p>
+      </div>
+      
+      <form id="registerForm" class="space-y-4">
+        <div>
+          <label id="lblRegName" class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">छात्र का नाम</label>
+          <input type="text" id="regName" required class="w-full border-2 border-gray-200/50 rounded-xl px-4 py-3 focus:outline-none input-focus-effect transition-all" placeholder="पूरा नाम">
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label id="lblRegClass" class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">कक्षा</label>
+            <select id="regClass" required class="w-full border-2 border-gray-200/50 rounded-xl px-3 py-3 focus:outline-none input-focus-effect transition-all bg-white">
+              <option value="">कक्षा चुनें</option>
+              <option value="Nursery">Nursery</option>
+              <option value="LKG">LKG</option>
+              <option value="UKG">UKG</option>
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+              <option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option>
+              <option value="9-Arts">9 (Arts)</option><option value="9-Home Science">9 (Home Science)</option><option value="9-Science">9 (Science)</option>
+              <option value="10">10</option>
+              <option value="11-Arts">11 (Arts)</option><option value="11-Commerce">11 (Commerce)</option><option value="11-Science">11 (Science)</option>
+              <option value="12-Arts">12 (Arts)</option><option value="12-Commerce">12 (Commerce)</option><option value="12-Science">12 (Science)</option>
+            </select>
+          </div>
+          <div>
+            <label id="lblRegRoll" class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">रोल नंबर</label>
+            <input type="text" id="regRollNo" required class="w-full border-2 border-gray-200/50 rounded-xl px-4 py-3 focus:outline-none input-focus-effect transition-all" placeholder="Roll No.">
+          </div>
+        </div>
+
+        <div>
+          <label id="lblRegPass" class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">पासवर्ड</label>
+          <input type="password" id="regPassword" required minlength="6" class="w-full border-2 border-gray-200/50 rounded-xl px-4 py-3 focus:outline-none input-focus-effect transition-all" placeholder="••••••••">
+        </div>
+        
+        <div>
+          <label id="lblRegConfirm" class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">पासवर्ड की पुष्टि</label>
+          <input type="password" id="regConfirmPassword" required class="w-full border-2 border-gray-200/50 rounded-xl px-4 py-3 focus:outline-none input-focus-effect transition-all" placeholder="••••••••">
+        </div>
+
+        <button type="submit" id="btnReg" class="w-full btn-gradient text-white py-4 rounded-xl font-bold text-lg mt-4 shadow-xl active:scale-95">खाता सुरक्षित करें</button>
+      </form>
+    </div>
+
+    <div id="formLogin" class="glass-card rounded-t-none p-8 space-y-6 hidden animate__animated animate__fadeIn">
+      <div class="flex items-center space-x-3">
+        <div class="w-1.5 h-8 bg-blue-600 rounded-full"></div>
+        <h2 id="loginHeader" class="text-2xl font-bold text-gray-800">वापसी लॉगिन</h2>
+      </div>
+
+      <form id="loginForm" class="space-y-5">
+        <div>
+          <label id="lblLoginClass" class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">कक्षा</label>
+          <select id="loginClass" required class="w-full border-2 border-gray-200/50 rounded-xl px-3 py-3 focus:outline-none input-focus-effect transition-all bg-white">
+            <option value="">कक्षा चुनें</option>
+            <option value="Nursery">Nursery</option><option value="LKG">LKG</option><option value="UKG">UKG</option>
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            <option value="4">4</option><option value="5">5</option>
+             <option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option>
+              <option value="9-Arts">9 (Arts)</option><option value="9-Home Science">9 (Home Science)</option><option value="9-Science">9 (Science)</option>
+              <option value="10">10</option>
+              <option value="11-Arts">11 (Arts)</option><option value="11-Commerce">11 (Commerce)</option><option value="11-Science">11 (Science)</option>
+              <option value="12-Arts">12 (Arts)</option><option value="12-Commerce">12 (Commerce)</option><option value="12-Science">12 (Science)</option>
+            
+
+
+            <!-- ... same options ... -->
+          </select>
+        </div>
+        
+        <div>
+          <label id="lblLoginRoll" class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">रोल नंबर</label>
+          <input type="text" id="loginRollNo" required class="w-full border-2 border-gray-200/50 rounded-xl px-4 py-3 focus:outline-none input-focus-effect transition-all" placeholder="आपका रोल नंबर">
+        </div>
+
+        <div>
+          <label id="lblLoginPass" class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">पासवर्ड</label>
+          <input type="password" id="loginPassword" required class="w-full border-2 border-gray-200/50 rounded-xl px-4 py-3 focus:outline-none input-focus-effect transition-all" placeholder="••••••••">
+        </div>
+
+        <button type="submit" id="btnLogin" class="w-full btn-gradient text-white py-4 rounded-xl font-bold text-lg mt-4 shadow-xl active:scale-95">लॉगिन करें</button>
+      </form>
+    </div>
+
+    <div id="formMessage" class="hidden"></div>
+  </main>
+
+  <footer class="bg-black/40 backdrop-blur-md text-center text-gray-400 py-8 text-sm border-t border-white/10 mt-auto">
+    <div class="max-w-7xl mx-auto px-4">
+      <p id="footerMain" class="font-bold tracking-wide">© 2025 JRC स्कूल, हरही बाज़ार बस्ती</p>
+      <p id="footerSub" class="text-xs mt-1 text-gray-500">गुणवत्तापूर्ण शिक्षा के लिए समर्पित</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+  
+  <script>
+    // --- THREE.JS 3D BACKGROUND ---
+    let scene, camera, renderer, particles;
+    
+    function init3D() {
+      const container = document.getElementById('canvas-container');
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      container.appendChild(renderer.domElement);
+
+      const geometry = new THREE.BufferGeometry();
+      const count = 3000;
+      const posArray = new Float32Array(count * 3);
+
+      for(let i = 0; i < count * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 10;
+      }
+
+      geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+      
+      const material = new THREE.PointsMaterial({
+        size: 0.005,
+        color: 0x3b82f6,
+        transparent: true,
+        opacity: 0.8
+      });
+
+      particles = new THREE.Points(geometry, material);
+      scene.add(particles);
+      camera.position.z = 2;
+
+      // Mouse interaction
+      document.addEventListener('mousemove', (e) => {
+        const mouseX = (e.clientX / window.innerWidth) - 0.5;
+        const mouseY = (e.clientY / window.innerHeight) - 0.5;
+        gsap.to(particles.rotation, {
+          y: mouseX * 0.5,
+          x: -mouseY * 0.5,
+          duration: 2
+        });
+      });
+
+      function animate() {
+        requestAnimationFrame(animate);
+        particles.rotation.y += 0.001;
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    window.onload = init3D;
+
+    // --- TRANSLATION & TABS (Preserved Logic) ---
+    const translations = {
+      hi: { lang: "English", mainTitle: "छात्र पोर्टल", subTitle: "अपनी शिक्षा की यात्रा यहाँ से शुरू करें", tabReg: "नया खाता बनाएं", tabLogin: "लॉगिन", regHeader: "रजिस्टर करें", regInfo: "सूचना: वही नाम लिखें जो स्कूल रजिस्टर में है (Case-Sensitive)।", lblRegName: "छात्र का नाम", lblRegClass: "कक्षा", lblRegRoll: "रोल नंबर", lblRegPass: "पासवर्ड", lblRegConfirm: "पासवर्ड की पुष्टि", btnReg: "खाता सुरक्षित करें", loginHeader: "वापसी लॉगिन", lblLoginClass: "कक्षा", lblLoginRoll: "रोल नंबर", lblLoginPass: "पासवर्ड", btnLogin: "लॉगिन करें", footerMain: "© 2025 JRC स्कूल, हरही बाज़ार बस्ती", footerSub: "गुणवत्तापूर्ण शिक्षा के लिए समर्पित" },
+      en: { lang: "हिंदी", mainTitle: "Student Portal", subTitle: "Begin your educational journey here", tabReg: "Create Account", tabLogin: "Login", regHeader: "Registration", regInfo: "Note: Use exact name as per school records.", lblRegName: "Full Name", lblRegClass: "Class", lblRegRoll: "Roll Number", lblRegPass: "Password", lblRegConfirm: "Confirm Password", btnReg: "Secure Account", loginHeader: "Welcome Back", lblLoginClass: "Class", lblLoginRoll: "Roll Number", lblLoginPass: "Password", btnLogin: "Login Now", footerMain: "© 2025 JRC School, Basti", footerSub: "Committed to excellence" }
+    };
+
+    let currentLang = 'hi';
+    document.getElementById('langToggle').addEventListener('click', () => {
+      currentLang = currentLang === 'hi' ? 'en' : 'hi';
+      const t = translations[currentLang];
+      document.getElementById('langText').innerText = t.lang;
+      document.getElementById('mainTitle').innerText = t.mainTitle;
+      document.getElementById('subTitle').innerText = t.subTitle;
+      document.getElementById('tabRegister').innerText = t.tabReg;
+      document.getElementById('tabLogin').innerText = t.tabLogin;
+      document.getElementById('regHeader').innerText = t.regHeader;
+      document.getElementById('regInfo').innerText = t.regInfo;
+      document.getElementById('lblRegName').innerText = t.lblRegName;
+      document.getElementById('lblRegClass').innerText = t.lblRegClass;
+      document.getElementById('lblRegRoll').innerText = t.lblRegRoll;
+      document.getElementById('lblRegPass').innerText = t.lblRegPass;
+      document.getElementById('lblRegConfirm').innerText = t.lblRegConfirm;
+      document.getElementById('btnReg').innerText = t.btnReg;
+      document.getElementById('loginHeader').innerText = t.loginHeader;
+      document.getElementById('lblLoginClass').innerText = t.lblLoginClass;
+      document.getElementById('lblLoginRoll').innerText = t.lblLoginRoll;
+      document.getElementById('lblLoginPass').innerText = t.lblLoginPass;
+      document.getElementById('btnLogin').innerText = t.btnLogin;
+      document.getElementById('footerMain').innerText = t.footerMain;
+      document.getElementById('footerSub').innerText = t.footerSub;
+    });
+
+    // Tab Switching
+    const tabReg = document.getElementById('tabRegister');
+    const tabLog = document.getElementById('tabLogin');
+    const fReg = document.getElementById('formRegister');
+    const fLog = document.getElementById('formLogin');
+
+    tabReg.addEventListener('click', () => {
+      tabReg.classList.add('tab-active'); tabLog.classList.remove('tab-active');
+      fReg.classList.remove('hidden'); fLog.classList.add('hidden');
+    });
+    tabLog.addEventListener('click', () => {
+      tabLog.classList.add('tab-active'); tabReg.classList.remove('tab-active');
+      fLog.classList.remove('hidden'); fReg.classList.add('hidden');
+    });
+
+    // Toast Notification logic
+    const formMessage = document.getElementById('formMessage');
+    const observer = new MutationObserver(() => {
+      if (!formMessage.classList.contains('hidden')) {
+        formMessage.style.display = 'block';
+        setTimeout(() => formMessage.classList.add('show'), 10);
+        formMessage.style.backgroundColor = (formMessage.innerText.includes('सफल') || formMessage.innerText.includes('Success')) ? '#10b981' : '#ef4444';
+        setTimeout(() => {
+          formMessage.classList.remove('show');
+          setTimeout(() => formMessage.classList.add('hidden'), 400);
+        }, 4000);
+      }
+    });
+    observer.observe(formMessage, { attributes: true });
+  </script>
+
+  <script src="frontend/js/student-panel.js"></script>
+  <script src="./js/student.js"></script>
+</body>
+</html>
