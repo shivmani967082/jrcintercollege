@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="hi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>हमारे बारे में | JRC स्कूल, हरही बाज़ार बस्ती</title>
-  
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -26,23 +27,32 @@
     /* Animated Background */
     .bg-animation {
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       z-index: -1;
       background: radial-gradient(circle at 20% 30%, #1e3a8a 0%, transparent 40%),
-                  radial-gradient(circle at 80% 70%, #1e1b4b 0%, transparent 40%);
+        radial-gradient(circle at 80% 70%, #1e1b4b 0%, transparent 40%);
       filter: blur(80px);
       animation: moveBg 15s infinite alternate ease-in-out;
     }
 
     @keyframes moveBg {
-      0% { transform: scale(1) translate(0, 0); }
-      100% { transform: scale(1.1) translate(3%, 3%); }
+      0% {
+        transform: scale(1) translate(0, 0);
+      }
+
+      100% {
+        transform: scale(1.1) translate(3%, 3%);
+      }
     }
 
     /* Fix for the Main Title visibility */
     .main-section {
       position: relative;
-      z-index: 10; /* Ensures content stays above background effects */
+      z-index: 10;
+      /* Ensures content stays above background effects */
     }
 
     .glass-card {
@@ -69,8 +79,11 @@
       -ms-overflow-style: none;
       scroll-behavior: smooth;
     }
-    .teacher-scroll-container::-webkit-scrollbar { display: none; }
-    
+
+    .teacher-scroll-container::-webkit-scrollbar {
+      display: none;
+    }
+
     .scroll-wrapper {
       position: relative;
       display: flex;
@@ -93,14 +106,25 @@
       transition: all 0.3s ease;
       border: none;
     }
-    .scroll-btn:hover { transform: scale(1.15); background: white; }
-    .btn-left { left: -10px; }
-    .btn-right { right: -10px; }
+
+    .scroll-btn:hover {
+      transform: scale(1.15);
+      background: white;
+    }
+
+    .btn-left {
+      left: -10px;
+    }
+
+    .btn-right {
+      right: -10px;
+    }
 
     .teacher-card {
       flex: 0 0 240px;
       cursor: pointer;
     }
+
     .teacher-img {
       width: 100%;
       height: 240px;
@@ -110,6 +134,7 @@
       border: 2px solid transparent;
       transition: 0.3s;
     }
+
     .teacher-card:hover .teacher-img {
       border-color: var(--accent);
     }
@@ -125,6 +150,7 @@
       justify-content: center;
       backdrop-filter: blur(10px);
     }
+
     .modal-content {
       background: #0f172a;
       border: 1px solid rgba(251, 191, 36, 0.3);
@@ -138,8 +164,15 @@
     }
 
     @keyframes modalSlide {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
 
     .gold-text {
@@ -151,74 +184,88 @@
     }
 
     .lang-btn {
-        background: linear-gradient(45deg, #fbbf24, #f59e0b);
-        color: #0f172a;
-        font-weight: bold;
-        padding: 6px 14px;
-        border-radius: 99px;
-        box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        font-size: 11px;
-        white-space: nowrap;
+      background: linear-gradient(45deg, #fbbf24, #f59e0b);
+      color: #0f172a;
+      font-weight: bold;
+      padding: 6px 14px;
+      border-radius: 99px;
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      font-size: 11px;
+      white-space: nowrap;
     }
   </style>
 </head>
+
 <body>
 
   <div class="bg-animation"></div>
 
   <!-- Responsive Header -->
-   <header class="bg-slate-900/80 backdrop-blur-lg sticky top-0 z-[100] border-b border-white/10"></header>
+  <header class="bg-slate-900/80 backdrop-blur-lg sticky top-0 z-[100] border-b border-white/10">
     <div class="max-w-[1450px] mx-auto flex items-center justify-between px-4 py-3">
-      
+
       <!-- Brand Logo Section -->
       <div class="flex items-center space-x-2 shrink-0">
-        <div class="bg-amber-400 text-slate-900 font-extrabold rounded-lg h-10 w-10 flex items-center justify-center text-xl shadow-lg shadow-amber-400/20">J</div>
+        <div
+          class="bg-amber-400 text-slate-900 font-extrabold rounded-lg h-10 w-10 flex items-center justify-center text-xl shadow-lg shadow-amber-400/20">
+          J</div>
         <div class="leading-tight">
-          <p class="text-xs md:text-sm font-bold uppercase tracking-widest text-white whitespace-nowrap">J.R.C. Inter College</p>
+          <p class="text-xs md:text-sm font-bold uppercase tracking-widest text-white whitespace-nowrap">J.R.C. Inter
+            College</p>
           <p class="text-[9px] text-amber-400 whitespace-nowrap">Harahi Bazar, Basti (U.P.)</p>
         </div>
       </div>
 
       <!-- Navigation Links -->
-      <nav class="hidden lg:flex items-center space-x-3 xl:space-x-5 text-[11px] xl:text-[13px] font-bold uppercase tracking-tight ml-4">
+      <nav
+        class="hidden lg:flex items-center space-x-3 xl:space-x-5 text-[11px] xl:text-[13px] font-bold uppercase tracking-tight ml-4">
         <a href="index.html" class="text-white hover:text-amber-400 transition" id="nav_home">होम</a>
         <a href="about.html" class="text-amber-400 transition" id="nav_about">हमारे बारे में</a>
         <a href="admissions.html" class="text-white hover:text-amber-400 transition" id="nav_adm">प्रवेश</a>
         <a href="fees.html" class="text-white hover:text-amber-400 transition" id="nav_fees">फीस संरचना</a>
         <a href="student-login.html" class="text-white hover:text-amber-400 transition" id="nav_portal">छात्र पोर्टल</a>
-        
+
         <div class="flex items-center space-x-3 pl-4 border-l border-white/10">
-          <a href="ai-assistant.html" class="bg-amber-400 text-slate-900 px-3 py-1.5 rounded-full hover:bg-white transition-all shadow-md" id="nav_ai">AI सहायक</a>
-          <a href="teacher-login.html" class="border border-white/20 text-slate-300 px-3 py-1.5 rounded-full hover:bg-white/10 transition-all">Teacher</a>
-          <a href="admin-login.html" class="border border-white/20 text-slate-300 px-3 py-1.5 rounded-full hover:bg-white/10 transition-all">Admin</a>
+          <a href="ai-assistant.html"
+            class="bg-amber-400 text-slate-900 px-3 py-1.5 rounded-full hover:bg-white transition-all shadow-md"
+            id="nav_ai">AI सहायक</a>
+          <a href="teacher-login.html"
+            class="border border-white/20 text-slate-300 px-3 py-1.5 rounded-full hover:bg-white/10 transition-all">Teacher</a>
+          <a href="admin-login.html"
+            class="border border-white/20 text-slate-300 px-3 py-1.5 rounded-full hover:bg-white/10 transition-all">Admin</a>
           <button onclick="toggleLanguage()" class="lang-btn" id="langBtn">English</button>
         </div>
       </nav>
 
       <!-- Mobile Toggle -->
       <div class="lg:hidden flex items-center gap-2">
-         <button onclick="toggleLanguage()" class="lang-btn text-[10px] px-3 py-1" id="langBtnMobile">English</button>
+        <button onclick="toggleLanguage()" class="lang-btn text-[10px] px-3 py-1" id="langBtnMobile">English</button>
       </div>
     </div>
   </header>
 
   <main class="max-w-6xl mx-auto px-6 py-12 space-y-20 main-section">
-    
+
     <!-- About Section -->
     <section class="text-center space-y-8 pt-6">
       <div class="relative inline-block">
         <h1 class="text-4xl md:text-5xl font-extrabold gold-text" id="main_title">J.R.C. इंटर कॉलेज के बारे में</h1>
         <div class="h-1 w-20 bg-amber-400 mx-auto mt-4 rounded-full"></div>
       </div>
-      
-      <div class="glass-card p-6 md:p-10 text-base md:text-lg leading-relaxed space-y-6 text-slate-200 text-left md:text-center shadow-2xl">
+
+      <div
+        class="glass-card p-6 md:p-10 text-base md:text-lg leading-relaxed space-y-6 text-slate-200 text-left md:text-center shadow-2xl">
         <p id="desc_p1">
-          J.R.C. इंटर कॉलेज, हरही बाज़ार बस्ती, मूल्यों, अनुशासन और आधुनिक शिक्षण प्रथाओं में निहित गुणवत्तापूर्ण शिक्षा प्रदान करने के लिए प्रतिबद्ध है। हम मानते हैं कि प्रत्येक बच्चा अद्वितीय है और एक ऐसे वातावरण का हकदार है जो उन्हें अपनी सच्ची क्षमता खोजने में मदद करता है।
+          J.R.C. इंटर कॉलेज, हरही बाज़ार बस्ती, मूल्यों, अनुशासन और आधुनिक शिक्षण प्रथाओं में निहित गुणवत्तापूर्ण शिक्षा
+          प्रदान करने के लिए प्रतिबद्ध है। हम मानते हैं कि प्रत्येक बच्चा अद्वितीय है और एक ऐसे वातावरण का हकदार है जो
+          उन्हें अपनी सच्ची क्षमता खोजने में मदद करता है।
         </p>
         <p id="desc_p2">
-          हमारा परिसर एक सुरक्षित और पोषण करने वाला स्थान प्रदान करता है जहां छात्रों को शिक्षा, खेल, सह-पाठ्यचर्या गतिविधियों और नेतृत्व में उत्कृष्टता के लिए प्रोत्साहित किया जाता है। पारंपरिक शिक्षण और प्रौद्योगिकी-सक्षम शिक्षा के मिश्रण के साथ, हम अपने छात्रों को भविष्य की चुनौतियों के लिए तैयार करते हैं।
+          हमारा परिसर एक सुरक्षित और पोषण करने वाला स्थान प्रदान करता है जहां छात्रों को शिक्षा, खेल, सह-पाठ्यचर्या
+          गतिविधियों और नेतृत्व में उत्कृष्टता के लिए प्रोत्साहित किया जाता है। पारंपरिक शिक्षण और प्रौद्योगिकी-सक्षम
+          शिक्षा के मिश्रण के साथ, हम अपने छात्रों को भविष्य की चुनौतियों के लिए तैयार करते हैं।
         </p>
       </div>
     </section>
@@ -230,24 +277,31 @@
         <p class="text-slate-300" id="vision_text">
           जिम्मेदार, आत्मविश्वासी और दयालु व्यक्तियों को पोषित करना जो समाज और राष्ट्र में सकारात्मक योगदान देते हैं।
         </p>
-        
+
         <h2 class="text-3xl font-bold text-white mt-10" id="mission_title">हमारा मिशन</h2>
         <ul class="space-y-4 text-slate-300">
-          <li class="flex items-start gap-3"><span class="text-amber-400">✔</span><span id="m1">सर्वांगीण शिक्षा प्रदान करना जो शिक्षा, मूल्यों और जीवन कौशल को संतुलित करती है।</span></li>
-          <li class="flex items-start gap-3"><span class="text-amber-400">✔</span><span id="m2">जिज्ञासा, रचनात्मकता और आलोचनात्मक सोच की संस्कृति को बढ़ावा देना।</span></li>
-          <li class="flex items-start gap-3"><span class="text-amber-400">✔</span><span id="m3">शारीरिक फिटनेस, खेल भावना और टीम वर्क को बढ़ावा देना।</span></li>
-          <li class="flex items-start gap-3"><span class="text-amber-400">✔</span><span id="m4">नैतिक मूल्यों, संस्कृति के प्रति सम्मान और सामाजिक जिम्मेदारी को बढ़ावा देना।</span></li>
+          <li class="flex items-start gap-3"><span class="text-amber-400">✔</span><span id="m1">सर्वांगीण शिक्षा प्रदान
+              करना जो शिक्षा, मूल्यों और जीवन कौशल को संतुलित करती है।</span></li>
+          <li class="flex items-start gap-3"><span class="text-amber-400">✔</span><span id="m2">जिज्ञासा, रचनात्मकता और
+              आलोचनात्मक सोच की संस्कृति को बढ़ावा देना।</span></li>
+          <li class="flex items-start gap-3"><span class="text-amber-400">✔</span><span id="m3">शारीरिक फिटनेस, खेल
+              भावना और टीम वर्क को बढ़ावा देना।</span></li>
+          <li class="flex items-start gap-3"><span class="text-amber-400">✔</span><span id="m4">नैतिक मूल्यों, संस्कृति
+              के प्रति सम्मान और सामाजिक जिम्मेदारी को बढ़ावा देना।</span></li>
         </ul>
       </div>
 
       <div class="glass-card p-8 border-l-4 border-amber-400">
         <h2 class="text-3xl font-bold text-white mb-6" id="principal_title">प्रधानाचार्य का संदेश</h2>
         <div class="bg-amber-400/10 p-6 rounded-2xl mb-6 italic text-amber-100 border border-amber-400/20">
-          "<span id="p_quote">शिक्षा केवल अंक प्राप्त करने के बारे में नहीं है; यह चरित्र, आत्मविश्वास और जीवन के लिए एक मजबूत नींव बनाने के बारे में है।</span>"
+          "<span id="p_quote">शिक्षा केवल अंक प्राप्त करने के बारे में नहीं है; यह चरित्र, आत्मविश्वास और जीवन के लिए एक
+            मजबूत नींव बनाने के बारे में है।</span>"
         </div>
         <div class="text-slate-300 space-y-4">
           <p id="p_desc">
-            J.R.C. इंटर कॉलेज में, हम एक ऐसा वातावरण बनाने का प्रयास करते हैं जहां छात्र हर दिन सीखने और बढ़ने के लिए प्रेरित महसूस करते हैं। हमारे समर्पित शिक्षक सदस्य यह सुनिश्चित करने के लिए अथक परिश्रम करते हैं कि प्रत्येक बच्चे को व्यक्तिगत ध्यान और मार्गदर्शन मिले।
+            J.R.C. इंटर कॉलेज में, हम एक ऐसा वातावरण बनाने का प्रयास करते हैं जहां छात्र हर दिन सीखने और बढ़ने के लिए
+            प्रेरित महसूस करते हैं। हमारे समर्पित शिक्षक सदस्य यह सुनिश्चित करने के लिए अथक परिश्रम करते हैं कि प्रत्येक
+            बच्चे को व्यक्तिगत ध्यान और मार्गदर्शन मिले।
           </p>
           <p class="font-bold text-amber-400 mt-6" id="p_sign">- प्रधानाचार्य, J.R.C. इंटर कॉलेज</p>
         </div>
@@ -258,9 +312,10 @@
     <section id="faculty">
       <div class="mb-8">
         <h2 class="text-4xl font-bold gold-text" id="faculty_title">हमारे शिक्षक</h2>
-        <p class="text-slate-400 mt-2" id="faculty_desc">हमारे शिक्षक अनुभवी, देखभाल करने वाले और अपने संबंधित विषयों में अत्यधिक योग्य हैं। फोटो पर क्लिक करें जानकारी के लिए।</p>
+        <p class="text-slate-400 mt-2" id="faculty_desc">हमारे शिक्षक अनुभवी, देखभाल करने वाले और अपने संबंधित विषयों
+          में अत्यधिक योग्य हैं। फोटो पर क्लिक करें जानकारी के लिए।</p>
       </div>
-      
+
       <div class="scroll-wrapper">
         <button class="scroll-btn btn-left" onclick="scrollTeachers('left')">❮</button>
         <div class="teacher-scroll-container" id="teacherContainer"></div>
@@ -272,15 +327,20 @@
   <!-- Modal -->
   <div id="teacherModal">
     <div class="modal-content">
-      <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-500 hover:text-amber-400 text-3xl transition">&times;</button>
+      <button onclick="closeModal()"
+        class="absolute top-4 right-4 text-slate-500 hover:text-amber-400 text-3xl transition">&times;</button>
       <div id="modalData">
-        <img id="modalImg" src="" alt="Teacher" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-amber-400/30">
+        <img id="modalImg" src="" alt="Teacher"
+          class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-amber-400/30">
         <h3 id="modalName" class="text-2xl font-bold text-white mb-1"></h3>
         <p id="modalSubInfo" class="text-amber-400 font-bold uppercase tracking-widest text-[10px] mb-4"></p>
         <div class="text-left space-y-3 text-sm text-slate-300 bg-white/5 p-4 rounded-xl border border-white/10">
-          <p class="flex justify-between border-b border-white/5 pb-1"><strong id="lbl_qual">योग्यता:</strong> <span id="modalQual" class="text-amber-200"></span></p>
-          <p class="flex justify-between border-b border-white/5 pb-1"><strong id="lbl_exp">अनुभव:</strong> <span id="modalExp" class="text-amber-200"></span></p>
-          <p class="flex justify-between border-b border-white/5 pb-1"><strong id="lbl_sub">विषय:</strong> <span id="modalSub" class="text-amber-200"></span></p>
+          <p class="flex justify-between border-b border-white/5 pb-1"><strong id="lbl_qual">योग्यता:</strong> <span
+              id="modalQual" class="text-amber-200"></span></p>
+          <p class="flex justify-between border-b border-white/5 pb-1"><strong id="lbl_exp">अनुभव:</strong> <span
+              id="modalExp" class="text-amber-200"></span></p>
+          <p class="flex justify-between border-b border-white/5 pb-1"><strong id="lbl_sub">विषय:</strong> <span
+              id="modalSub" class="text-amber-200"></span></p>
           <div class="mt-2">
             <p class="text-[9px] font-bold uppercase text-amber-400 mb-1" id="lbl_thought">विचार (Thought):</p>
             <p class="italic text-slate-200">" <span id="modalThought"></span> "</p>
@@ -291,27 +351,28 @@
   </div>
 
   <footer class="bg-slate-950/80 backdrop-blur-md border-t border-white/10 py-10 mt-20 text-center px-6">
-    <p class="text-slate-400 text-sm" id="footer_text">© 2025 JRC स्कूल, हरही बाज़ार बस्ती | शिवमणि सिंह द्वारा डिज़ाइन किया गया</p>
+    <p class="text-slate-400 text-sm" id="footer_text">© 2025 JRC स्कूल, हरही बाज़ार बस्ती | शिवमणि सिंह द्वारा डिज़ाइन
+      किया गया</p>
   </footer>
 
   <script>
     const teachersData = [
-      { id: 1, name: {hi: "Mr. Dinesh Singh (Principal)", en: "Mr. Dinesh Singh (Principal)"}, qual: {hi: "B.Ed", en: "B.Ed"}, exp: {hi: "12 साल", en: "12 Years"}, sub: {hi: "English", en: "English"}, thought: {hi: "चरित्र ही शिक्षा की नींव है।", en: "Character is the foundation of education."}, img: "https://via.placeholder.com/300?text=Principal" },
-      { id: 2, name: {hi: "Mr. Jairam Chaudhary (Director)", en: "Mr. Jairam Chaudhary (Director)"}, qual: {hi: "Ph.D, Hindi", en: "Ph.D, Hindi"}, exp: {hi: "15 साल", en: "15 Years"}, sub: {hi: "Physical", en: "Physical"}, thought: {hi: "अनुशासन ही सफलता की कुंजी है।", en: "Discipline is the key to success."}, img: "https://via.placeholder.com/300?text=Director" },
-      { id: 3, name: {hi: "Vinay Chaudhary (M.D.)", en: "Vinay Chaudhary (M.D.)"}, qual: {hi: "M.A.", en: "M.A."}, exp: {hi: "5 साल", en: "5 Years"}, sub: {hi: "S.st.", en: "S.st."}, thought: {hi: "अतीत को जानकर ही हम बेहतर भविष्य बना सकते हैं।", en: "Knowing the past helps in building a better future."}, img: "https://via.placeholder.com/300?text=MD" },
-      { id: 4, name: {hi: "Mr. Babban Medhankar", en: "Mr. Babban Medhankar"}, qual: {hi: "B.A., M.A., B.Ed.", en: "B.A., M.A., B.Ed."}, exp: {hi: "10 साल", en: "10 Years"}, sub: {hi: "Hindi", en: "Hindi"}, thought: {hi: "शिक्षा सबसे शक्तिशाली हथियार है।", en: "Education is the most powerful weapon."}, img: "babban sir.jpeg" },
-      { id: 5, name: {hi: "Miss. Sarita Verma", en: "Miss. Sarita Verma"}, qual: {hi: "B.Ed", en: "B.Ed"}, exp: {hi: "3 साल", en: "3 Years"}, sub: {hi: "S.st.", en: "S.st."}, thought: {hi: "तकनीक आज की दुनिया की भाषा है।", en: "Technology is the language of today's world."}, img: "sarita mam.jpeg" },
-      { id: 6, name: {hi: "Mr. Sanjay Verma", en: "Mr. Sanjay Verma"}, qual: {hi: "BTC, M.sc", en: "BTC, M.sc"}, exp: {hi: "10 साल", en: "10 Years"}, sub: {hi: "Biology", en: "Biology"}, thought: {hi: "विज्ञान वास्तविकता की कविता है।", en: "Science is the poetry of reality."}, img: "Sanjay sir.jpeg" },
-      { id: 7, name: {hi: "Mr. Deepak Patel", en: "Mr. Deepak Patel"}, qual: {hi: "B.sc., L.Lb.", en: "B.sc., L.Lb."}, exp: {hi: "8 साल", en: "8 Years"}, sub: {hi: "Physics", en: "Physics"}, thought: {hi: "अनुशासन ही सफलता का आधार है।", en: "Discipline is the basis of success."}, img: "Deepak sir.jpeg" },
-      { id: 8, name: {hi: "Dr. Vikas kumar", en: "Dr. Vikas kumar"}, qual: {hi: "M.sc., Net, Ph.D Pursuing", en: "M.sc., Net, Ph.D Pursuing"}, exp: {hi: "6 साल", en: "6 Years"}, sub: {hi: "Maths", en: "Maths"}, thought: {hi: "सीखना कभी बंद नहीं होता।", en: "Learning never stops."}, img: "Vikas sir.jpeg" },
-      { id: 9, name: {hi: "Shivmani singh", en: "Shivmani singh"}, qual: {hi: "B.C.A.", en: "B.C.A."}, exp: {hi: "1 साल", en: "1 Year"}, sub: {hi: "Maths & Computer", en: "Maths & Computer"}, thought: {hi: "विज्ञान जिज्ञासा का दूसरा नाम है।", en: "Science is another name for curiosity."}, img: "mee.jpg" },
-      { id: 10, name: {hi: "अध्यापक 10", en: "Faculty 10"}, qual: {hi: "PGT", en: "PGT"}, exp: {hi: "5 साल", en: "5 Years"}, sub: {hi: "Art", en: "Art"}, thought: {hi: "संगीत आत्मा की आवाज़ है।", en: "Music is the voice of the soul."}, img: "https://via.placeholder.com/300?text=Teacher" },
-      { id: 11, name: {hi: "अध्यापक 11", en: "Faculty 11"}, qual: {hi: "TGT", en: "TGT"}, exp: {hi: "4 साल", en: "4 Years"}, sub: {hi: "Science", en: "Science"}, thought: {hi: "प्रकृति ही सबसे बड़ी गुरु है।", en: "Nature is the greatest teacher."}, img: "https://via.placeholder.com/300?text=Teacher" },
-      { id: 12, name: {hi: "अध्यापक 12", en: "Faculty 12"}, qual: {hi: "M.A.", en: "M.A."}, exp: {hi: "7 साल", en: "7 Years"}, sub: {hi: "Sanskrit", en: "Sanskrit"}, thought: {hi: "ज्ञानम् परमं बलम्।", en: "Knowledge is supreme power."}, img: "https://via.placeholder.com/300?text=Teacher" },
-      { id: 13, name: {hi: "अध्यापक 13", en: "Faculty 13"}, qual: {hi: "B.Ed", en: "B.Ed"}, exp: {hi: "6 साल", en: "6 Years"}, sub: {hi: "Geography", en: "Geography"}, thought: {hi: "धरती को समझना खुद को समझना है।", en: "Understanding Earth is understanding self."}, img: "https://via.placeholder.com/300?text=Teacher" },
-      { id: 14, name: {hi: "अध्यापक 14", en: "Faculty 14"}, qual: {hi: "M.Sc", en: "M.Sc"}, exp: {hi: "9 साल", en: "9 Years"}, sub: {hi: "Chemistry", en: "Chemistry"}, thought: {hi: "अभ्यास ही पूर्णता लाता है।", en: "Practice brings perfection."}, img: "https://via.placeholder.com/300?text=Teacher" },
-      { id: 15, name: {hi: "अध्यापक 15", en: "Faculty 15"}, qual: {hi: "B.A.", en: "B.A."}, exp: {hi: "3 साल", en: "3 Years"}, sub: {hi: "EVS", en: "EVS"}, thought: {hi: "बच्चे कल का भविष्य हैं।", en: "Children are the future of tomorrow."}, img: "https://via.placeholder.com/300?text=Teacher" },
-      { id: 16, name: {hi: "अध्यापक 16", en: "Faculty 16"}, qual: {hi: "M.Com", en: "M.Com"}, exp: {hi: "5 साल", en: "5 Years"}, sub: {hi: "Civics", en: "Civics"}, thought: {hi: "जागरूक नागरिक ही देश की शक्ति है।", en: "Aware citizens are the strength of the nation."}, img: "https://via.placeholder.com/300?text=Teacher" }
+      { id: 1, name: { hi: "Mr. Dinesh Singh (Principal)", en: "Mr. Dinesh Singh (Principal)" }, qual: { hi: "B.Ed", en: "B.Ed" }, exp: { hi: "12 साल", en: "12 Years" }, sub: { hi: "English", en: "English" }, thought: { hi: "चरित्र ही शिक्षा की नींव है।", en: "Character is the foundation of education." }, img: "https://via.placeholder.com/300?text=Principal" },
+      { id: 2, name: { hi: "Mr. Jairam Chaudhary (Director)", en: "Mr. Jairam Chaudhary (Director)" }, qual: { hi: "Ph.D, Hindi", en: "Ph.D, Hindi" }, exp: { hi: "15 साल", en: "15 Years" }, sub: { hi: "Physical", en: "Physical" }, thought: { hi: "अनुशासन ही सफलता की कुंजी है।", en: "Discipline is the key to success." }, img: "https://via.placeholder.com/300?text=Director" },
+      { id: 3, name: { hi: "Vinay Chaudhary (M.D.)", en: "Vinay Chaudhary (M.D.)" }, qual: { hi: "M.A.", en: "M.A." }, exp: { hi: "5 साल", en: "5 Years" }, sub: { hi: "S.st.", en: "S.st." }, thought: { hi: "अतीत को जानकर ही हम बेहतर भविष्य बना सकते हैं।", en: "Knowing the past helps in building a better future." }, img: "https://via.placeholder.com/300?text=MD" },
+      { id: 4, name: { hi: "Mr. Babban Medhankar", en: "Mr. Babban Medhankar" }, qual: { hi: "B.A., M.A., B.Ed.", en: "B.A., M.A., B.Ed." }, exp: { hi: "10 साल", en: "10 Years" }, sub: { hi: "Hindi", en: "Hindi" }, thought: { hi: "शिक्षा सबसे शक्तिशाली हथियार है।", en: "Education is the most powerful weapon." }, img: "/frontend/assets/babban sir.jpeg" },
+      { id: 5, name: { hi: "Miss. Sarita Verma", en: "Miss. Sarita Verma" }, qual: { hi: "B.Ed", en: "B.Ed" }, exp: { hi: "3 साल", en: "3 Years" }, sub: { hi: "S.st.", en: "S.st." }, thought: { hi: "तकनीक आज की दुनिया की भाषा है।", en: "Technology is the language of today's world." }, img: "/frontend/assets/sarita mam.jpeg" },
+      { id: 6, name: { hi: "Mr. Sanjay Verma", en: "Mr. Sanjay Verma" }, qual: { hi: "BTC, M.sc", en: "BTC, M.sc" }, exp: { hi: "10 साल", en: "10 Years" }, sub: { hi: "Biology", en: "Biology" }, thought: { hi: "विज्ञान वास्तविकता की कविता है।", en: "Science is the poetry of reality." }, img: "/frontend/assets/Sanjay sir.jpeg" },
+      { id: 7, name: { hi: "Mr. Deepak Patel", en: "Mr. Deepak Patel" }, qual: { hi: "B.sc., L.Lb.", en: "B.sc., L.Lb." }, exp: { hi: "8 साल", en: "8 Years" }, sub: { hi: "Physics", en: "Physics" }, thought: { hi: "अनुशासन ही सफलता का आधार है।", en: "Discipline is the basis of success." }, img: "/frontend/assets/Deepak sir.jpeg" },
+      { id: 8, name: { hi: "Dr. Vikas kumar", en: "Dr. Vikas kumar" }, qual: { hi: "M.sc., Net, Ph.D Pursuing", en: "M.sc., Net, Ph.D Pursuing" }, exp: { hi: "6 साल", en: "6 Years" }, sub: { hi: "Maths", en: "Maths" }, thought: { hi: "सीखना कभी बंद नहीं होता।", en: "Learning never stops." }, img: "/frontend/assets/vikas sir.jpeg" },
+      { id: 9, name: { hi: "Shivmani singh", en: "Shivmani singh" }, qual: { hi: "B.C.A.", en: "B.C.A." }, exp: { hi: "1 साल", en: "1 Year" }, sub: { hi: "Maths & Computer", en: "Maths & Computer" }, thought: { hi: "विज्ञान जिज्ञासा का दूसरा नाम है।", en: "Science is another name for curiosity." }, img: "/frontend/assets/mee.jpg" },
+      { id: 10, name: { hi: "अध्यापक 10", en: "Faculty 10" }, qual: { hi: "PGT", en: "PGT" }, exp: { hi: "5 साल", en: "5 Years" }, sub: { hi: "Art", en: "Art" }, thought: { hi: "संगीत आत्मा की आवाज़ है।", en: "Music is the voice of the soul." }, img: "https://via.placeholder.com/300?text=Teacher" },
+      { id: 11, name: { hi: "अध्यापक 11", en: "Faculty 11" }, qual: { hi: "TGT", en: "TGT" }, exp: { hi: "4 साल", en: "4 Years" }, sub: { hi: "Science", en: "Science" }, thought: { hi: "प्रकृति ही सबसे बड़ी गुरु है।", en: "Nature is the greatest teacher." }, img: "https://via.placeholder.com/300?text=Teacher" },
+      { id: 12, name: { hi: "अध्यापक 12", en: "Faculty 12" }, qual: { hi: "M.A.", en: "M.A." }, exp: { hi: "7 साल", en: "7 Years" }, sub: { hi: "Sanskrit", en: "Sanskrit" }, thought: { hi: "ज्ञानम् परमं बलम्।", en: "Knowledge is supreme power." }, img: "https://via.placeholder.com/300?text=Teacher" },
+      { id: 13, name: { hi: "अध्यापक 13", en: "Faculty 13" }, qual: { hi: "B.Ed", en: "B.Ed" }, exp: { hi: "6 साल", en: "6 Years" }, sub: { hi: "Geography", en: "Geography" }, thought: { hi: "धरती को समझना खुद को समझना है।", en: "Understanding Earth is understanding self." }, img: "https://via.placeholder.com/300?text=Teacher" },
+      { id: 14, name: { hi: "अध्यापक 14", en: "Faculty 14" }, qual: { hi: "M.Sc", en: "M.Sc" }, exp: { hi: "9 साल", en: "9 Years" }, sub: { hi: "Chemistry", en: "Chemistry" }, thought: { hi: "अभ्यास ही पूर्णता लाता है।", en: "Practice brings perfection." }, img: "https://via.placeholder.com/300?text=Teacher" },
+      { id: 15, name: { hi: "अध्यापक 15", en: "Faculty 15" }, qual: { hi: "B.A.", en: "B.A." }, exp: { hi: "3 साल", en: "3 Years" }, sub: { hi: "EVS", en: "EVS" }, thought: { hi: "बच्चे कल का भविष्य हैं।", en: "Children are the future of tomorrow." }, img: "https://via.placeholder.com/300?text=Teacher" },
+      { id: 16, name: { hi: "अध्यापक 16", en: "Faculty 16" }, qual: { hi: "M.Com", en: "M.Com" }, exp: { hi: "5 साल", en: "5 Years" }, sub: { hi: "Civics", en: "Civics" }, thought: { hi: "जागरूक नागरिक ही देश की शक्ति है।", en: "Aware citizens are the strength of the nation." }, img: "https://via.placeholder.com/300?text=Teacher" }
     ];
 
     let currentLang = 'hi';
@@ -401,7 +462,7 @@
     function showTeacherDetails(id) {
       const modal = document.getElementById('teacherModal');
       const teacher = teachersData.find(t => t.id === id);
-      if(teacher) {
+      if (teacher) {
         document.getElementById('modalName').innerText = teacher.name[currentLang];
         document.getElementById('modalImg').src = teacher.img;
         document.getElementById('modalSubInfo').innerText = teacher.sub[currentLang];
@@ -414,10 +475,12 @@
     }
 
     function closeModal() { document.getElementById('teacherModal').style.display = 'none'; }
-    window.onclick = (e) => { if(e.target.id === 'teacherModal') closeModal(); }
-    
+    window.onclick = (e) => { if (e.target.id === 'teacherModal') closeModal(); }
+
     // Initial load
     renderTeachers();
   </script>
+  <script src="frontend/js/main.js"></script>
 </body>
+
 </html>

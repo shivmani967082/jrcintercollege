@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="hi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Teacher Login | JRC स्कूल</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Inter:wght@300;400;600;800&display=swap');
 
     :root {
-      --primary: #3b82f6; /* Modern Blue */
+      --primary: #3b82f6;
+      /* Modern Blue */
       --primary-dark: #1d4ed8;
       --glass: rgba(255, 255, 255, 0.94);
       --accent: #60a5fa;
@@ -22,7 +24,8 @@
       /* Changed overflow: hidden to overflow-y: auto to allow scrolling */
       overflow-x: hidden;
       overflow-y: auto;
-      background-color: #020617; /* Very deep blue-black */
+      background-color: #020617;
+      /* Very deep blue-black */
       font-family: 'Inter', sans-serif;
       min-height: 100vh;
       display: flex;
@@ -45,8 +48,8 @@
       backdrop-filter: blur(25px);
       border: 1px solid rgba(255, 255, 255, 0.6);
       border-radius: 2.5rem;
-      box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8), 
-                  0 0 40px rgba(59, 130, 246, 0.1);
+      box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(59, 130, 246, 0.1);
       width: 100%;
       max-width: 460px;
       z-index: 10;
@@ -59,7 +62,10 @@
     .glass-card::before {
       content: '';
       position: absolute;
-      top: -2px; left: -2px; right: -2px; bottom: -2px;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
       background: linear-gradient(135deg, #3b82f6, transparent, #60a5fa);
       z-index: -1;
       border-radius: 2.5rem;
@@ -141,14 +147,17 @@
     }
   </style>
 </head>
+
 <body>
 
   <div id="canvas-container"></div>
 
   <!-- Language Selection Trigger -->
   <button id="langOpenBtn" class="lang-toggle animate__animated animate__fadeInDown flex items-center gap-2">
-    <svg xmlns="www.w3.org/2000/svg" class="h-4 w-4 text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5c.13 1 .46 2.04 1.05 3" />
+    <svg xmlns="www.w3.org/2000/svg" class="h-4 w-4 text-blue-300" fill="none" viewBox="0 0 24 24"
+      stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5c.13 1 .46 2.04 1.05 3" />
     </svg>
     <span id="currentLangDisplay">हिन्दी / English</span>
   </button>
@@ -158,51 +167,51 @@
     <div class="lang-modal animate__animated animate__zoomIn">
       <h3 class="text-2xl font-black text-gray-800 mb-6 text-center">Language / भाषा</h3>
       <div class="grid grid-cols-1 gap-4">
-        <button onclick="setLanguage('en')" class="flex items-center justify-between p-4 border-2 border-gray-100 rounded-2xl hover:border-blue-500 hover:bg-blue-50 transition-all group">
+        <button onclick="setLanguage('en')"
+          class="flex items-center justify-between p-4 border-2 border-gray-100 rounded-2xl hover:border-blue-500 hover:bg-blue-50 transition-all group">
           <span class="font-bold text-gray-700 group-hover:text-blue-700 text-lg">English</span>
           <span class="text-xs font-bold text-blue-400 bg-blue-50 px-2 py-1 rounded">Global</span>
         </button>
-        <button onclick="setLanguage('hi')" class="flex items-center justify-between p-4 border-2 border-gray-100 rounded-2xl hover:border-blue-500 hover:bg-blue-50 transition-all group">
+        <button onclick="setLanguage('hi')"
+          class="flex items-center justify-between p-4 border-2 border-gray-100 rounded-2xl hover:border-blue-500 hover:bg-blue-50 transition-all group">
           <span class="font-bold text-gray-700 group-hover:text-blue-700 text-lg">हिन्दी</span>
           <span class="text-xs font-bold text-blue-400 bg-blue-50 px-2 py-1 rounded">Primary</span>
         </button>
       </div>
-      <button id="closeLangModal" class="mt-8 w-full py-2 text-gray-400 font-bold hover:text-gray-800 transition-colors">Close / बंद करें</button>
+      <button id="closeLangModal"
+        class="mt-8 w-full py-2 text-gray-400 font-bold hover:text-gray-800 transition-colors">Close / बंद करें</button>
     </div>
   </div>
 
   <div class="glass-card p-10 mx-4 animate__animated animate__zoomIn">
     <div class="text-center mb-10">
-      <div class="custom-icon-bg text-white font-extrabold rounded-3xl h-20 w-20 flex items-center justify-center text-4xl mx-auto mb-6 animate__animated animate__bounceIn">T</div>
+      <div
+        class="custom-icon-bg text-white font-extrabold rounded-3xl h-20 w-20 flex items-center justify-center text-4xl mx-auto mb-6 animate__animated animate__bounceIn">
+        T</div>
       <h1 id="title" class="text-4xl font-black text-gray-900 tracking-tight">Teacher Login</h1>
       <p id="subtitle" class="text-blue-600 font-bold text-sm mt-2">JRC School Management Portal</p>
     </div>
 
     <div id="infoNote" class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8 rounded-r-xl">
-      <p class="text-xs text-blue-800 font-bold leading-relaxed">सूचना: केवल एडमिन द्वारा पंजीकृत क्लास टीचर ही पोर्टल का उपयोग कर सकते हैं।</p>
+      <p class="text-xs text-blue-800 font-bold leading-relaxed">सूचना: केवल एडमिन द्वारा पंजीकृत क्लास टीचर ही पोर्टल
+        का उपयोग कर सकते हैं।</p>
     </div>
 
     <form id="loginForm" class="space-y-6">
       <div class="input-group">
-        <label id="lblId" class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Teacher Name / ID</label>
-        <input 
-          type="text" 
-          id="teacherId" 
-          required 
+        <label id="lblId" class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Teacher
+          Name / ID</label>
+        <input type="text" id="teacherId" required
           class="w-full px-5 py-4 focus:outline-none input-style font-bold text-gray-800"
-          placeholder="पंजीकृत नाम दर्ज करें"
-          autocomplete="username"
-        >
-        
+          placeholder="पंजीकृत नाम दर्ज करें" autocomplete="username">
+
       </div>
 
       <div class="input-group">
-        <label id="lblClass" class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Assigned Class</label>
-        <select 
-          id="loginClass" 
-          required 
-          class="w-full px-5 py-4 focus:outline-none input-style font-bold text-gray-800 cursor-pointer appearance-none"
-        >
+        <label id="lblClass" class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Assigned
+          Class</label>
+        <select id="loginClass" required
+          class="w-full px-5 py-4 focus:outline-none input-style font-bold text-gray-800 cursor-pointer appearance-none">
           <option value="" id="optDefault">-- अपनी कक्षा चुनें --</option>
           <option value="Nursery">Nursery</option>
           <option value="LKG">LKG</option>
@@ -230,41 +239,38 @@
       </div>
 
       <div class="input-group">
-        <label id="lblPass" class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Password</label>
-        <input 
-          type="password" 
-          id="password" 
-          required 
-          class="w-full px-5 py-4 focus:outline-none input-style font-bold text-gray-800"
-          placeholder="••••••••"
-          autocomplete="current-password"
-        >
+        <label id="lblPass"
+          class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Password</label>
+        <input type="password" id="password" required
+          class="w-full px-5 py-4 focus:outline-none input-style font-bold text-gray-800" placeholder="••••••••"
+          autocomplete="current-password">
       </div>
 
-      <div id="errorMessage" class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-r-xl text-xs font-bold animate__animated animate__shakeX">
+      <div id="errorMessage"
+        class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-r-xl text-xs font-bold animate__animated animate__shakeX">
         गलत विवरण। कृपया सही जानकारी दर्ज करें।
       </div>
 
-      <button 
-        type="submit" 
-        class="w-full btn-blue text-white font-black py-4 rounded-2xl text-lg active:scale-95 flex items-center justify-center gap-3"
-      >
+      <button type="submit"
+        class="w-full btn-blue text-white font-black py-4 rounded-2xl text-lg active:scale-95 flex items-center justify-center gap-3">
         <span id="btnText">Sign In</span>
         <svg xmlns="www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
         </svg>
       </button>
     </form>
 
     <div class="mt-10 text-center border-t border-gray-100 pt-6">
-      <a href="index.html" id="backHome" class="text-sm font-black text-blue-600 hover:text-blue-800 transition-colors inline-flex items-center gap-2">
+      <a href="index.html" id="backHome"
+        class="text-sm font-black text-blue-600 hover:text-blue-800 transition-colors inline-flex items-center gap-2">
         ← Home Page
       </a>
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  
+
   <script>
     // --- BLUE STARFIELD BACKGROUND ---
     let scene, camera, renderer, starGeo, stars;
@@ -272,16 +278,16 @@
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
       camera.position.z = 1;
-      camera.rotation.x = Math.PI/2;
+      camera.rotation.x = Math.PI / 2;
 
-      renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.getElementById('canvas-container').appendChild(renderer.domElement);
 
       starGeo = new THREE.BufferGeometry();
       const starCount = 8000;
       const positions = new Float32Array(starCount * 3);
-      for(let i=0; i<starCount * 3; i++) {
+      for (let i = 0; i < starCount * 3; i++) {
         positions[i] = (Math.random() - 0.5) * 800;
       }
       starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -304,9 +310,9 @@
 
       function animate() {
         const positions = starGeo.attributes.position.array;
-        for(let i=1; i<positions.length; i+=3) {
+        for (let i = 1; i < positions.length; i += 3) {
           positions[i] -= 0.8; // Faster movement
-          if(positions[i] < -400) positions[i] = 400;
+          if (positions[i] < -400) positions[i] = 400;
         }
         starGeo.attributes.position.needsUpdate = true;
         renderer.render(scene, camera);
@@ -373,7 +379,7 @@
       document.getElementById('btnText').innerText = t.btn;
       document.getElementById('backHome').innerText = t.back;
       document.getElementById('errorMessage').innerText = t.error;
-      
+
       modal.style.display = 'none';
       localStorage.setItem('jrc_teacher_lang', lang);
     }
@@ -383,5 +389,7 @@
   </script>
 
   <script src="frontend/js/teacher-auth.js"></script>
+  <script src="frontend/js/main.js"></script>
 </body>
+
 </html>
