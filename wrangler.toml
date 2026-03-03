@@ -1,6 +1,0 @@
-name = "jrcintercollege"
-pages_build_output_dir = "."
-
-[site]
-bucket = "."
-exclude = ["node_modules", "backend", ".git", ".vscode", "package.json", "package-lock.json", "netlify.toml", "*.md", "structure.txt"]
