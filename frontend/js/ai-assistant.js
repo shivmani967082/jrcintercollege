@@ -213,12 +213,12 @@ const JRCAssistant = {
         en: 'Regular school timings are typically from **8:00 AM to 2:00 PM** (Monday to Saturday).\n\nExact timings may vary by:\n• Season (summer/winter)\n• Class level\n• Special events or activities\n\nPlease contact the school office at +91 8874543973 for the latest schedule. Would you like the contact details?'
       },
       contact: {
-        hi: 'आप J.R.C. इंटर कॉलेज से संपर्क कर सकते हैं:\n\n📞 **फोन:** +91 8874543973\n📧 **ईमेल:** info@jrcschool.com\n📍 **पता:** हरही बाज़ार, बस्ती, उत्तर प्रदेश\n\nकार्यालय समय: सोमवार से शनिवार, सुबह 9:00 बजे से शाम 4:00 बजे तक\n\nक्या आप दिशा-निर्देश या अधिक संपर्क जानकारी चाहेंगे?',
+        hi: 'आप J.R.C. इंटर कॉलेज से संपर्क कर सकते हैं:\n\n📞 **फोन:** +91 8874543973\n📧 **ईमेल:** info@jrcschool.com\n📍 **पता:** हड़ही बाज़ार, बस्ती, उत्तर प्रदेश\n\nकार्यालय समय: सोमवार से शनिवार, सुबह 9:00 बजे से शाम 4:00 बजे तक\n\nक्या आप दिशा-निर्देश या अधिक संपर्क जानकारी चाहेंगे?',
         hinglish: 'आप J.R.C. Inter College से contact कर सकते हैं:\n\n📞 **Phone:** +91 8874543973\n📧 **Email:** info@jrcschool.com\n📍 **Address:** Harahi Bazar, Basti, Uttar Pradesh\n\nOffice hours: Monday से Saturday, सुबह 9:00 AM से शाम 4:00 PM तक\n\nक्या आप directions या more contact information चाहेंगे?',
         en: 'You can contact J.R.C. Inter College:\n\n📞 **Phone:** +91 8874543973\n📧 **Email:** info@jrcschool.com\n📍 **Address:** Harahi Bazar, Basti, Uttar Pradesh\n\nOffice hours: Monday to Saturday, 9:00 AM to 4:00 PM\n\nWould you like directions or more contact information?'
       },
       about: {
-        hi: 'J.R.C. इंटर कॉलेज, हरही बाज़ार बस्ती, निम्नलिखित के साथ सर्वांगीण विकास पर केंद्रित है:\n\n✨ **सुविधाएं:**\n• डिजिटल शिक्षा के साथ स्मार्ट कक्षाएं\n• आधुनिक कंप्यूटर लैब\n• अच्छी तरह से सुसज्जित पुस्तकालय\n• खेल सुविधाएं\n• सुरक्षित और सुरक्षित परिसर\n\n👨‍🏫 **शिक्षक:** अनुभवी और योग्य शिक्षक\n\n🏆 **उपलब्धियां:** खेलों में उत्कृष्टता, विशेष रूप से खो-खो (जिला और राज्य स्तर)\n\nदृष्टि, मिशन और प्रधानाचार्य के संदेश के लिए हमारे बारे में पृष्ठ पर जाएं। आप और क्या जानना चाहेंगे?',
+        hi: 'J.R.C. इंटर कॉलेज, हड़ही बाज़ार बस्ती, निम्नलिखित के साथ सर्वांगीण विकास पर केंद्रित है:\n\n✨ **सुविधाएं:**\n• डिजिटल शिक्षा के साथ स्मार्ट कक्षाएं\n• आधुनिक कंप्यूटर लैब\n• अच्छी तरह से सुसज्जित पुस्तकालय\n• खेल सुविधाएं\n• सुरक्षित और सुरक्षित परिसर\n\n👨‍🏫 **शिक्षक:** अनुभवी और योग्य शिक्षक\n\n🏆 **उपलब्धियां:** खेलों में उत्कृष्टता, विशेष रूप से खो-खो (जिला और राज्य स्तर)\n\nदृष्टि, मिशन और प्रधानाचार्य के संदेश के लिए हमारे बारे में पृष्ठ पर जाएं। आप और क्या जानना चाहेंगे?',
         hinglish: 'J.R.C. Inter College, Harahi Bazar Basti, निम्नलिखित के साथ holistic development पर focused है:\n\n✨ **Facilities:**\n• Smart classrooms digital learning के साथ\n• Modern computer labs\n• Well-equipped library\n• Sports facilities\n• Safe और secure campus\n\n👨‍🏫 **Faculty:** Experienced और qualified teachers\n\n🏆 **Achievements:** Sports में excellence, especially Kho-Kho (district और state level)\n\nVision, mission और principal\'s message के लिए About page पर जाएं। आप और क्या जानना चाहेंगे?',
         en: 'J.R.C. Inter College, Harahi Bazar Basti, is focused on holistic development with:\n\n✨ **Facilities:**\n• Smart classrooms with digital learning\n• Modern computer labs\n• Well-equipped library\n• Sports facilities\n• Safe and secure campus\n\n👨‍🏫 **Faculty:** Experienced and qualified teachers\n\n🏆 **Achievements:** Excellence in sports, especially Kho-Kho (district and state level)\n\nVisit the About page for vision, mission, and principal\'s message. What would you like to know more about?'
       },
@@ -287,8 +287,8 @@ const JRCAssistant = {
     // Create bubble
     const bubble = document.createElement('div');
     bubble.className = `rounded-2xl px-4 py-3 max-w-xs text-sm ${sender === 'user'
-        ? 'bg-yellow-300 text-blue-900 order-2'
-        : 'bg-white bg-opacity-10 text-white'
+      ? 'bg-yellow-300 text-blue-900 order-2'
+      : 'bg-white bg-opacity-10 text-white'
       }`;
 
     // Format text with line breaks
@@ -301,8 +301,8 @@ const JRCAssistant = {
     // Create avatar
     const avatar = document.createElement('div');
     avatar.className = `rounded-full h-8 w-8 flex items-center justify-center text-xs font-bold ${sender === 'user'
-        ? 'bg-blue-200 text-blue-900 order-1'
-        : 'bg-yellow-400 text-blue-900'
+      ? 'bg-blue-200 text-blue-900 order-1'
+      : 'bg-yellow-400 text-blue-900'
       }`;
     // Set avatar text based on detected language
     if (sender === 'user') {

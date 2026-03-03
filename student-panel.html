@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="hi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>मेरा डैशबोर्ड | JRC स्कूल</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Bree+Serif&display=swap');
 
@@ -52,8 +53,10 @@
     }
 
     /* FIX: Result Card Styling - Dark Aesthetic */
-result-card, [class*="result"] {
-      background: rgba(30, 41, 59, 0.7) !important; /* Dark background forced */
+    result-card,
+    [class*="result"] {
+      background: rgba(30, 41, 59, 0.7) !important;
+      /* Dark background forced */
       backdrop-filter: blur(10px) !important;
       border: 1px solid rgba(255, 255, 255, 0.1) !important;
       border-radius: 1.25rem !important;
@@ -62,7 +65,7 @@ result-card, [class*="result"] {
       color: white !important;
       box-shadow: none !important;
     }
-    
+
     .result-card::before {
       content: '';
       position: absolute;
@@ -80,10 +83,13 @@ result-card, [class*="result"] {
     }
 
     /* Ensure text inside result cards is visible */
-    .result-card h3, .result-card p, .result-card span, .result-card div {
+    .result-card h3,
+    .result-card p,
+    .result-card span,
+    .result-card div {
       color: white !important;
     }
-    
+
     .result-card .text-accent {
       color: var(--accent) !important;
     }
@@ -95,11 +101,22 @@ result-card, [class*="result"] {
     }
 
     /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #030712; }
-    ::-webkit-scrollbar-thumb { background: #312e81; border-radius: 10px; }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
 
-    .modal-active { display: flex !important; }
+    ::-webkit-scrollbar-track {
+      background: #030712;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #312e81;
+      border-radius: 10px;
+    }
+
+    .modal-active {
+      display: flex !important;
+    }
 
     /* Game Styles */
     #gameCanvas {
@@ -116,9 +133,14 @@ result-card, [class*="result"] {
       border: 1px solid var(--glass-border);
       transition: all 0.3s;
     }
-    .lang-btn:hover { background: var(--accent); color: #000; }
+
+    .lang-btn:hover {
+      background: var(--accent);
+      color: #000;
+    }
   </style>
 </head>
+
 <body class="min-h-screen flex flex-col">
 
   <!-- 3D Background -->
@@ -127,13 +149,15 @@ result-card, [class*="result"] {
   <header class="nav-glass sticky top-0 z-50">
     <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
       <div class="flex items-center space-x-4 animate__animated animate__fadeInLeft">
-        <div class="bg-gradient-to-br from-yellow-400 to-yellow-600 text-blue-900 font-black rounded-2xl h-12 w-12 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(251,191,36,0.4)]">J</div>
+        <div
+          class="bg-gradient-to-br from-yellow-400 to-yellow-600 text-blue-900 font-black rounded-2xl h-12 w-12 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(251,191,36,0.4)]">
+          J</div>
         <div class="hidden sm:block">
           <p class="text-lg font-bold uppercase tracking-widest leading-none" id="brandTitle">J.R.C. Inter College</p>
           <p class="text-xs text-yellow-400 mt-1" id="subTitle">Official Student Portal • छात्र पोर्टल</p>
         </div>
       </div>
-      
+
       <div class="flex items-center space-x-6">
         <div class="hidden md:flex items-center bg-white/5 rounded-full px-4 py-1.5 border border-white/10">
           <span class="text-xs mr-2 text-gray-400">Welcome,</span>
@@ -145,35 +169,41 @@ result-card, [class*="result"] {
           🌐
         </button>
 
-        <button type="button" id="logoutBtn" class="bg-red-500/20 hover:bg-red-500 text-red-500 hover:text-white border border-red-500/50 px-4 py-1.5 rounded-xl text-sm font-bold transition-all">निकास (Logout)</button>
+        <button type="button" id="logoutBtn"
+          class="bg-red-500/20 hover:bg-red-500 text-red-500 hover:text-white border border-red-500/50 px-4 py-1.5 rounded-xl text-sm font-bold transition-all">निकास
+          (Logout)</button>
       </div>
     </div>
   </header>
 
   <main class="flex-1 max-w-6xl mx-auto px-6 py-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
-    
+
     <!-- Left Column: User Info & Game -->
     <div class="lg:col-span-4 space-y-8">
       <!-- Profile Card -->
       <section class="glass-panel p-8 animate__animated animate__fadeInLeft">
         <div class="flex items-center gap-4 mb-6">
-          <div class="h-16 w-16 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-3xl shadow-lg">👨‍🎓</div>
+          <div
+            class="h-16 w-16 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-3xl shadow-lg">
+            👨‍🎓</div>
           <h2 class="text-2xl font-bold" id="titleProfile">मेरा प्रोफाइल</h2>
         </div>
         <div id="profileContent" class="space-y-4">
-           <!-- Loaded via student-panel.js -->
-           <p class="text-gray-400 animate-pulse">डेटा लोड हो रहा है...</p>
+          <!-- Loaded via student-panel.js -->
+          <p class="text-gray-400 animate-pulse">डेटा लोड हो रहा है...</p>
         </div>
       </section>
 
       <!-- Mini Game Section -->
-      <section class="glass-panel p-6 border-t-4 border-yellow-500 animate__animated animate__fadeInLeft animate__delay-1s">
+      <section
+        class="glass-panel p-6 border-t-4 border-yellow-500 animate__animated animate__fadeInLeft animate__delay-1s">
         <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
           <span>🎮</span> <span id="gameTitle">स्टूडेंट गैलेक्सी गेम</span>
         </h2>
         <div class="relative group">
           <canvas id="gameCanvas"></canvas>
-          <div id="gameOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/60 rounded-xl cursor-pointer">
+          <div id="gameOverlay"
+            class="absolute inset-0 flex flex-col items-center justify-center bg-black/60 rounded-xl cursor-pointer">
             <p class="text-yellow-400 font-bold">CLICK TO START</p>
             <p class="text-[10px] text-white/50 mt-2">Use Arrow Keys / Touch to move</p>
           </div>
@@ -183,7 +213,7 @@ result-card, [class*="result"] {
 
     <!-- Right Column: Results & Fees -->
     <div class="lg:col-span-8 space-y-8">
-      
+
       <!-- Welcome Message -->
       <div class="animate__animated animate__fadeInDown">
         <h1 class="text-4xl font-extrabold mb-2" id="dashGreeting">नमस्ते छात्र! 🚀</h1>
@@ -226,7 +256,8 @@ result-card, [class*="result"] {
           <div class="text-2xl mb-2 group-hover:scale-125 transition">📝</div>
           <p class="text-xs font-bold" id="linkAdm">प्रवेश</p>
         </a>
-        <a href="ai-assistant.html" class="glass-panel p-4 text-center hover:bg-purple-600/20 transition group border-purple-500/50">
+        <a href="ai-assistant.html"
+          class="glass-panel p-4 text-center hover:bg-purple-600/20 transition group border-purple-500/50">
           <div class="text-2xl mb-2 group-hover:scale-125 transition">🤖</div>
           <p class="text-xs font-bold" id="linkAI">AI सहायक</p>
         </a>
@@ -235,12 +266,15 @@ result-card, [class*="result"] {
   </main>
 
   <!-- Legacy Modals -->
-  <div id="messageModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[100] p-4 backdrop-blur-sm">
+  <div id="messageModal"
+    class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[100] p-4 backdrop-blur-sm">
     <div class="glass-panel bg-slate-900 max-w-lg w-full p-8 border-2 border-white/20">
       <h3 class="text-xl font-bold mb-4">शिक्षक को संदेश भेजें</h3>
       <form id="sendMessageForm" class="space-y-4">
         <input type="hidden" id="targetTeacherId">
-        <textarea id="messageText" class="w-full bg-white/5 border border-white/20 rounded-xl p-4 text-white focus:outline-none focus:border-yellow-400" rows="4" placeholder="अपना संदेश यहाँ लिखें..."></textarea>
+        <textarea id="messageText"
+          class="w-full bg-white/5 border border-white/20 rounded-xl p-4 text-white focus:outline-none focus:border-yellow-400"
+          rows="4" placeholder="अपना संदेश यहाँ लिखें..."></textarea>
         <div class="flex gap-4">
           <button type="submit" class="flex-1 bg-yellow-500 text-black font-bold py-3 rounded-xl">संदेश भेजें</button>
           <button type="button" id="closeModalBtn" class="px-6 py-3 rounded-xl border border-white/20">बंद करें</button>
@@ -257,13 +291,13 @@ result-card, [class*="result"] {
   <!-- Background Script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-  
+
   <script>
     // --- 3D BACKGROUND ---
     let scene, camera, renderer, particles;
     function init3D() {
       const container = document.getElementById('canvas-container');
-      if(!container) return;
+      if (!container) return;
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -272,7 +306,7 @@ result-card, [class*="result"] {
       const geometry = new THREE.BufferGeometry();
       const count = 3000;
       const posArray = new Float32Array(count * 3);
-      for(let i = 0; i < count * 3; i++) posArray[i] = (Math.random() - 0.5) * 15;
+      for (let i = 0; i < count * 3; i++) posArray[i] = (Math.random() - 0.5) * 15;
       geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
       const material = new THREE.PointsMaterial({ size: 0.008, color: 0x6366f1, transparent: true, opacity: 0.4 });
       particles = new THREE.Points(geometry, material);
@@ -295,7 +329,7 @@ result-card, [class*="result"] {
     // --- MINI GAME: SPACE SCHOLAR ---
     function initGame() {
       const canvas = document.getElementById('gameCanvas');
-      if(!canvas) return;
+      if (!canvas) return;
       const ctx = canvas.getContext('2d');
       const overlay = document.getElementById('gameOverlay');
       let gameActive = false;
@@ -308,22 +342,22 @@ result-card, [class*="result"] {
       }
 
       function update() {
-        if(!gameActive) return;
-        ctx.clearRect(0,0,400,300);
+        if (!gameActive) return;
+        ctx.clearRect(0, 0, 400, 300);
         ctx.fillStyle = '#fbbf24';
         ctx.font = '24px serif';
         ctx.fillText('🚀', player.x - 10, player.y + 10);
-        
+
         items.forEach((item, index) => {
           item.y += item.speed;
           ctx.fillText(item.char, item.x, item.y);
-          if(Math.abs(item.x - player.x) < 25 && Math.abs(item.y - player.y) < 25) {
+          if (Math.abs(item.x - player.x) < 25 && Math.abs(item.y - player.y) < 25) {
             items.splice(index, 1);
             score++;
           }
-          if(item.y > 300) items.splice(index, 1);
+          if (item.y > 300) items.splice(index, 1);
         });
-        
+
         ctx.fillStyle = 'white';
         ctx.font = '12px Outfit';
         ctx.fillText('Score: ' + score, 10, 20);
@@ -336,26 +370,26 @@ result-card, [class*="result"] {
         score = 0;
         items = [];
         const interval = setInterval(() => {
-          if(!gameActive) clearInterval(interval);
+          if (!gameActive) clearInterval(interval);
           spawnItem();
         }, 1000);
         update();
       });
 
       window.addEventListener('keydown', (e) => {
-        if(e.key === 'ArrowLeft' && player.x > 20) player.x -= 15;
-        if(e.key === 'ArrowRight' && player.x < 380) player.x += 15;
+        if (e.key === 'ArrowLeft' && player.x > 20) player.x -= 15;
+        if (e.key === 'ArrowRight' && player.x < 380) player.x += 15;
       });
     }
 
     // --- TRANSLATION DATA ---
     const translations = {
       hi: {
-        brand: "J.R.C. Inter College", sub: "Official Student Portal • छात्र पोर्टल", 
+        brand: "J.R.C. Inter College", sub: "Official Student Portal • छात्र पोर्टल",
         greeting: "नमस्ते छात्र! 🚀", desc: "आपकी शैक्षणिक यात्रा का पूर्ण विवरण यहाँ है।",
         prof: "मेरा प्रोफाइल", res: "मेरे परीक्षा परिणाम", fee: "मेरी फीस का विवरण",
         game: "स्टूडेंट गैलेक्सी गेम", news: "सूचनाएं", fstr: "फीस संरचना", adm: "प्रवेश", ai: "AI सहायक",
-        footer: "© 2025 J.R.C. स्कूल, हरही बाज़ार बस्ती"
+        footer: "© 2025 J.R.C. स्कूल, हड़ही बाज़ार बस्ती"
       },
       en: {
         brand: "J.R.C. Inter College", sub: "Official Student Portal",
@@ -389,7 +423,7 @@ result-card, [class*="result"] {
 
   <script src="frontend/js/student-panel.js"></script>
   <script>
-    (function() {
+    (function () {
       if (typeof StudentPanel !== 'undefined') {
         if (!StudentPanel.isLoggedIn()) {
           window.location.href = 'student-login.html';
@@ -398,14 +432,14 @@ result-card, [class*="result"] {
         StudentPanel.loadDashboard();
       }
 
-      document.getElementById('logoutBtn').addEventListener('click', function() {
+      document.getElementById('logoutBtn').addEventListener('click', function () {
         if (typeof StudentPanel !== 'undefined') StudentPanel.logout();
         window.location.href = 'student-login.html';
       });
 
       const modal = document.getElementById('messageModal');
       const closeBtn = document.getElementById('closeModalBtn');
-      if(closeBtn) {
+      if (closeBtn) {
         closeBtn.addEventListener('click', () => {
           modal.classList.add('hidden');
           modal.classList.remove('modal-active');
@@ -413,18 +447,18 @@ result-card, [class*="result"] {
       }
 
       const form = document.getElementById('sendMessageForm');
-      if(form) {
-        form.addEventListener('submit', async function(e) {
+      if (form) {
+        form.addEventListener('submit', async function (e) {
           e.preventDefault();
           const teacherId = document.getElementById('targetTeacherId').value;
           const message = document.getElementById('messageText').value;
           if (typeof StudentPanel !== 'undefined' && typeof StudentPanel.sendMessageToTeacher === 'function') {
-             const success = await StudentPanel.sendMessageToTeacher(teacherId, message);
-             if (success) {
-               document.getElementById('messageText').value = '';
-               modal.classList.add('hidden');
-               modal.classList.remove('modal-active');
-             }
+            const success = await StudentPanel.sendMessageToTeacher(teacherId, message);
+            if (success) {
+              document.getElementById('messageText').value = '';
+              modal.classList.add('hidden');
+              modal.classList.remove('modal-active');
+            }
           }
         });
       }
@@ -432,4 +466,5 @@ result-card, [class*="result"] {
   </script>
   <script src="./js/student.js"></script>
 </body>
+
 </html>
