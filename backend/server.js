@@ -29,7 +29,20 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(helmet());
+// Middleware
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.tailwindcss.com", "https://cdnjs.cloudflare.com", "https://www.googletagmanager.com"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.tailwindcss.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "https:", "http:"],
+      connectSrc: ["'self'", "https:", "http:"],
+      frameSrc: ["'self'", "https://www.google.com"],
+    },
+  },
+}));
 app.use(morgan('dev'));
 app.use(cors({
   origin: function (origin, callback) {
@@ -116,31 +129,31 @@ if (!process.env.MONGODB_URI) {
 mongoose.connect(process.env.MONGODB_URI, {
   serverSelectionTimeoutMS: 5000
 })
-.then(() => {
-  console.log('✅ Connected to MongoDB');
+  .then(() => {
+    console.log('✅ Connected to MongoDB');
 
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
 
-    const BASE_URL =
-      process.env.NODE_ENV === "production"
-        ? process.env.RENDER_EXTERNAL_URL
-        : `http://localhost:${PORT}`;
+      const BASE_URL =
+        process.env.NODE_ENV === "production"
+          ? process.env.RENDER_EXTERNAL_URL
+          : `http://localhost:${PORT}`;
 
-    console.log(`📡 API available at ${BASE_URL}/api`);
-    console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
+      console.log(`📡 API available at ${BASE_URL}/api`);
+      console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
+    });
+    // ── Serve frontend for all non-API routes ──────────//
+    app.get('*', (req, res) => {
+      // Skip if it's an API route or a file with an extension (e.g. .pdf, .png, .css)
+      if (!req.path.startsWith('/api') && !req.path.includes('.')) {
+        res.sendFile(path.join(__dirname, '../index.html'));
+      }
+    });
+  })
+  .catch((error) => {
+    console.error('❌ MongoDB connection error:', error);
+    process.exit(1); // stop app if DB fails in production
   });
-// ── Serve frontend for all non-API routes ──────────//
-app.get('*', (req, res) => {
-  // Skip if it's an API route or a file with an extension (e.g. .pdf, .png, .css)
-  if (!req.path.startsWith('/api') && !req.path.includes('.')) {
-    res.sendFile(path.join(__dirname, '../index.html'));
-  }
-});
-})
-.catch((error) => {
-  console.error('❌ MongoDB connection error:', error);
-  process.exit(1); // stop app if DB fails in production
-});
 
 module.exports = app;
