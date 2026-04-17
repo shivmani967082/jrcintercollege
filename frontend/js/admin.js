@@ -2,18 +2,23 @@
  * Admin Portal JavaScript
  * Manages admission enquiries viewing and status updates
  */
-const API_BASE = "https://jrcintercollege.onrender.com";
+const API_BASE = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') 
+  ? 'http://localhost:3000' 
+  : "https://jrcintercollege.onrender.com";
 const AdminPortal = {
   
-  API_URL: 'https://jrcintercollege.onrender.com/api/admissions',
-  NEWS_API_URL: 'https://jrcintercollege.onrender.com/api/news',
-  STUDENT_API_URL: 'https://jrcintercollege.onrender.com/api/student',
-  TEACHERS_API_URL: 'https://jrcintercollege.onrender.com/api/teachers',
-  CLASS_TEACHERS_API_URL: 'https://jrcintercollege.onrender.com/api/class-teachers',
+  API_URL: `${API_BASE}/api/admissions`,
+  NEWS_API_URL: `${API_BASE}/api/news`,
+  STUDENT_API_URL: `${API_BASE}/api/student`,
+  TEACHERS_API_URL: `${API_BASE}/api/class-teachers`,
+  CLASS_TEACHERS_API_URL: `${API_BASE}/api/class-teachers`,
   currentPage: 1,
   currentLimit: 20,
   currentStatus: '',
   currentSearch: '',
+  allClasses: [], // Cached classes for multi-select
+  selectedAdditionalClasses: [], // Currently selected classes for the teacher form
+
 
   init() {
     // Check authentication first
@@ -26,7 +31,6 @@ const AdminPortal = {
     this.loadNews();
     this.loadStudentList();
     this.loadTeachers();
-    this.loadClassTeachers();
   },
 
   bindEvents() {
@@ -86,19 +90,20 @@ const AdminPortal = {
       this.updateStatus();
     });
 
-    // Teacher management
-    const classTeacherForm = document.getElementById('classTeacherForm');
-    if (classTeacherForm) {
-      classTeacherForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        this.registerClassTeacher();
-      });
-    }
-
     const addTeacherBtn = document.getElementById('addTeacherBtn');
     if (addTeacherBtn) {
       addTeacherBtn.addEventListener('click', () => this.openTeacherModal());
     }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      const dropdown = document.getElementById('teacherClassDropdown');
+      const button = e.target.closest('button');
+      if (dropdown && !dropdown.contains(e.target) && (!button || !button.onclick || !button.onclick.toString().includes('toggleTeacherClassDropdown'))) {
+        dropdown.classList.add('hidden');
+      }
+    });
+
     const cancelTeacher = document.getElementById('cancelTeacher');
     if (cancelTeacher) {
       cancelTeacher.addEventListener('click', () => this.closeTeacherModal());
@@ -648,15 +653,26 @@ ${admission.notes ? `Notes: ${admission.notes}` : ''}
       }
       container.innerHTML = list.map(t => `
         <div class="bg-gray-50 rounded-lg p-4 flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <span class="font-semibold text-gray-800">${this.escapeHtml(t.name)}</span>
-            <span class="text-sm text-gray-500">(कक्षा: ${this.escapeHtml(t.assignedClass)})</span>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-gray-300 overflow-hidden flex-shrink-0">
+               ${t.profilePicture ? `<img src="${API_BASE}${t.profilePicture}" alt="avatar" class="w-full h-full object-cover">` : '<div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">?</div>'}
+            </div>
+            <div>
+              <span class="font-semibold text-gray-800">${this.escapeHtml(t.name)}</span>
+              <span class="text-sm text-gray-500">(कक्षा: ${this.escapeHtml(t.assignedClass)})</span>
+            </div>
           </div>
-          <button type="button" class="resetCtPasswordBtn px-3 py-1 bg-amber-600 text-white rounded text-sm hover:bg-amber-700" data-id="${t._id}" data-name="${this.escapeHtml(t.name)}">पासवर्ड रीसेट</button>
+          <div class="flex gap-2">
+            <button type="button" class="resetCtPasswordBtn px-3 py-1 bg-amber-600 text-white rounded text-sm hover:bg-amber-700" data-id="${t._id}" data-name="${this.escapeHtml(t.name)}">पासवर्ड रीसेट</button>
+            <button type="button" class="deleteCtBtn px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700" data-id="${t._id}">हटाएं</button>
+          </div>
         </div>
       `).join('');
       container.querySelectorAll('.resetCtPasswordBtn').forEach(btn => {
         btn.addEventListener('click', () => this.resetClassTeacherPassword(btn.dataset.id, btn.dataset.name));
+      });
+      container.querySelectorAll('.deleteCtBtn').forEach(btn => {
+        btn.addEventListener('click', () => this.deleteClassTeacher(btn.dataset.id));
       });
     } catch (err) {
       console.error('Class teachers load error:', err);
@@ -668,16 +684,35 @@ ${admission.notes ? `Notes: ${admission.notes}` : ''}
     const name = document.getElementById('ctName').value.trim();
     const cls = document.getElementById('ctClass').value;
     const password = document.getElementById('ctPassword').value;
+    const subject = document.getElementById('ctSubject').value.trim();
+    const qualification = document.getElementById('ctQualification').value.trim();
+    const experience = document.getElementById('ctExperience').value.trim();
+    const picture = document.getElementById('ctPicture').files[0];
+
     const msgEl = document.getElementById('ctMessage');
     if (!name || !cls || !password || password.length < 6) {
       if (msgEl) { msgEl.textContent = 'नाम, कक्षा और पासवर्ड (कम से कम 6) भरें।'; msgEl.classList.remove('hidden'); msgEl.classList.add('text-red-600'); }
       return;
     }
+    
+    // Create FormData for multipart submission
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('assignedClass', cls);
+    formData.append('password', password);
+    formData.append('subject', subject);
+    formData.append('qualification', qualification);
+    formData.append('experience', experience);
+    if(picture) {
+      formData.append('profilePicture', picture);
+    }
+
     try {
+      // NOTE: Using a relative fetch path if API_URL defaults to production in source
+      // If we are testing locally we should ensure base URL works. The file sets `CLASS_TEACHERS_API_URL` directly.
       const res = await fetch(this.CLASS_TEACHERS_API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, assignedClass: cls, password })
+        body: formData // Note: no headers so browser sets multipart boundary
       });
       const result = await res.json();
       if (!res.ok) throw new Error(result.message || 'रजिस्टर नहीं हो पाया');
@@ -691,6 +726,19 @@ ${admission.notes ? `Notes: ${admission.notes}` : ''}
       this.loadClassTeachers();
     } catch (err) {
       if (msgEl) { msgEl.textContent = err.message; msgEl.classList.remove('text-green-600'); msgEl.classList.add('text-red-600'); msgEl.classList.remove('hidden'); }
+    }
+  },
+
+  async deleteClassTeacher(id) {
+    if (!confirm('क्या आप इस शिक्षक को हटाना चाहते हैं?')) return;
+    try {
+      const res = await fetch(`${this.CLASS_TEACHERS_API_URL}/${id}`, { method: 'DELETE' });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.message || 'हटाया नहीं जा सका');
+      this.loadClassTeachers();
+      alert('शिक्षक हटा दिया गया।');
+    } catch (err) {
+      alert('त्रुटि: ' + err.message);
     }
   },
 
@@ -730,29 +778,28 @@ ${admission.notes ? `Notes: ${admission.notes}` : ''}
         return;
       }
       container.innerHTML = list.map(t => `
-        <div class="bg-gray-50 rounded-lg p-4 flex flex-wrap items-start justify-between gap-2">
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2 mb-1">
-              ${t.image && t.image.trim() ? (() => {
-                const cleanPath = t.image.startsWith('/') ? t.image.substring(1) : t.image;
-                const imgUrl = t.image.startsWith('http') ? t.image : `https://jrcintercollege.onrender.com/${cleanPath}`;
-                return `<img src="${this.escapeHtml(imgUrl)}" alt="${this.escapeHtml(t.name)}" class="w-12 h-12 rounded-full object-cover border-2 border-blue-200" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><div style="display:none; width:48px; height:48px; background:#d1d5db; border-radius:9999px; border:2px solid #93c5fd;"></div>`;
-              })() : '<div class="w-12 h-12 rounded-full bg-gray-300 border-2 border-blue-200"></div>'}
-              <div>
-                <h4 class="font-semibold text-gray-800">${this.escapeHtml(t.name)}</h4>
-                ${t.designation ? `<p class="text-xs text-blue-600">${this.escapeHtml(t.designation)}</p>` : ''}
-              </div>
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col gap-4 relative overflow-hidden group hover:shadow-md transition-shadow">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl border-2 border-blue-50 overflow-hidden flex-shrink-0 bg-gray-100 shadow-inner">
+               ${t.profilePicture ? `<img src="${API_BASE}${t.profilePicture}" alt="avatar" class="w-full h-full object-cover">` : '<div class="w-full h-full flex items-center justify-center text-gray-400 text-xl font-bold">?</div>'}
             </div>
-            <div class="text-sm text-gray-600 mt-2 space-y-1">
-              ${t.qualification ? `<p><span class="font-medium">योग्यता:</span> ${this.escapeHtml(t.qualification)}</p>` : ''}
-              ${t.experience ? `<p><span class="font-medium">अनुभव:</span> ${this.escapeHtml(t.experience)}</p>` : ''}
-              ${t.subject ? `<p><span class="font-medium">विषय:</span> ${this.escapeHtml(t.subject)}</p>` : ''}
-              ${t.thought ? `<p class="italic text-gray-500">"${this.escapeHtml(t.thought)}"</p>` : ''}
+            <div class="flex-1 min-w-0">
+              <h4 class="font-bold text-gray-900 truncate">${this.escapeHtml(t.name)}</h4>
+              <p class="text-xs font-bold text-blue-600 uppercase tracking-wider">${this.escapeHtml(t.designation || 'Teacher')}</p>
+              <p class="text-[11px] text-gray-500 mt-0.5"><span class="font-bold">Class:</span> ${this.escapeHtml(t.assignedClass)}</p>
             </div>
           </div>
-          <div class="flex gap-2">
-            <button type="button" class="editTeacherBtn px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700" data-id="${t._id}">संपादित</button>
-            <button type="button" class="deleteTeacherBtn px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700" data-id="${t._id}">हटाएं</button>
+          
+          <div class="bg-gray-50 rounded-xl p-3 text-xs space-y-1.5 border border-gray-100">
+            ${t.subject ? `<p class="flex justify-between"><span class="text-gray-500">विषय:</span> <span class="font-bold text-gray-700">${this.escapeHtml(t.subject)}</span></p>` : ''}
+            ${t.qualification ? `<p class="flex justify-between"><span class="text-gray-500">योग्यता:</span> <span class="font-bold text-gray-700">${this.escapeHtml(t.qualification)}</span></p>` : ''}
+            ${t.experience ? `<p class="flex justify-between"><span class="text-gray-500">अनुभव:</span> <span class="font-bold text-gray-700">${this.escapeHtml(t.experience)}</span></p>` : ''}
+            ${t.thought ? `<p class="mt-2 pt-2 border-t border-gray-200 italic text-gray-400 leading-relaxed line-clamp-2">"${this.escapeHtml(t.thought)}"</p>` : ''}
+          </div>
+
+          <div class="flex gap-2 mt-auto">
+            <button type="button" class="editTeacherBtn flex-1 py-2 bg-blue-50 text-blue-700 font-bold rounded-lg text-xs hover:bg-blue-100 transition" data-id="${t._id}">संपादित</button>
+            <button type="button" class="deleteTeacherBtn flex-1 py-2 bg-red-50 text-red-600 font-bold rounded-lg text-xs hover:bg-red-100 transition" data-id="${t._id}">हटाएं</button>
           </div>
         </div>
       `).join('');
@@ -768,71 +815,48 @@ ${admission.notes ? `Notes: ${admission.notes}` : ''}
     }
   },
 
-  openTeacherModal(id) {
-    document.getElementById('teacherModalTitle').textContent = id ? 'शिक्षक संपादित करें' : 'नया शिक्षक जोड़ें';
+  async openTeacherModal(id) {
+    document.getElementById('teacherModalTitle').textContent = id ? 'शिक्षक संपादित करें (Edit Teacher)' : 'नया शिक्षक जोड़ें (Add New Teacher)';
     document.getElementById('teacherId').value = id || '';
-    document.getElementById('teacherName').value = '';
-    document.getElementById('teacherDesignation').value = '';
-    document.getElementById('teacherQualification').value = '';
-    document.getElementById('teacherExperience').value = '';
-    document.getElementById('teacherSubject').value = '';
-    document.getElementById('teacherThought').value = '';
-    document.getElementById('teacherImage').value = '';
-    document.getElementById('teacherOrder').value = '0';
-    const preview = document.getElementById('teacherImagePreview');
-    if (preview) {
-      preview.classList.add('hidden');
-      // Store original image path in data attribute
-      preview.setAttribute('data-original-image', '');
-    }
-    
+    document.getElementById('teacherForm').reset();
+    this.selectedAdditionalClasses = [];
+    this.renderTeacherClassTags();
+    document.getElementById('teacherImagePreview').classList.add('hidden');
+    // Password required only for new teachers
+    document.getElementById('teacherPassword').required = !id;
+
     if (id) {
-      fetch(this.TEACHERS_API_URL + '/' + id)
-        .then(r => r.json())
-        .then(json => {
-          const t = json.data;
-          if (t) {
-            document.getElementById('teacherName').value = t.name || '';
-            document.getElementById('teacherDesignation').value = t.designation || '';
-            document.getElementById('teacherQualification').value = t.qualification || '';
-            document.getElementById('teacherExperience').value = t.experience || '';
-            document.getElementById('teacherSubject').value = t.subject || '';
-            document.getElementById('teacherThought').value = t.thought || '';
-            document.getElementById('teacherOrder').value = t.order || '0';
-            // Show existing image preview if available (but don't set file input)
-            if (t.image && t.image.trim()) {
-              const preview = document.getElementById('teacherImagePreview');
-              const previewImg = document.getElementById('teacherImagePreviewImg');
-              if (preview && previewImg) {
-                // Build correct image URL
-                let imgUrl = '';
-                if (t.image.startsWith('http')) {
-                  imgUrl = t.image;
-                } else {
-                  // Remove leading slash if present, then add base URL
-                  const cleanPath = t.image.startsWith('/') ? t.image.substring(1) : t.image;
-                  imgUrl = `https://jrcintercollege.onrender.com/${cleanPath}`;
-                }
-                previewImg.src = imgUrl;
-                previewImg.onerror = function() {
-                  console.error('Image load error:', imgUrl);
-                  this.style.display = 'none';
-                };
-                preview.classList.remove('hidden');
-                // Store original image path for later use
-                preview.setAttribute('data-original-image', t.image);
-                // Add a note that this is existing image
-                const previewText = preview.querySelector('p');
-                if (previewText) previewText.textContent = 'Current Image (select new file to replace)';
-              }
-            } else {
-              // No image - hide preview
-              const preview = document.getElementById('teacherImagePreview');
-              if (preview) preview.classList.add('hidden');
-            }
-          }
-        })
-        .catch(() => {});
+       try {
+         const res = await fetch(`${this.TEACHERS_API_URL}/${id}`);
+         const result = await res.json();
+         if (res.ok && result.success) {
+           const t = result.data;
+           document.getElementById('teacherName').value = t.name || '';
+           document.getElementById('teacherDesignation').value = t.designation || '';
+           document.getElementById('teacherQualification').value = t.qualification || '';
+           document.getElementById('teacherExperience').value = t.experience || '';
+           document.getElementById('teacherSubject').value = t.subject || '';
+           document.getElementById('teacherThought').value = t.thought || '';
+           document.getElementById('teacherOrder').value = t.order || 0;
+           document.getElementById('teacherAssignedClass').value = t.assignedClass || '';
+           
+           // Set additional classes for multi-select
+           this.selectedAdditionalClasses = t.additionalAccess || [];
+           await this.fetchTeacherClasses(); // Ensure classes are loaded
+           this.renderTeacherClassCheckboxes();
+           this.renderTeacherClassTags();
+           
+           if (t.profilePicture) {
+             const preview = document.getElementById('teacherImagePreview');
+             const previewImg = document.getElementById('teacherImagePreviewImg');
+             previewImg.src = `${API_BASE}${t.profilePicture}`;
+             previewImg.style.display = 'block';
+             preview.classList.remove('hidden');
+           }
+         }
+       } catch (err) {
+         console.error('Fetch teacher details error:', err);
+       }
     }
     document.getElementById('teacherModal').classList.remove('hidden');
     document.getElementById('teacherModal').classList.add('flex');
@@ -849,6 +873,91 @@ ${admission.notes ? `Notes: ${admission.notes}` : ''}
     document.body.style.overflow = '';
   },
 
+  async fetchTeacherClasses() {
+    if (this.allClasses.length > 0) return;
+    try {
+      const res = await fetch(`${this.TEACHERS_API_URL}/classes`);
+      const result = await res.json();
+      if (res.ok && result.success) {
+        this.allClasses = result.data;
+      }
+    } catch (err) {
+      console.error('Fetch classes error:', err);
+      // Fallback if API fails
+      this.allClasses = ['Nursery', 'LKG', 'UKG', '1', '2', '3', '4', '5', '6', '7', '8', '9', '9-Arts', '9-Home Science', '9-Science', '10', '11-Arts', '11-Commerce', '11-Science', '12-Arts', '12-Commerce', '12-Science'];
+    }
+  },
+
+  toggleTeacherClassDropdown() {
+    const dropdown = document.getElementById('teacherClassDropdown');
+    const isHidden = dropdown.classList.contains('hidden');
+    
+    if (isHidden) {
+      this.fetchTeacherClasses().then(() => {
+        this.renderTeacherClassCheckboxes();
+        dropdown.classList.remove('hidden');
+      });
+    } else {
+      dropdown.classList.add('hidden');
+    }
+  },
+
+  renderTeacherClassCheckboxes() {
+    const container = document.getElementById('teacherClassCheckboxes');
+    if (!container) return;
+    
+    container.innerHTML = this.allClasses.map(cls => `
+      <label class="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+        <input type="checkbox" value="${cls}" 
+          ${this.selectedAdditionalClasses.includes(cls) ? 'checked' : ''}
+          onchange="AdminPortal.handleTeacherClassChange(this)"
+          class="rounded text-blue-600 focus:ring-blue-500">
+        <span class="text-sm">${cls}</span>
+      </label>
+    `).join('');
+  },
+
+  handleTeacherClassChange(checkbox) {
+    const cls = checkbox.value;
+    if (checkbox.checked) {
+      if (!this.selectedAdditionalClasses.includes(cls)) {
+        this.selectedAdditionalClasses.push(cls);
+      }
+    } else {
+      this.selectedAdditionalClasses = this.selectedAdditionalClasses.filter(c => c !== cls);
+    }
+    this.renderTeacherClassTags();
+  },
+
+  renderTeacherClassTags() {
+    const container = document.getElementById('teacherClassTags');
+    const placeholder = document.getElementById('teacherAdditionalAccessPlaceholder');
+    if (!container) return;
+    
+    if (this.selectedAdditionalClasses.length === 0) {
+      container.innerHTML = '';
+      if (placeholder) placeholder.classList.remove('hidden');
+      return;
+    }
+    
+    if (placeholder) placeholder.classList.add('hidden');
+    
+    container.innerHTML = this.selectedAdditionalClasses.map(cls => `
+      <div class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold flex items-center space-x-1">
+        <span>${cls}</span>
+        <button type="button" onclick="AdminPortal.removeTeacherClassTag('${cls}')" class="hover:text-blue-900 focus:outline-none">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+    `).join('');
+  },
+
+  removeTeacherClassTag(cls) {
+    this.selectedAdditionalClasses = this.selectedAdditionalClasses.filter(c => c !== cls);
+    this.renderTeacherClassCheckboxes(); // Update visible checkboxes if dropdown is open
+    this.renderTeacherClassTags();
+  },
+
   async saveTeacher() {
     const id = document.getElementById('teacherId').value;
     const name = document.getElementById('teacherName').value.trim();
@@ -858,77 +967,69 @@ ${admission.notes ? `Notes: ${admission.notes}` : ''}
     const subject = document.getElementById('teacherSubject').value.trim();
     const thought = document.getElementById('teacherThought').value.trim();
     const order = parseInt(document.getElementById('teacherOrder').value) || 0;
+    const assignedClass = document.getElementById('teacherAssignedClass').value;
+    const password = document.getElementById('teacherPassword').value;
     const imageFile = document.getElementById('teacherImage').files[0];
+    const additionalAccess = this.selectedAdditionalClasses || [];
     
-    if (!name) {
-      alert('नाम भरें।');
+    if (!name || !assignedClass) {
+      alert('नाम और कक्षा भरना अनिवार्य है।');
       return;
+    }
+
+    // Duplicate class teacher check
+    const warningEl = document.getElementById('duplicateClassWarning');
+    if (warningEl) warningEl.classList.add('hidden');
+    try {
+      const checkUrl = `${this.TEACHERS_API_URL}/check-class?class=${encodeURIComponent(assignedClass)}${id ? '&excludeId=' + id : ''}`;
+      const checkRes = await fetch(checkUrl);
+      const checkData = await checkRes.json();
+      if (checkData.taken) {
+        const msg = `कक्षा "${assignedClass}" पहले से "${checkData.teacherName}" को class teacher के रूप में assign है। कृपया कोई अन्य कक्षा चुनें, या इस कक्षा को Additional Access में डालें।`;
+        if (warningEl) { warningEl.textContent = msg; warningEl.classList.remove('hidden'); }
+        alert(msg);
+        return;
+      }
+    } catch (e) {
+      console.error('Duplicate check failed:', e);
     }
     
     try {
       const url = id ? `${this.TEACHERS_API_URL}/${id}` : this.TEACHERS_API_URL;
       const method = id ? 'PATCH' : 'POST';
       
-      // Use FormData if file is uploaded, otherwise use JSON
-      let body, headers;
-      if (imageFile) {
-        console.log('📤 Uploading file:', imageFile.name, 'Size:', imageFile.size, 'bytes');
-        // File upload - use FormData
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('designation', designation);
-        formData.append('qualification', qualification);
-        formData.append('experience', experience);
-        formData.append('subject', subject);
-        formData.append('thought', thought);
-        formData.append('order', order);
-        formData.append('image', imageFile);
-        console.log('📦 FormData created with', formData.has('image') ? 'image' : 'NO IMAGE');
-        body = formData;
-        headers = {}; // Don't set Content-Type, browser will set it with boundary
-      } else {
-        // No file - use JSON (for updates without changing image)
-        // If editing, keep existing image; if creating new, leave empty
-        const preview = document.getElementById('teacherImagePreview');
-        let imageValue = '';
-        if (id && preview) {
-          // Get original image path from data attribute
-          const originalImage = preview.getAttribute('data-original-image') || '';
-          imageValue = originalImage;
-        }
-        body = JSON.stringify({ 
-          name, designation, qualification, experience, subject, thought, order,
-          image: imageValue
-        });
-        headers = { 'Content-Type': 'application/json' };
-      }
-      
-      console.log('🚀 Sending request to:', url, 'Method:', method);
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('designation', designation);
+      formData.append('qualification', qualification);
+      formData.append('experience', experience);
+      formData.append('subject', subject);
+      formData.append('thought', thought);
+      formData.append('order', order);
+      formData.append('assignedClass', assignedClass);
+      formData.append('additionalAccess', JSON.stringify(additionalAccess));
+      if (password) formData.append('password', password);
+      if (imageFile) formData.append('profilePicture', imageFile);
+
+      console.log('🚀 Sending teacher data to:', url, 'Method:', method);
       const res = await fetch(url, {
         method,
-        headers,
-        body
+        body: formData
+        // Content-Type is set automatically for FormData
       });
       
-      console.log('📥 Response status:', res.status, res.statusText);
       const result = await res.json();
-      console.log('📥 Response data:', result);
+      console.log('📥 Response result:', result);
       
       if (!res.ok) {
-        console.error('❌ Request failed:', result);
-        throw new Error(result.message || 'सेव नहीं हो पाया');
+        throw new Error(result.message || 'त्रुटि: सर्वर से संपर्क नहीं हो सका');
       }
-      
-      console.log('✅ Teacher saved successfully:', result.data);
-      if (result.data && result.data.image) {
-        console.log('✅ Image path saved:', result.data.image);
-        console.log('✅ Full image URL:', `https://jrcintercollege.onrender.com/${result.data.image}`);
-      }
-      this.closeTeacherModal();
+
+      alert(id ? 'शिक्षक जानकारी अपडेट हो गई!' : 'नया शिक्षक सफलतापूर्वक जुड़ गया!');
+      document.getElementById('teacherModal').classList.add('hidden');
       this.loadTeachers();
-      alert(id ? 'शिक्षक अपडेट हो गया।' : 'शिक्षक जोड़ा गया।');
     } catch (err) {
-      console.error('❌ Save error:', err);
+      console.error('Save teacher error:', err);
       alert('त्रुटि: ' + err.message);
     }
   },

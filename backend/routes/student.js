@@ -72,7 +72,12 @@ router.get('/list', async (req, res) => {
       return res.json({ success: true, data: [] });
     }
     const query = {};
-    if (req.query.class) query.class = req.query.class;
+    if (req.query.classes) {
+      // Multi-class support: ?classes=8,7B,9A
+      query.class = { $in: req.query.classes.split(',').map(c => c.trim()).filter(Boolean) };
+    } else if (req.query.class) {
+      query.class = req.query.class;
+    }
     const list = await Student.find(query).select('name class rollNo passwordHash').sort({ class: 1, rollNo: 1 }).lean();
     const data = list.map(s => ({
       id: s._id,

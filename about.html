@@ -178,6 +178,7 @@
     .gold-text {
       background: linear-gradient(to right, #fbbf24, #f59e0b);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
       font-weight: 700;
       display: inline-block;
@@ -357,25 +358,10 @@
   </footer>
 
   <script>
-    const teachersData = [
-      { id: 1, name: { hi: "Mr. Dinesh Singh (Principal)", en: "Mr. Dinesh Singh (Principal)" }, qual: { hi: "B.Ed", en: "B.Ed" }, exp: { hi: "12 साल", en: "12 Years" }, sub: { hi: "English", en: "English" }, thought: { hi: "चरित्र ही शिक्षा की नींव है।", en: "Character is the foundation of education." }, img: "https://via.placeholder.com/300?text=Principal" },
-      { id: 2, name: { hi: "Mr. Jairam Chaudhary (Director)", en: "Mr. Jairam Chaudhary (Director)" }, qual: { hi: "Ph.D, Hindi", en: "Ph.D, Hindi" }, exp: { hi: "15 साल", en: "15 Years" }, sub: { hi: "Physical", en: "Physical" }, thought: { hi: "अनुशासन ही सफलता की कुंजी है।", en: "Discipline is the key to success." }, img: "https://via.placeholder.com/300?text=Director" },
-      { id: 3, name: { hi: "Vinay Chaudhary (M.D.)", en: "Vinay Chaudhary (M.D.)" }, qual: { hi: "M.A.", en: "M.A." }, exp: { hi: "5 साल", en: "5 Years" }, sub: { hi: "S.st.", en: "S.st." }, thought: { hi: "अतीत को जानकर ही हम बेहतर भविष्य बना सकते हैं।", en: "Knowing the past helps in building a better future." }, img: "https://via.placeholder.com/300?text=MD" },
-      { id: 4, name: { hi: "Mr. Babban Medhankar", en: "Mr. Babban Medhankar" }, qual: { hi: "B.A., M.A., B.Ed.", en: "B.A., M.A., B.Ed." }, exp: { hi: "10 साल", en: "10 Years" }, sub: { hi: "Hindi", en: "Hindi" }, thought: { hi: "शिक्षा सबसे शक्तिशाली हथियार है।", en: "Education is the most powerful weapon." }, img: "frontend/assets/babban sir.jpeg" },
-      { id: 5, name: { hi: "Miss. Sarita Verma", en: "Miss. Sarita Verma" }, qual: { hi: "B.Ed", en: "B.Ed" }, exp: { hi: "3 साल", en: "3 Years" }, sub: { hi: "S.st.", en: "S.st." }, thought: { hi: "तकनीक आज की दुनिया की भाषा है।", en: "Technology is the language of today's world." }, img: "frontend/assets/sarita mam.jpeg" },
-      { id: 6, name: { hi: "Mr. Sanjay Verma", en: "Mr. Sanjay Verma" }, qual: { hi: "BTC, M.sc", en: "BTC, M.sc" }, exp: { hi: "10 साल", en: "10 Years" }, sub: { hi: "Biology", en: "Biology" }, thought: { hi: "विज्ञान वास्तविकता की कविता है।", en: "Science is the poetry of reality." }, img: "frontend/assets/sanjay sir.jpeg" },
-      { id: 7, name: { hi: "Mr. Deepak Patel", en: "Mr. Deepak Patel" }, qual: { hi: "B.sc., L.Lb.", en: "B.sc., L.Lb." }, exp: { hi: "8 साल", en: "8 Years" }, sub: { hi: "Physics", en: "Physics" }, thought: { hi: "अनुशासन ही सफलता का आधार है।", en: "Discipline is the basis of success." }, img: "frontend/assets/deepak sir.jpeg" },
-      { id: 8, name: { hi: "Dr. Vikas kumar", en: "Dr. Vikas kumar" }, qual: { hi: "M.sc., Net, Ph.D Pursuing", en: "M.sc., Net, Ph.D Pursuing" }, exp: { hi: "6 साल", en: "6 Years" }, sub: { hi: "Maths", en: "Maths" }, thought: { hi: "सीखना कभी बंद नहीं होता।", en: "Learning never stops." }, img: "frontend/assets/vikas sir.jpeg" },
-      { id: 9, name: { hi: "Shivmani singh", en: "Shivmani singh" }, qual: { hi: "B.C.A.", en: "B.C.A." }, exp: { hi: "1 साल", en: "1 Year" }, sub: { hi: "Maths & Computer", en: "Maths & Computer" }, thought: { hi: "विज्ञान जिज्ञासा का दूसरा नाम है।", en: "Science is another name for curiosity." }, img: "frontend/assets/mee.jpg" },
-      { id: 10, name: { hi: "अध्यापक 10", en: "Faculty 10" }, qual: { hi: "PGT", en: "PGT" }, exp: { hi: "5 साल", en: "5 Years" }, sub: { hi: "Art", en: "Art" }, thought: { hi: "संगीत आत्मा की आवाज़ है।", en: "Music is the voice of the soul." }, img: "https://via.placeholder.com/300?text=Teacher" },
-      { id: 11, name: { hi: "अध्यापक 11", en: "Faculty 11" }, qual: { hi: "TGT", en: "TGT" }, exp: { hi: "4 साल", en: "4 Years" }, sub: { hi: "Science", en: "Science" }, thought: { hi: "प्रकृति ही सबसे बड़ी गुरु है।", en: "Nature is the greatest teacher." }, img: "https://via.placeholder.com/300?text=Teacher" },
-      { id: 12, name: { hi: "अध्यापक 12", en: "Faculty 12" }, qual: { hi: "M.A.", en: "M.A." }, exp: { hi: "7 साल", en: "7 Years" }, sub: { hi: "Sanskrit", en: "Sanskrit" }, thought: { hi: "ज्ञानम् परमं बलम्।", en: "Knowledge is supreme power." }, img: "https://via.placeholder.com/300?text=Teacher" },
-      { id: 13, name: { hi: "अध्यापक 13", en: "Faculty 13" }, qual: { hi: "B.Ed", en: "B.Ed" }, exp: { hi: "6 साल", en: "6 Years" }, sub: { hi: "Geography", en: "Geography" }, thought: { hi: "धरती को समझना खुद को समझना है।", en: "Understanding Earth is understanding self." }, img: "https://via.placeholder.com/300?text=Teacher" },
-      { id: 14, name: { hi: "अध्यापक 14", en: "Faculty 14" }, qual: { hi: "M.Sc", en: "M.Sc" }, exp: { hi: "9 साल", en: "9 Years" }, sub: { hi: "Chemistry", en: "Chemistry" }, thought: { hi: "अभ्यास ही पूर्णता लाता है।", en: "Practice brings perfection." }, img: "https://via.placeholder.com/300?text=Teacher" },
-      { id: 15, name: { hi: "अध्यापक 15", en: "Faculty 15" }, qual: { hi: "B.A.", en: "B.A." }, exp: { hi: "3 साल", en: "3 Years" }, sub: { hi: "EVS", en: "EVS" }, thought: { hi: "बच्चे कल का भविष्य हैं।", en: "Children are the future of tomorrow." }, img: "https://via.placeholder.com/300?text=Teacher" },
-      { id: 16, name: { hi: "अध्यापक 16", en: "Faculty 16" }, qual: { hi: "M.Com", en: "M.Com" }, exp: { hi: "5 साल", en: "5 Years" }, sub: { hi: "Civics", en: "Civics" }, thought: { hi: "जागरूक नागरिक ही देश की शक्ति है।", en: "Aware citizens are the strength of the nation." }, img: "https://via.placeholder.com/300?text=Teacher" }
-    ];
-
+    const API_BASE = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') 
+      ? 'http://localhost:3000' 
+      : 'https://jrcintercollege.onrender.com';
+    let teachersData = [];
     let currentLang = 'hi';
 
     const translations = {
@@ -388,7 +374,7 @@
         mission_title: "हमारा मिशन",
         m1: "सर्वांगीण शिक्षा प्रदान करना जो शिक्षा और जीवन कौशल को संतुलित करती है।",
         m2: "जिज्ञासा और रचनात्मकता की संस्कृति को बढ़ावा देना।",
-        m3: "शारीरिक फिटनेस और टीम वर्क को बढ़ावा देना।",
+        m3: "श पहाारीरिक फिटनेस और टीम वर्क को बढ़ावा देना।",
         m4: "नैतिक मूल्यों और सामाजिक जिम्मेदारी को बढ़ावा देना।",
         principal_title: "प्रधानाचार्य का संदेश",
         p_quote: "शिक्षा केवल अंक प्राप्त करने के बारे में नहीं है; यह चरित्र निर्माण के बारे में है।",
@@ -437,18 +423,38 @@
       updatePageContent();
     }
 
+    async function fetchTeachers() {
+      try {
+        const res = await fetch(`${API_BASE}/api/class-teachers/public`);
+        if (res.ok) {
+          const json = await res.json();
+          teachersData = json.data || [];
+        }
+      } catch (err) {
+        console.error("Failed to load teachers", err);
+      }
+      renderTeachers();
+    }
+
     function renderTeachers() {
       const container = document.getElementById('teacherContainer');
       container.innerHTML = '';
+      if (!teachersData || teachersData.length === 0) {
+        container.innerHTML = '<p class="text-white text-sm">अभी कोई शिक्षक नहीं जुड़े हैं।</p>';
+        return;
+      }
       teachersData.forEach(teacher => {
         const card = document.createElement('div');
         card.className = 'teacher-card glass-card p-3';
-        card.onclick = () => showTeacherDetails(teacher.id);
+        card.onclick = () => showTeacherDetails(teacher._id);
+        
+        let imgUrl = teacher.profilePicture || 'frontend/assets/default-avatar.png';
+        
         card.innerHTML = `
-          <img src="${teacher.img}" onerror="this.src='https://via.placeholder.com/300?text=Faculty'" class="teacher-img">
+          <img src="${imgUrl}" onerror="this.src='frontend/assets/default-avatar.png'" class="teacher-img">
           <div class="text-center mt-3">
-            <p class="font-bold text-white text-[12px]">${teacher.name[currentLang]}</p>
-            <p class="text-[9px] text-amber-400 font-bold uppercase mt-1">${teacher.sub[currentLang]}</p>
+            <p class="font-bold text-white text-[12px]">${teacher.name || ''}</p>
+            <p class="text-[9px] text-amber-400 font-bold uppercase mt-1">${teacher.subject || ''}</p>
           </div>
         `;
         container.appendChild(card);
@@ -462,15 +468,17 @@
 
     function showTeacherDetails(id) {
       const modal = document.getElementById('teacherModal');
-      const teacher = teachersData.find(t => t.id === id);
+      const teacher = teachersData.find(t => t._id === id);
       if (teacher) {
-        document.getElementById('modalName').innerText = teacher.name[currentLang];
-        document.getElementById('modalImg').src = teacher.img;
-        document.getElementById('modalSubInfo').innerText = teacher.sub[currentLang];
-        document.getElementById('modalQual').innerText = teacher.qual[currentLang];
-        document.getElementById('modalExp').innerText = teacher.exp[currentLang];
-        document.getElementById('modalSub').innerText = teacher.sub[currentLang];
-        document.getElementById('modalThought').innerText = teacher.thought[currentLang];
+        let imgUrl = teacher.profilePicture || 'frontend/assets/default-avatar.png';
+
+        document.getElementById('modalName').innerText = teacher.name || '';
+        document.getElementById('modalImg').src = imgUrl;
+        document.getElementById('modalSubInfo').innerText = teacher.subject || '';
+        document.getElementById('modalQual').innerText = teacher.qualification || '';
+        document.getElementById('modalExp').innerText = teacher.experience || '';
+        document.getElementById('modalSub').innerText = teacher.subject || '';
+        document.getElementById('modalThought').innerText = "शिक्षा सबसे शक्तिशाली हथियार है।";
         modal.style.display = 'flex';
       }
     }
@@ -479,7 +487,7 @@
     window.onclick = (e) => { if (e.target.id === 'teacherModal') closeModal(); }
 
     // Initial load
-    renderTeachers();
+    fetchTeachers();
   </script>
   <script src="frontend/js/main.js"></script>
 </body>

@@ -77,7 +77,12 @@ app.use(express.static(staticPath));
 console.log('📁 Serving static files from:', staticPath);
 
 const teacherUploadsPath = path.join(__dirname, '../frontend/assets/uploads/teachers');
-app.use('/uploads/teachers', express.static(teacherUploadsPath));
+// Allow cross-origin loading of uploaded images (fixes ERR_BLOCKED_BY_RESPONSE on Live Server)
+app.use('/uploads/teachers', (req, res, next) => {
+  res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next();
+}, express.static(teacherUploadsPath));
 console.log('📁 Teacher images from:', teacherUploadsPath);
 
 // Health check
@@ -99,6 +104,7 @@ app.use('/api/student', studentAuthRoutes);
 app.use('/api/student', studentRoutes);
 app.use('/api/teacher', teacherRoutes);
 app.use('/api/class-teachers', classTeacherRoutes);
+app.use('/api/admin', require('./routes/adminAuth'));
 
 // 404
 app.use((req, res) => {

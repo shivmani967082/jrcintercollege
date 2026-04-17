@@ -41,7 +41,8 @@ router.post('/login', async (req, res) => {
       id: teacher._id,
       teacherId: teacher.teacherId,
       name: teacher.name,
-      assignedClass: teacher.assignedClass
+      assignedClass: teacher.assignedClass,
+      additionalAccess: teacher.additionalAccess || []
     };
     res.json({ success: true, message: 'लॉगिन सफल।', data });
   } catch (err) {

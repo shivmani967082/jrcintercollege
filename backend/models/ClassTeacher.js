@@ -33,6 +33,44 @@ const classTeacherSchema = new mongoose.Schema({
     trim: true,
     enum: CLASSES
   },
+  profilePicture: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  subject: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  qualification: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  experience: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  designation: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  thought: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  order: {
+    type: Number,
+    default: 0
+  },
+  additionalAccess: {
+    type: [String],
+    default: []
+  },
   passwordHash: { type: String, required: true },
   salt: { type: String, required: true }
 }, {

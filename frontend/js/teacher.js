@@ -16,29 +16,52 @@ const TeacherPortal = {
       return;
     }
 
+    const allClasses = TeacherAuth.getAllClasses();
+    this.allClasses = allClasses;
+
     const tElement = document.getElementById('teacherName');
     if (tElement) {
-      tElement.textContent = (session.name || 'Teacher') + ' (Class: ' + assignedClass + ')';
+      const classLabel = allClasses.length > 1 ? allClasses.join(', ') : assignedClass;
+      tElement.textContent = (session.name || 'Teacher') + ' (Class: ' + classLabel + ')';
       tElement.style.color = 'black'; 
     }
     
-    this.lockToAssignedClass(assignedClass);
+    this.setupClassFilter(allClasses, assignedClass);
     this.bindEvents();
     this.loadStudents();
   },
 
-  lockToAssignedClass(assignedClass) {
+  setupClassFilter(allClasses, primaryClass) {
     const classFilter = document.getElementById('classFilter');
     if (classFilter) {
-      classFilter.innerHTML = '<option value="' + this.escape(assignedClass) + '">' + this.escape(assignedClass) + '</option>';
-      classFilter.value = assignedClass;
-      classFilter.disabled = true;
+      classFilter.innerHTML = '';
+      if (allClasses.length > 1) {
+        // Add "All Classes" option
+        const allOpt = document.createElement('option');
+        allOpt.value = '__all__';
+        allOpt.textContent = 'सभी कक्षाएं (All Classes)';
+        classFilter.appendChild(allOpt);
+      }
+      allClasses.forEach(cls => {
+        const opt = document.createElement('option');
+        opt.value = cls;
+        opt.textContent = cls + (cls === primaryClass ? ' (मुख्य)' : '');
+        classFilter.appendChild(opt);
+      });
+      classFilter.value = allClasses.length > 1 ? '__all__' : primaryClass;
+      classFilter.disabled = false;
     }
     const regClass = document.getElementById('regClass');
     if (regClass) {
-      regClass.innerHTML = '<option value="' + this.escape(assignedClass) + '">' + this.escape(assignedClass) + '</option>';
-      regClass.value = assignedClass;
-      regClass.disabled = true;
+      regClass.innerHTML = '';
+      allClasses.forEach(cls => {
+        const opt = document.createElement('option');
+        opt.value = cls;
+        opt.textContent = cls;
+        regClass.appendChild(opt);
+      });
+      regClass.value = primaryClass;
+      regClass.disabled = allClasses.length <= 1;
     }
   },
 
@@ -141,9 +164,17 @@ const TeacherPortal = {
   },
 
   async loadStudents() {
-    const assignedClass = TeacherAuth.getAssignedClass();
-    if (!assignedClass) return;
-    const url = `${API_BASE}/student/list?class=${encodeURIComponent(assignedClass)}`;
+    const classFilter = document.getElementById('classFilter');
+    const filterValue = classFilter ? classFilter.value : '';
+    const allClasses = this.allClasses || [TeacherAuth.getAssignedClass()];
+    
+    let url;
+    if (filterValue === '__all__' || !filterValue) {
+      // Fetch all accessible classes
+      url = `${API_BASE}/student/list?classes=${encodeURIComponent(allClasses.join(','))}`;
+    } else {
+      url = `${API_BASE}/student/list?class=${encodeURIComponent(filterValue)}`;
+    }
     const tbody = document.getElementById('studentsTableBody');
     tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-6 text-center text-black">लोड हो रहा है...</td></tr>';
     try {
@@ -302,11 +333,16 @@ const TeacherPortal = {
     const cls = document.getElementById('regClass').value;
     const rollNo = document.getElementById('regRollNo').value.trim();
     const msgEl = document.getElementById('regMessage');
-    msgEl.classList.add('hidden');
+    if (msgEl) msgEl.classList.add('hidden');
+    
     if (!name || !cls || !rollNo) {
-      msgEl.textContent = 'नाम, कक्षा और रोल नंबर भरें।';
-      msgEl.classList.remove('hidden');
-      msgEl.classList.add('text-red-600');
+      if (msgEl) {
+        msgEl.textContent = 'नाम, कक्षा और रोल नंबर भरें।';
+        msgEl.classList.remove('hidden');
+        msgEl.classList.add('text-red-600');
+      } else {
+        alert('नाम, कक्षा और रोल नंबर भरें।');
+      }
       return;
     }
     try {

@@ -155,8 +155,12 @@
               class="bg-blue-700 hover:bg-blue-600 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center shadow-md">
               <span class="mr-1">🔄</span> Refresh
             </button>
+            <button id="changePasswordBtn"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center shadow-md">
+              <span class="mr-1">🔑</span> Change Password
+            </button>
             <button id="logoutBtn"
-              class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center shadow-md">
+              class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center shadow-md">
               <span class="mr-1">🚪</span> Logout
             </button>
             <a href="index.html"
@@ -417,28 +421,65 @@
       </div>
     </section>
 
-    <!-- Class Teacher प्रबंधन -->
+    <!-- Unified Teacher Management Section -->
     <section class="mt-16 pt-12 border-t-2 border-gray-200">
-      <h2 class="text-gray-800 font-black mb-2 flex items-center gap-2">
-        <span class="bg-indigo-100 p-2 rounded-lg text-indigo-600 text-xl">👩‍🏫</span>
-        <span data-key="ct_mgmt">Class Teacher (टीचर पैनल लॉगिन)</span>
-      </h2>
-      <p class="text-sm text-gray-500 mb-6 font-medium">Manage teacher access credentials for specific classrooms.</p>
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+        <div>
+          <h2 class="text-3xl font-black text-gray-800 flex items-center gap-3">
+            <span class="bg-blue-100 p-2.5 rounded-2xl text-blue-600 text-2xl">👩‍🏫</span>
+            <span data-key="teacher_mgmt">शिक्षक प्रबंधन (Faculty Management)</span>
+          </h2>
+          <p class="text-gray-500 mt-1 font-medium">About Page प्रोफाइल्स और टीचर पैनल लॉगिन को यहाँ से मैनेज करें।</p>
+        </div>
+        <button id="addTeacherBtn"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 transition shadow-lg shadow-blue-100 transform active:scale-95">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path>
+          </svg>
+          नया शिक्षक जोड़ें
+        </button>
+      </div>
 
-      <div class="glass-card rounded-2xl shadow-lg p-8 mb-8 border border-gray-100">
-        <h3 class="font-bold text-gray-800 mb-6 pb-2 border-b">नया Class Teacher रजिस्टर करें</h3>
-        <form id="classTeacherForm" class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
+      <div id="teachersListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Teachers will be loaded here dynamicially -->
+        <div class="col-span-full py-12 text-center text-gray-500">
+          लोड हो रहा है...
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Teacher Add/Edit Modal (PRESERVED) -->
+  <div id="teacherModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50 flex py-4"
+    style="overflow-y: auto; backdrop-filter: blur(4px);">
+    <div class="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4 my-auto shadow-2xl border border-gray-100"
+      style="max-height: calc(100vh - 2rem); overflow-y: auto;">
+      <h3 class="text-2xl font-black text-gray-800 mb-6 flex items-center gap-2" id="teacherModalTitle">नया शिक्षक
+        जोड़ें</h3>
+      <form id="teacherForm">
+        <input type="hidden" id="teacherId">
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
           <div>
-            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">शिक्षक का नाम *</label>
-            <input type="text" id="ctName" required
-              class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="नाम">
+            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">नाम * (Login ID)</label>
+            <input type="text" id="teacherName" required
+              class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none"
+              placeholder="शिक्षक का नाम">
           </div>
           <div>
-            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">कक्षा *</label>
-            <select id="ctClass" required
-              class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="">चुनें</option>
+            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">पदनाम (Designation)</label>
+            <input type="text" id="teacherDesignation"
+              class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none"
+              placeholder="जैसे Principal, Director">
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">कक्षा * (Class Assignment)</label>
+            <select id="teacherAssignedClass" required
+              class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none">
+              <option value="">कक्षा चुनें</option>
               <option value="Nursery">Nursery</option>
               <option value="LKG">LKG</option>
               <option value="UKG">UKG</option>
@@ -464,49 +505,34 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">पासवर्ड *</label>
-            <input type="password" id="ctPassword" required minlength="6"
-              class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Min 6 characters">
-          </div>
-          <button type="submit"
-            class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg transform active:scale-95">रजिस्टर
-            करें</button>
-        </form>
-        <p id="ctMessage" class="mt-4 text-sm font-bold hidden"></p>
-      </div>
-      <div id="classTeachersListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <p class="text-gray-500 text-center py-4">लोड हो रहा है...</p>
-      </div>
-    </section>
-
-    <!-- शिक्षक प्रबंधन (About Page) -->
-
-  </main>
-
-  <!-- Teacher Add/Edit Modal (PRESERVED) -->
-  <div id="teacherModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50 flex py-4"
-    style="overflow-y: auto; backdrop-filter: blur(4px);">
-    <div class="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4 my-auto shadow-2xl border border-gray-100"
-      style="max-height: calc(100vh - 2rem); overflow-y: auto;">
-      <h3 class="text-2xl font-black text-gray-800 mb-6 flex items-center gap-2" id="teacherModalTitle">नया शिक्षक
-        जोड़ें</h3>
-      <form id="teacherForm">
-        <input type="hidden" id="teacherId">
-        <div class="grid md:grid-cols-2 gap-6 mb-6">
-          <div>
-            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">नाम *</label>
-            <input type="text" id="teacherName" required
+            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">पासवर्ड * (Login Password)</label>
+            <input type="password" id="teacherPassword"
               class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none"
-              placeholder="शिक्षक का नाम">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">पदनाम (Designation)</label>
-            <input type="text" id="teacherDesignation"
-              class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none"
-              placeholder="जैसे Principal, Director">
+              placeholder="कम से कम 6 अक्षर">
+            <p class="text-[10px] text-gray-400 mt-1">केवल नया शिक्षक जोड़ते समय या पासवर्ड बदलते समय भरें।</p>
           </div>
         </div>
+
+        <div class="mb-6">
+          <label class="block text-xs font-bold text-gray-500 uppercase mb-2">अतिरिक्त कक्षा पहुँच (Additional Class Access)</label>
+          <div class="relative">
+            <button type="button" onclick="AdminPortal.toggleTeacherClassDropdown()"
+              class="w-full text-left border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none bg-white flex justify-between items-center">
+              <span id="teacherAdditionalAccessPlaceholder" class="text-gray-400">कक्षाएं चुनें (Select Classes)</span>
+              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div id="teacherClassDropdown" class="hidden absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-xl max-h-60 overflow-y-auto p-2">
+              <!-- Checkboxes will be injected here -->
+              <div id="teacherClassCheckboxes" class="grid grid-cols-2 gap-2"></div>
+            </div>
+          </div>
+          <div id="teacherClassTags" class="flex flex-wrap gap-2 mt-3">
+            <!-- Selected tags will appear here -->
+          </div>
+          <p class="text-[10px] text-gray-400 mt-1">यह शिक्षक इन अतिरिक्त कक्षाओं के छात्रों को भी देख/प्रबंधित कर सकेगा।</p>
+          <p id="duplicateClassWarning" class="text-sm text-red-600 font-bold mt-2 hidden"></p>
+        </div>
+
         <div class="grid md:grid-cols-2 gap-6 mb-6">
           <div>
             <label class="block text-xs font-bold text-gray-500 uppercase mb-2">योग्यता (Qualification)</label>
@@ -631,6 +657,31 @@
             Update
           </button>
         </div>
+      </form>
+    </div>
+  </div>
+  <!-- Admin Change Password Modal -->
+  <div id="changePasswordModal" class="fixed inset-0 z-50 hidden bg-gray-900 bg-opacity-75 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 relative">
+      <button id="closeChangePasswordBtn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+      <h3 class="text-xl font-bold text-gray-900 mb-6 border-b pb-2">Change Admin Password</h3>
+      <form id="changePasswordForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-bold text-gray-700 mb-1">Current Password *</label>
+          <input type="password" id="cpCurrent" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-gray-700 mb-1">New Password *</label>
+          <input type="password" id="cpNew" required minlength="6" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-gray-700 mb-1">Confirm New Password *</label>
+          <input type="password" id="cpConfirm" required minlength="6" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <p id="cpMessage" class="text-xs font-bold hidden"></p>
+        <button type="submit" class="w-full bg-indigo-600 text-white rounded-lg px-4 py-2 font-bold hover:bg-indigo-700 shadow-md">Update Password</button>
       </form>
     </div>
   </div>
@@ -769,9 +820,6 @@
       }
 
       let isAdminPage = true;
-      window.addEventListener('beforeunload', () => {
-        AdminAuth.logout(true);
-      });
     }
   </script>
 </body>

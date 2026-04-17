@@ -71,6 +71,7 @@ const TeacherAuth = {
           teacherId: json.data.teacherId,
           name: json.data.name,
           assignedClass: json.data.assignedClass,
+          additionalAccess: json.data.additionalAccess || [],
           loginTime: new Date().toISOString(),
           expiresAt: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString()
         };
@@ -118,6 +119,21 @@ const TeacherAuth = {
   getAssignedClass() {
     const s = this.getSession();
     return s ? s.assignedClass : null;
+  },
+
+  getAdditionalAccess() {
+    const s = this.getSession();
+    return s ? (s.additionalAccess || []) : [];
+  },
+
+  getAllClasses() {
+    const s = this.getSession();
+    if (!s) return [];
+    const classes = [s.assignedClass];
+    if (s.additionalAccess && s.additionalAccess.length > 0) {
+      s.additionalAccess.forEach(c => { if (!classes.includes(c)) classes.push(c); });
+    }
+    return classes;
   },
 
   logout(silent = false) {
