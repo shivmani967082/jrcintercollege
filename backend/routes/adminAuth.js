@@ -9,7 +9,7 @@ const { checkLockout, recordFailure, recordSuccess } = require('../middleware/ra
 router.post('/login', async (req, res, next) => {
   const { username } = req.body;
   if (username) {
-    req.key = `admin:${username.trim().toLowerCase()}`;
+    req.baseKey = `admin:${username.trim().toLowerCase()}`;
   }
   next();
 }, checkLockout, async (req, res) => {

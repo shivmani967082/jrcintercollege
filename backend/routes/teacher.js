@@ -24,7 +24,7 @@ const { checkLockout, recordFailure, recordSuccess } = require('../middleware/ra
 router.post('/login', async (req, res, next) => {
   const { teacherId, class: cls } = req.body;
   if (teacherId && cls) {
-    req.key = `teacher:${teacherId.trim()}:${cls.trim()}`;
+    req.baseKey = `teacher:${teacherId.trim()}:${cls.trim()}`;
   }
   next();
 }, checkLockout, async (req, res) => {

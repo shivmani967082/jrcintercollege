@@ -19,24 +19,35 @@ const getLockoutDuration = (attempts) => {
  */
 const checkLockout = async (req, res, next) => {
   try {
-    const { key } = req; // Key should be attached by a previous middleware or derived in the route
-    if (!key) return next();
+    const baseKey = req.baseKey; 
+    if (!baseKey) return next();
+
+    // Include IP in the key to prevent easy bypass
+    const ip = req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+    const key = `${baseKey}:${ip}`;
+    req.key = key; // Attach for subsequent recordFailure/recordSuccess calls
 
     const attempt = await LoginAttempt.findOne({ key });
+    
     if (attempt && attempt.lockoutUntil && attempt.lockoutUntil > new Date()) {
       const remainingSeconds = Math.ceil((attempt.lockoutUntil - new Date()) / 1000);
-      let waitTime = `${remainingSeconds} seconds`;
       
+      let waitTime;
       if (remainingSeconds > 3600) {
         waitTime = `${Math.ceil(remainingSeconds / 3600)} hours`;
       } else if (remainingSeconds > 60) {
         waitTime = `${Math.ceil(remainingSeconds / 60)} minutes`;
+      } else {
+        waitTime = `${remainingSeconds} seconds`;
       }
+
+      console.log(`[RateLimit] Blocked attempt for ${key}. Remaining: ${remainingSeconds}s`);
 
       return res.status(403).json({
         success: false,
         message: `Too many failed attempts. Please wait ${waitTime} before trying again.`,
-        lockoutUntil: attempt.lockoutUntil
+        lockoutUntil: attempt.lockoutUntil,
+        remainingSeconds
       });
     }
     next();

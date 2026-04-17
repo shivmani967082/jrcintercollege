@@ -161,8 +161,12 @@ const AdminAuth = {
         // Redirect to admin panel
         window.location.href = 'admin.html';
       } else {
-        errorMessage.textContent = data.message || 'अवैध क्रेडेंशियल्स';
-        errorMessage.classList.remove('hidden');
+        if (res.status === 403 && data.remainingSeconds) {
+          JRCUtils.startLockoutCountdown(data.remainingSeconds, errorMessage);
+        } else {
+          errorMessage.textContent = data.message || 'अवैध क्रेडेंशियल्स';
+          errorMessage.classList.remove('hidden');
+        }
         document.getElementById('password').value = '';
         document.getElementById('password').focus();
       }

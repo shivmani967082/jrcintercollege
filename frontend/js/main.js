@@ -530,6 +530,46 @@ const JRCUtils = {
   },
 
   // ============================================
+  // SECURITY HELPERS
+  // ============================================
+  startLockoutCountdown(remainingSeconds, messageElement, prefix = 'Too many failed attempts. Please wait ') {
+    if (!messageElement) return null;
+    
+    let timeLeft = parseInt(remainingSeconds, 10);
+    if (isNaN(timeLeft) || timeLeft <= 0) return null;
+
+    // Clear any existing timer on this element
+    if (messageElement._countdownTimer) {
+      clearInterval(messageElement._countdownTimer);
+    }
+
+    const updateMessage = () => {
+      const mins = Math.floor(timeLeft / 60);
+      const secs = timeLeft % 60;
+      let timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+      messageElement.textContent = `${prefix}${timeStr} before trying again.`;
+      messageElement.classList.remove('hidden');
+    };
+
+    updateMessage();
+    
+    const timer = setInterval(() => {
+      timeLeft--;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        messageElement.classList.add('hidden');
+        messageElement.textContent = '';
+        delete messageElement._countdownTimer;
+      } else {
+        updateMessage();
+      }
+    }, 1000);
+
+    messageElement._countdownTimer = timer;
+    return timer;
+  },
+
+  // ============================================
   // DEBOUNCE FUNCTION
   // ============================================
   debounce(func, wait) {

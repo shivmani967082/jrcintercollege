@@ -78,9 +78,13 @@ const TeacherAuth = {
         localStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
         window.location.href = 'teacher.html';
       } else {
-        if (errorMessage) {
-          errorMessage.textContent = json.message || 'गलत Teacher ID, कक्षा या पासवर्ड।';
-          errorMessage.classList.remove('hidden');
+        if (res.status === 403 && json.remainingSeconds) {
+          if (errorMessage) JRCUtils.startLockoutCountdown(json.remainingSeconds, errorMessage, 'Too many failed attempts. Please wait ');
+        } else {
+          if (errorMessage) {
+            errorMessage.textContent = json.message || 'गलत Teacher ID, कक्षा या पासवर्ड।';
+            errorMessage.classList.remove('hidden');
+          }
         }
         const pwEl = document.getElementById('password');
         if (pwEl) { pwEl.value = ''; pwEl.focus(); }

@@ -102,7 +102,7 @@ router.post('/login', [
 ], async (req, res, next) => {
   const { class: cls, rollNo } = req.body;
   if (cls && rollNo) {
-    req.key = `student:${cls.trim()}:${String(rollNo).trim()}`;
+    req.baseKey = `student:${cls.trim()}:${String(rollNo).trim()}`;
   }
   next();
 }, checkLockout, async (req, res) => {

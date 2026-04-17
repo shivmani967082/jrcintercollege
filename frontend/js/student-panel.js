@@ -85,7 +85,14 @@ const StudentPanel = {
         this.setStudentInfo(data.student);
         window.location.href = 'student-panel.html';
       } else {
-        this.showMessage('formMessage', data.message || 'लॉगिन विफल।', true);
+        if (res.status === 403 && data.remainingSeconds) {
+          const msgEl = document.getElementById('formMessage');
+          if (msgEl) {
+            JRCUtils.startLockoutCountdown(data.remainingSeconds, msgEl, 'लॉगिन ब्लॉक है। कृपया प्रतीक्षा करें: ');
+          }
+        } else {
+          this.showMessage('formMessage', data.message || 'लॉगिन विफल।', true);
+        }
       }
     } catch (err) { this.showMessage('formMessage', 'सर्वर त्रुटि।', true); }
   },
