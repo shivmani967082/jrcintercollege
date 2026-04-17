@@ -92,22 +92,34 @@ router.post('/register', [
   }
 });
 
+const { checkLockout, recordFailure, recordSuccess } = require('../middleware/rateLimiter');
+
 // POST /api/student/login
 router.post('/login', [
   body('class').trim().notEmpty().withMessage('कक्षा जरूरी है'),
   body('rollNo').trim().notEmpty().withMessage('रोल नंबर जरूरी है'),
   body('password').notEmpty().withMessage('पासवर्ड जरूरी है')
-], async (req, res) => {
+], async (req, res, next) => {
+  const { class: cls, rollNo } = req.body;
+  if (cls && rollNo) {
+    req.key = `student:${cls.trim()}:${String(rollNo).trim()}`;
+  }
+  next();
+}, checkLockout, async (req, res) => {
   try {
     const errors = validationResult(req);
+    const key = req.key;
     if (!errors.isEmpty()) {
       return res.status(400).json({ success: false, message: errors.array()[0].msg });
     }
     const { class: cls, rollNo, password } = req.body;
     const student = await Student.findOne({ class: cls, rollNo: String(rollNo).trim() });
     if (!student || !student.verifyPassword(password)) {
+      if (key) await recordFailure(key);
       return res.status(401).json({ success: false, message: 'गलत कक्षा, रोल नंबर या पासवर्ड।' });
     }
+    
+    if (key) await recordSuccess(key);
     const token = sign({ studentId: student._id.toString() });
     return res.json({
       success: true,

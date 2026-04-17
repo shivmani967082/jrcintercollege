@@ -18,8 +18,16 @@ const CLASSES = [
   '12-Arts', '12-Commerce', '12-Science'
 ];
 
+const { checkLockout, recordFailure, recordSuccess } = require('../middleware/rateLimiter');
+
 // POST /api/teacher/login - class teacher login (Teacher ID + Class + Password)
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res, next) => {
+  const { teacherId, class: cls } = req.body;
+  if (teacherId && cls) {
+    req.key = `teacher:${teacherId.trim()}:${cls.trim()}`;
+  }
+  next();
+}, checkLockout, async (req, res) => {
   try {
     if (!isDbConnected()) {
       return res.status(503).json({ success: false, message: 'डेटाबेस कनेक्ट नहीं है।' });
@@ -32,11 +40,15 @@ router.post('/login', async (req, res) => {
     const classTrim = String(cls).trim();
     const teacher = await ClassTeacher.findOne({ teacherId: idTrim, assignedClass: classTrim });
     if (!teacher) {
+      if (req.key) await recordFailure(req.key);
       return res.status(401).json({ success: false, message: 'गलत नाम या कक्षा। केवल admin द्वारा रजिस्टर शिक्षक ही लॉगिन कर सकते हैं।' });
     }
     if (!teacher.verifyPassword(password)) {
+      if (req.key) await recordFailure(req.key);
       return res.status(401).json({ success: false, message: 'गलत पासवर्ड।' });
     }
+
+    if (req.key) await recordSuccess(req.key);
     const data = {
       id: teacher._id,
       teacherId: teacher.teacherId,

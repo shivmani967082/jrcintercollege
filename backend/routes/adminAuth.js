@@ -3,10 +3,19 @@ const router = express.Router();
 const Admin = require('../models/Admin');
 const bcrypt = require('bcrypt');
 
+const { checkLockout, recordFailure, recordSuccess } = require('../middleware/rateLimiter');
+
 // POST /api/admin/login
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res, next) => {
+  const { username } = req.body;
+  if (username) {
+    req.key = `admin:${username.trim().toLowerCase()}`;
+  }
+  next();
+}, checkLockout, async (req, res) => {
   try {
     const { username, password } = req.body;
+    const key = req.key;
     
     if (!username || !password) {
       return res.status(400).json({ success: false, message: 'Username and password are required' });
@@ -14,13 +23,18 @@ router.post('/login', async (req, res) => {
 
     const adminUser = await Admin.findOne({ username });
     if (!adminUser) {
+      await recordFailure(key);
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
     const isMatch = await bcrypt.compare(password, adminUser.password);
     if (!isMatch) {
+      await recordFailure(key);
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
+
+    // Reset attempts on success
+    await recordSuccess(key);
 
     // Return success to the frontend (frontend sets localStorage)
     res.json({ success: true, message: 'Login successful' });

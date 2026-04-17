@@ -7,6 +7,7 @@
   <title>Teacher Login | JRC स्कूल</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Inter:wght@300;400;600;800&display=swap');
 
@@ -145,6 +146,23 @@
       background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
       box-shadow: 0 8px 20px rgba(30, 64, 175, 0.3);
     }
+
+    /* Password Toggle Styling */
+    .pass-toggle {
+      position: absolute;
+      right: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 1.25rem;
+      transition: color 0.2s;
+      z-index: 10;
+    }
+
+    .pass-toggle:hover {
+      color: #3b82f6;
+    }
   </style>
 </head>
 
@@ -241,9 +259,12 @@
       <div class="input-group">
         <label id="lblPass"
           class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Password</label>
-        <input type="password" id="password" required
-          class="w-full px-5 py-4 focus:outline-none input-style font-bold text-gray-800" placeholder="••••••••"
-          autocomplete="current-password">
+        <div class="relative">
+          <input type="password" id="password" required
+            class="w-full px-5 py-4 focus:outline-none input-style font-bold text-gray-800" placeholder="••••••••"
+            autocomplete="current-password">
+          <i class="ph-bold ph-eye pass-toggle" onclick="togglePassword()"></i>
+        </div>
       </div>
 
       <div id="errorMessage"
@@ -272,6 +293,18 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <script>
+    function togglePassword() {
+      const input = document.getElementById('password');
+      const icon = event.currentTarget;
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('ph-eye', 'ph-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('ph-eye-slash', 'ph-eye');
+      }
+    }
+
     // --- BLUE STARFIELD BACKGROUND ---
     let scene, camera, renderer, starGeo, stars;
     function init3D() {

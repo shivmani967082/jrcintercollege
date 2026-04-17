@@ -7,6 +7,7 @@
   <title>छात्र लॉगिन | JRC स्कूल</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     :root {
       --primary: #1e3a8a;
@@ -94,6 +95,23 @@
     .lang-btn:hover {
       background: rgba(255, 255, 255, 0.25);
       transform: rotate(3deg);
+    }
+
+    /* Password Toggle Styling */
+    .pass-toggle {
+      position: absolute;
+      right: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 1.25rem;
+      transition: color 0.2s;
+      z-index: 10;
+    }
+
+    .pass-toggle:hover {
+      color: #3b82f6;
     }
   </style>
 </head>
@@ -216,18 +234,24 @@
         <div>
           <label id="lblRegPass"
             class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">पासवर्ड</label>
-          <input type="password" id="regPassword" required minlength="6"
-            class="w-full border-2 border-gray-200/50 rounded-xl px-4 py-3 focus:outline-none input-focus-effect transition-all"
-            placeholder="••••••••">
+          <div class="relative">
+            <input type="password" id="regPassword" required minlength="6"
+              class="w-full border-2 border-gray-200/50 rounded-xl px-4 py-3 focus:outline-none input-focus-effect transition-all"
+              placeholder="••••••••">
+            <i class="ph-bold ph-eye pass-toggle" onclick="togglePassword('regPassword', this)"></i>
+          </div>
         </div>
 
         <div>
           <label id="lblRegConfirm"
             class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">पासवर्ड की
             पुष्टि</label>
-          <input type="password" id="regConfirmPassword" required
-            class="w-full border-2 border-gray-200/50 rounded-xl px-4 py-3 focus:outline-none input-focus-effect transition-all"
-            placeholder="••••••••">
+          <div class="relative">
+            <input type="password" id="regConfirmPassword" required
+              class="w-full border-2 border-gray-200/50 rounded-xl px-4 py-3 focus:outline-none input-focus-effect transition-all"
+              placeholder="••••••••">
+            <i class="ph-bold ph-eye pass-toggle" onclick="togglePassword('regConfirmPassword', this)"></i>
+          </div>
         </div>
 
         <button type="submit" id="btnReg"
@@ -289,9 +313,12 @@
         <div>
           <label id="lblLoginPass"
             class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">पासवर्ड</label>
-          <input type="password" id="loginPassword" required
-            class="w-full border-2 border-gray-200/50 rounded-xl px-4 py-3 focus:outline-none input-focus-effect transition-all"
-            placeholder="••••••••">
+          <div class="relative">
+            <input type="password" id="loginPassword" required
+              class="w-full border-2 border-gray-200/50 rounded-xl px-4 py-3 focus:outline-none input-focus-effect transition-all"
+              placeholder="••••••••">
+            <i class="ph-bold ph-eye pass-toggle" onclick="togglePassword('loginPassword', this)"></i>
+          </div>
         </div>
 
         <button type="submit" id="btnLogin"
@@ -315,6 +342,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 
   <script>
+    function togglePassword(inputId, icon) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('ph-eye', 'ph-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('ph-eye-slash', 'ph-eye');
+      }
+    }
+
     // --- THREE.JS 3D BACKGROUND ---
     let scene, camera, renderer, particles;
 
